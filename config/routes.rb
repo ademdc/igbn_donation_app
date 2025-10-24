@@ -6,7 +6,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
-  
+  post 'sumup/checkout_return_url', to: 'sumup#checkout_return_url'
+
    resources :donations, only: [:create] do
     member do
       get :status

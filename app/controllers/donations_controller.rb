@@ -13,7 +13,7 @@ class DonationsController < ApplicationController
         )
         
         @donation.update(
-          checkout_id: checkout['id'],
+          checkout_id: checkout['data']['client_transaction_id'],
           checkout_reference: checkout['checkout_reference'],
           status: 'processing'
         )

@@ -14,6 +14,8 @@ module IgbnDonationApp
 
     config.i18n.available_locales = [:bs, :de]
     config.i18n.default_locale = :bs
+
+    config.hosts << ENV['APP_HOST'] if ENV['APP_HOST'].present?
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

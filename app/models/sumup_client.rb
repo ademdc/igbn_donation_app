@@ -18,6 +18,7 @@ class SumupClient
     request['Authorization'] = "Bearer #{@api_key}"
     request['Content-Type'] = 'application/json'
     request.body = {
+      return_url: set_return_url,
       total_amount: {
         value: (amount*100).to_i,
         currency: currency,
@@ -63,5 +64,9 @@ class SumupClient
     end
     
     JSON.parse(response.body) if response.is_a?(Net::HTTPSuccess)
+  end
+
+  def set_return_url
+    "https://#{ENV['APP_HOST']}/sumup/checkout_return_url"
   end
 end
