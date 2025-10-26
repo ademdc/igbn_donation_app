@@ -1,5 +1,6 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-  <div class="container mx-auto px-4 py-12">
+<div class="min-h-screen bg-cover bg-center bg-no-repeat relative" style="background-image: url(<%= asset_path('bg-image.png') %>);">
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-50/70 to-indigo-100/70 backdrop-blur-sm"></div>
+  <div class="relative container mx-auto px-4 py-12">  <div class="container mx-auto px-4 py-12">
     <div class="max-w-2xl mx-auto">
       <!-- Header -->
       <!-- Language Switcher -->
@@ -18,10 +19,10 @@
       </div>
       </div>
       <div class="text-center mb-12">
-        <h1 class="text-5xl font-bold text-gray-900 mb-4">
-          <%= t("donations.index.title") %>
+        <h1 class="text-5xl font-bold text-gray-900 mb-4 text-white ">
+          <%= t("donations.index.title").upcase %>
         </h1>
-        <i class="text-xl text-gray-600">
+        <i class="text-xl text-white shadow-lg px-6 py-3">
           <%= t("donations.index.subtitle") %>
         </i>
       </div>
@@ -189,4 +190,6 @@
       <% end %>
     </div>
   </div>
+</div>
+</div>
 </div>
