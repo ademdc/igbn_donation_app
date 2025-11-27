@@ -5,7 +5,7 @@ class Donation < ApplicationRecord
 
   before_validation :set_defaults, on: :create
   
-  after_create :send_confirmation_email 
+  after_update_commit :send_confirmation_email_on_success, if: :saved_change_to_status?
 
   scope :recent, -> { order(created_at: :desc) }
   scope :successful, -> { where(status: 'successful') }
@@ -31,7 +31,7 @@ class Donation < ApplicationRecord
 
   private
 
-  def send_confirmation_email
+  def send_confirmation_email_on_success
     if self.donor_email.present? && self.successful?
       DonationMailer.confirmation_email(self).deliver
     end
