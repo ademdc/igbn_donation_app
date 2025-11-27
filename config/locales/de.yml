@@ -16,7 +16,7 @@ de:
       complete_on_reader: "Bitte schließen Sie die Transaktion am Kartenleser ab"
       waiting_payment: "Warte auf Zahlung..."
       thank_you: "Vielen Dank! 🎉"
-      donation_received: "Ihre Spende von"
+      donation_received: "Ihre Spende ist Eingegangen"
       make_another: "Weitere Spende tätigen"
       payment_failed: "Zahlung fehlgeschlagen"
       try_again: "Erneut versuchen"

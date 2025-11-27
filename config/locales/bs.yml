@@ -16,7 +16,7 @@ bs:
       complete_on_reader: "Molimo dovršite transakciju na kartičnom čitaču"
       waiting_payment: "Čekanje plaćanja..."
       thank_you: "Hvala vam! 🎉"
-      donation_received: "Vaša donacija od"
+      donation_received: "Vaša donacija je primljena"
       make_another: "Napravite još jednu donaciju"
       payment_failed: "Plaćanje nije uspjelo"
       try_again: "Pokušajte ponovo"

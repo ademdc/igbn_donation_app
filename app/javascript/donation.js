@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     donateBtn.disabled = true;
-    donateBtn.textContent = 'Processing...';
+    donateBtn.textContent = 'U obradi...';
 
     try {
       const response = await fetch('/donations', {
