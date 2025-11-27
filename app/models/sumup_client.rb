@@ -7,8 +7,8 @@ class SumupClient
   def initialize(api_key = ENV['SUMUP_API_KEY'])
     @api_key = api_key
   end
-  
-  def create_reader_checkout(amount:, currency: 'EUR')
+
+  def create_reader_checkout(amount:, currency: 'EUR', email: nil)
     merchant_code = ENV['SUMUP_MERCHANT_CODE']
     reader_id = ENV['SUMUP_READER_ID']
     
@@ -24,7 +24,7 @@ class SumupClient
         currency: currency,
         minor_unit: 2
       },
-      checkout_reference: SecureRandom.uuid
+      checkout_reference: "Spende/Donacija ##{SecureRandom.uuid} #{email}".strip
     }.to_json
     response = Net::HTTP.start(url.hostname, url.port, use_ssl: true) do |http|
       http.request(request)

@@ -9,7 +9,8 @@ class DonationsController < ApplicationController
         sumup = SumupClient.new
         checkout = sumup.create_reader_checkout(
           amount: @donation.amount,
-          currency: @donation.currency
+          currency: @donation.currency,
+          email: @donation.donor_email
         )
         
         @donation.update(
