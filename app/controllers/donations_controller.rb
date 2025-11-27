@@ -46,10 +46,10 @@ class DonationsController < ApplicationController
       begin
         sumup = SumupClient.new
         checkout = sumup.get_checkout_status(@donation.checkout_id)
-        
-        if checkout['status'] == 'PAID'
+
+        if checkout['status'] == 'successful'
           @donation.update(
-            status: 'paid',
+            status: 'successful',
             transaction_code: checkout.dig('transactions', 0, 'transaction_code')
           )
         elsif checkout['status'] == 'FAILED'

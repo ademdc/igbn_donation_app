@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('paymentStatus').textContent = 
           `Status: ${data.status}... (${attempts}s)`;
 
-        if (data.status === 'paid') {
+        if (data.status === 'successful') {
           clearInterval(statusCheckInterval);
           showSuccess(data.amount);
         } else if (data.status === 'failed' || data.status === 'cancelled') {

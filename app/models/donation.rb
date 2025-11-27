@@ -1,12 +1,12 @@
 class Donation < ApplicationRecord
   validates :amount, presence: true, numericality: { greater_than: 0 }
   validates :currency, presence: true
-  validates :status, inclusion: { in: %w[pending processing paid failed cancelled] }
-  
+  validates :status, inclusion: { in: %w[pending processing successful failed cancelled] }
+
   before_validation :set_defaults, on: :create
   
   scope :recent, -> { order(created_at: :desc) }
-  scope :successful, -> { where(status: 'paid') }
+  scope :successful, -> { where(status: 'successful') }
   
   def self.preset_amounts
     [5, 10, 20]
@@ -15,9 +15,9 @@ class Donation < ApplicationRecord
   def pending?
     status == 'pending'
   end
-  
-  def paid?
-    status == 'paid'
+
+  def successful?
+    status == 'successful'
   end
   
   private
