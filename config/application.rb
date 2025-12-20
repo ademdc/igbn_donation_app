@@ -18,6 +18,8 @@ module IgbnDonationApp
     config.hosts << ENV['APP_HOST'] if ENV['APP_HOST'].present?
     config.hosts << "donation-terminal1.dzamija.net"
     config.hosts << "donation-terminal2.dzamija.net"
+    config.hosts << "donation-terminal2.lvh.me:3030"
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

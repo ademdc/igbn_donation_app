@@ -8,10 +8,9 @@ class SumupClient
     @api_key = api_key
   end
 
-  def create_reader_checkout(amount:, currency: 'EUR', email: nil)
+  def create_reader_checkout(amount:, currency: 'EUR', email: nil, reader_id:)
     merchant_code = ENV['SUMUP_MERCHANT_CODE']
-    reader_id = ENV['SUMUP_READER_ID']
-    
+
     url = URI("#{BASE_URL}/merchants/#{merchant_code}/readers/#{reader_id}/checkout")
     
     request = Net::HTTP::Post.new(url)
@@ -50,10 +49,9 @@ class SumupClient
     JSON.parse(response.body) if response.is_a?(Net::HTTPSuccess)
   end
   
-  def get_reader_status
+  def get_reader_status(reader_id:)
     merchant_code = ENV['SUMUP_MERCHANT_CODE']
-    reader_id = ENV['SUMUP_READER_ID']
-    
+
     url = URI("#{BASE_URL}/merchants/#{merchant_code}/readers/#{reader_id}")
     
     request = Net::HTTP::Get.new(url)

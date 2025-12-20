@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_10_12_204403) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_19_160011) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,6 +25,15 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_12_204403) do
     t.string "transaction_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "readers", force: :cascade do |t|
+    t.string "subdomain", null: false
+    t.string "sumup_reader_id", null: false
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subdomain"], name: "index_readers_on_subdomain", unique: true
   end
 
 end

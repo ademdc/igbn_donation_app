@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+terminal1:
+  subdomain: donation-terminal1
+  sumup_reader_id: reader-id-1
+  name: Donation Terminal 1
+
+terminal2:
+  subdomain: donation-terminal2
+  sumup_reader_id: reader-id-2
+  name: Donation Terminal 2
