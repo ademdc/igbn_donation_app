@@ -1,19 +1,29 @@
 console.log('Donation JS loaded');
-document.addEventListener('DOMContentLoaded', () => {
+
+let currentDonationId = null;
+let statusCheckInterval = null;
+
+document.addEventListener('turbo:load', () => {
+  console.log('turbo:load fired');
   const presetBtns = document.querySelectorAll('.preset-amount-btn');
+  console.log('Found preset buttons:', presetBtns.length);
   const customAmountInput = document.getElementById('customAmount');
   const donateBtn = document.getElementById('donateBtn');
   const donorNameInput = document.getElementById('donorName');
   const donorEmailInput = document.getElementById('donorEmail');
-  
+
   const donationForm = document.getElementById('donationForm');
   const processingState = document.getElementById('processingState');
   const successState = document.getElementById('successState');
   const errorState = document.getElementById('errorState');
-  
+
+  // Clear any existing interval from previous page
+  if (statusCheckInterval) {
+    clearInterval(statusCheckInterval);
+    statusCheckInterval = null;
+  }
+
   let selectedAmount = null;
-  let currentDonationId = null;
-  let statusCheckInterval = null;
 
   // Check reader status on load
   checkReaderStatus();
