@@ -15,6 +15,7 @@ class Terminal < ApplicationRecord
   validates :provider_reader_id, presence: true, if: -> { payment_connection&.client_class&.requires_reader? && pairing_code.blank? }
   validate :connection_belongs_to_account
   validate :hostname_free_of_accounts
+  validate :within_plan, if: -> { active? && (new_record? || active_changed?) }
 
   before_validation :set_hostname, on: :create
   before_validation :reset_reader_for_test_mode
@@ -75,6 +76,13 @@ class Terminal < ApplicationRecord
 
   def connection_belongs_to_account
     errors.add(:payment_connection, :invalid) if payment_connection && payment_connection.account_id != account_id
+  end
+
+  def within_plan
+    limit = account&.terminal_limit
+    return if limit.nil? || account.terminals.active.where.not(id: id).count < limit
+
+    errors.add(:base, I18n.t("app.billing.terminal_limit", count: limit))
   end
 
   def hostname_free_of_accounts

@@ -34,7 +34,7 @@
   <% end %>
 
   <section class="kiosk__card">
-    <% if !@terminal.active? || @account.suspended? %>
+    <% if !@terminal.active? || !@account.taking_donations? %>
       <p class="kiosk__closed"><%= t("terminal.closed") %></p>
     <% else %>
       <div id="donationForm">

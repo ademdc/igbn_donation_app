@@ -1,0 +1,21 @@
+<% bank = Rails.configuration.x.bank_transfer %>
+<% rows = {
+     t("app.billing.transfer.beneficiary") => "#{bank[:beneficiary]}, #{bank[:beneficiary_address]}",
+     "IBAN" => bank[:iban].scan(/.{1,4}/).join(" "),
+     "BIC / SWIFT" => bank[:swift],
+     t("app.billing.transfer.bank") => "#{bank[:bank]}, #{bank[:bank_address]}",
+     t("app.billing.amount") => money(@payment.amount_cents / 100.0, "EUR", precision: 0),
+     t("app.billing.transfer.reference") => @payment.reference
+   } %>
+<p><%= t("mailers.greeting", name: @user.name) %></p>
+<p><%= t("mailers.bank_transfer.body", account: @account.name) %></p>
+<table cellpadding="0" cellspacing="0" style="margin:16px 0;border-collapse:collapse;">
+  <% rows.each do |label, value| %>
+    <tr>
+      <td style="padding:4px 16px 4px 0;color:#3f5754;vertical-align:top;"><%= label %></td>
+      <td style="padding:4px 0;font-weight:700;"><%= value %></td>
+    </tr>
+  <% end %>
+</table>
+<p style="color:#3f5754;font-size:14px;"><%= t("app.billing.transfer.note", days: Account::TRANSFER_GRACE.in_days.to_i) %></p>
+<%= render "user_mailer/button", url: @account.url("/dashboard/billing"), label: t("mailers.reminder.action") %>

@@ -1,0 +1,94 @@
+de:
+  activerecord:
+    attributes:
+      account:
+        billing_name: "Rechnungsname"
+        billing_address: "Adresse"
+        billing_zip: "PLZ"
+        billing_city: "Ort"
+        billing_email: "Rechnungs-E-Mail"
+        country: "Land"
+  app:
+    nav:
+      billing: "Abrechnung"
+    billing:
+      lead: "Ihr Plan wird jährlich per Banküberweisung bezahlt."
+      current: "Ihr Plan"
+      status: "Status"
+      status_trial: "Kostenlos getestet bis %{date}"
+      status_paid: "Bezahlt bis %{date}"
+      status_free: "Kostenlos"
+      status_transfer: "Überweisung unterwegs, Terminals laufen weiter"
+      terminals_value: "%{active} aktiv, %{included} inklusive + %{extra} bezahlt"
+      price: "Preis"
+      price_value: "%{yearly} pro Jahr (%{monthly} pro Monat)"
+      pay_title: "Plan bezahlen"
+      renew_or_add: "Terminals hinzufügen oder verlängern"
+      choose: "Was möchten Sie bezahlen?"
+      kind_addon: "Weitere Terminals bis zum Ende des bezahlten Jahres: %{price} pro Terminal und Monat, %{months} Monate"
+      kind_renew: "Ein weiteres Jahr, bis %{date}"
+      extra_terminals: "Zusätzliche Terminals"
+      extra_hint: "%{included} Terminal ist inklusive, jedes weitere kostet %{price} pro Monat. Es werden mindestens so viele berechnet, wie aktiv sind."
+      details: "Rechnungsdaten"
+      fields:
+        name: "Name der Gemeinde"
+        address: "Straße und Hausnummer"
+        zip: "PLZ"
+        city: "Ort"
+        country: "Land"
+      pay_bank: "Per Überweisung bezahlen"
+      details_missing: "Bitte füllen Sie alle Rechnungsdaten aus."
+      nothing_to_pay: "Bitte wählen Sie mindestens ein Terminal."
+      terminal_limit:
+        one: "Ihr Plan enthält %{count} Terminal. Buchen Sie unter „Abrechnung“ ein weiteres dazu oder deaktivieren Sie ein anderes."
+        other: "Ihr Plan enthält %{count} Terminals. Buchen Sie unter „Abrechnung“ ein weiteres dazu oder deaktivieren Sie ein anderes."
+      history: "Zahlungen"
+      date: "Datum"
+      item: "Leistung"
+      amount: "Betrag"
+      item_subscription: "Jahresplan %{from} – %{to}"
+      item_addon:
+        one: "%{count} zusätzliches Terminal"
+        other: "%{count} zusätzliche Terminals"
+      payment_status:
+        approved: "Bezahlt"
+        declined: "Storniert"
+      banner:
+        trial_over: "Ihr Test ist beendet, die Terminals sind pausiert."
+        payment_due: "Ihr bezahltes Jahr ist abgelaufen, die Terminals sind pausiert."
+        trial_ending:
+          one: "Ihr Test endet morgen."
+          other: "Ihr Test endet in %{count} Tagen."
+        pay: "Jetzt bezahlen"
+      transfer:
+        title: "Bitte überweisen Sie diesen Betrag"
+        requested: "Die Bankdaten stehen unten und kommen auch per E-Mail."
+        hint: "Sie erhalten die Bankdaten und einen Verwendungszweck."
+        note: "Bitte geben Sie den Verwendungszweck genau so an. Die Terminals laufen %{days} Tage weiter, während die Überweisung unterwegs ist. Sobald das Geld da ist, bestätigen wir die Zahlung per E-Mail."
+        beneficiary: "Empfänger"
+        bank: "Bank"
+        reference: "Verwendungszweck"
+  mailers:
+    reminder:
+      action: "Zur Abrechnung"
+      price: "Ihr Plan kostet %{price} pro Jahr, bezahlt per Banküberweisung."
+      trial:
+        subject:
+          one: "%{account}: Ihr Test endet morgen"
+          other: "%{account}: Ihr Test endet in %{count} Tagen"
+        body:
+          one: "Der Test von %{account} endet am %{date}. Danach pausieren die Terminals, bis der Plan bezahlt ist."
+          other: "Der Test von %{account} endet am %{date}. Danach pausieren die Terminals, bis der Plan bezahlt ist."
+      renewal:
+        subject:
+          one: "%{account}: Ihr Plan läuft morgen ab"
+          other: "%{account}: Ihr Plan läuft in %{count} Tagen ab"
+        body:
+          one: "Der Plan von %{account} läuft am %{date} ab. Danach pausieren die Terminals, bis er verlängert ist."
+          other: "Der Plan von %{account} läuft am %{date} ab. Danach pausieren die Terminals, bis er verlängert ist."
+    bank_transfer:
+      subject: "Bankdaten für %{account} (%{reference})"
+      body: "So bezahlen Sie den Plan von %{account} per Überweisung:"
+    payment_confirmed:
+      subject: "Zahlung %{reference} ist eingegangen"
+      body: "Wir haben Ihre Zahlung %{reference} über %{amount} erhalten. Danke! Ihr Plan läuft bis %{date}."

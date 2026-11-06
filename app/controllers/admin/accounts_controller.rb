@@ -1,12 +1,14 @@
 module Admin
   class AccountsController < BaseController
     PER_PAGE = 50
+    BILLING_FILTERS = { "trialing" => :trialing, "trial_expired" => :trial_expired, "paying" => :paying,
+                        "payment_due" => :payment_due, "suspended" => :suspended }.freeze
 
     before_action :set_account, except: :index
 
     def index
       scope = Account.search(params[:q])
-      scope = scope.where(status: params[:status]) if Account::STATUSES.include?(params[:status])
+      scope = scope.public_send(BILLING_FILTERS.fetch(params[:status])) if BILLING_FILTERS.key?(params[:status])
 
       @page = [params[:page].to_i, 1].max
       @total = scope.count
@@ -19,6 +21,8 @@ module Admin
       @terminals = @account.terminals.includes(:payment_connection).order(:created_at)
       @connections = @account.payment_connections.order(:created_at)
       @stats = DashboardPresenter.new(@account, days: 30)
+      @awaiting_transfers = @account.payments.awaiting_transfer.includes(:account).order(:created_at)
+      @payments = @account.payments.where.not(status: "pending").recent
     end
 
     def update
@@ -27,6 +31,13 @@ module Admin
       else
         redirect_to admin_account_path(@account), alert: @account.errors.full_messages.to_sentence
       end
+    end
+
+    def extend_trial
+      days = params[:days].to_i.clamp(1, 365)
+      base = [@account.trial_ends_at, Time.current].compact.max
+      @account.update!(trial_ends_at: base + days.days)
+      redirect_to admin_account_path(@account), notice: "Trial extended by #{days} days"
     end
 
     # Opens the account dashboard as its owner, for support

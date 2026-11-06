@@ -1,0 +1,101 @@
+bs:
+  activerecord:
+    attributes:
+      account:
+        billing_name: "Naziv za račun"
+        billing_address: "Adresa"
+        billing_zip: "Poštanski broj"
+        billing_city: "Grad"
+        billing_email: "Email za račun"
+        country: "Država"
+  app:
+    nav:
+      billing: "Naplata"
+    billing:
+      lead: "Vaš plan se plaća godišnje bankovnim transferom."
+      current: "Vaš plan"
+      status: "Status"
+      status_trial: "Besplatno testiranje do %{date}"
+      status_paid: "Plaćeno do %{date}"
+      status_free: "Besplatno"
+      status_transfer: "Uplata je na putu, terminali i dalje rade"
+      terminals_value: "%{active} aktivnih, %{included} uključen + %{extra} plaćenih"
+      price: "Cijena"
+      price_value: "%{yearly} godišnje (%{monthly} mjesečno)"
+      pay_title: "Platite plan"
+      renew_or_add: "Dodajte terminale ili produžite"
+      choose: "Šta želite platiti?"
+      kind_addon: "Dodatni terminali do kraja plaćene godine: %{price} po terminalu mjesečno, mjeseci: %{months}"
+      kind_renew: "Još jedna godina, do %{date}"
+      extra_terminals: "Dodatni terminali"
+      extra_hint: "%{included} terminal je uključen, svaki dodatni košta %{price} mjesečno. Naplaćuje se najmanje onoliko koliko ih je aktivno."
+      details: "Podaci za račun"
+      fields:
+        name: "Naziv džemata"
+        address: "Ulica i broj"
+        zip: "Poštanski broj"
+        city: "Grad"
+        country: "Država"
+      pay_bank: "Plati bankovnim transferom"
+      details_missing: "Molimo popunite sve podatke za račun."
+      nothing_to_pay: "Molimo izaberite najmanje jedan terminal."
+      terminal_limit:
+        one: "Vaš plan uključuje %{count} terminal. Dodajte još jedan pod Naplata ili isključite neki."
+        few: "Vaš plan uključuje %{count} terminala. Dodajte još jedan pod Naplata ili isključite neki."
+        other: "Vaš plan uključuje %{count} terminala. Dodajte još jedan pod Naplata ili isključite neki."
+      history: "Uplate"
+      date: "Datum"
+      item: "Stavka"
+      amount: "Iznos"
+      item_subscription: "Godišnji plan %{from} – %{to}"
+      item_addon:
+        one: "%{count} dodatni terminal"
+        few: "%{count} dodatna terminala"
+        other: "%{count} dodatnih terminala"
+      payment_status:
+        approved: "Plaćeno"
+        declined: "Otkazano"
+      banner:
+        trial_over: "Vaše testiranje je završeno, terminali su pauzirani."
+        payment_due: "Vaša plaćena godina je istekla, terminali su pauzirani."
+        trial_ending:
+          one: "Vaše testiranje završava sutra."
+          few: "Vaše testiranje završava za %{count} dana."
+          other: "Vaše testiranje završava za %{count} dana."
+        pay: "Plati sada"
+      transfer:
+        title: "Molimo uplatite ovaj iznos"
+        requested: "Bankovni podaci su ispod, a stižu i putem emaila."
+        hint: "Dobit ćete bankovne podatke i poziv na broj."
+        note: "Molimo koristite poziv na broj tačno kako je prikazan. Terminali rade još %{days} dana dok je uplata na putu. Potvrdit ćemo putem emaila kad novac stigne."
+        beneficiary: "Primalac"
+        bank: "Banka"
+        reference: "Poziv na broj"
+  mailers:
+    reminder:
+      action: "Na naplatu"
+      price: "Vaš plan košta %{price} godišnje, plaćanje bankovnim transferom."
+      trial:
+        subject:
+          one: "%{account}: vaše testiranje završava sutra"
+          few: "%{account}: vaše testiranje završava za %{count} dana"
+          other: "%{account}: vaše testiranje završava za %{count} dana"
+        body:
+          one: "Testiranje za %{account} završava %{date}. Nakon toga terminali se pauziraju dok se plan ne plati."
+          few: "Testiranje za %{account} završava %{date}. Nakon toga terminali se pauziraju dok se plan ne plati."
+          other: "Testiranje za %{account} završava %{date}. Nakon toga terminali se pauziraju dok se plan ne plati."
+      renewal:
+        subject:
+          one: "%{account}: vaš plan ističe sutra"
+          few: "%{account}: vaš plan ističe za %{count} dana"
+          other: "%{account}: vaš plan ističe za %{count} dana"
+        body:
+          one: "Plan za %{account} ističe %{date}. Nakon toga terminali se pauziraju dok se ne produži."
+          few: "Plan za %{account} ističe %{date}. Nakon toga terminali se pauziraju dok se ne produži."
+          other: "Plan za %{account} ističe %{date}. Nakon toga terminali se pauziraju dok se ne produži."
+    bank_transfer:
+      subject: "Bankovni podaci za %{account} (%{reference})"
+      body: "Ovako plaćate plan za %{account} bankovnim transferom:"
+    payment_confirmed:
+      subject: "Uplata %{reference} je primljena"
+      body: "Primili smo vašu uplatu %{reference} u iznosu od %{amount}. Hvala! Vaš plan traje do %{date}."

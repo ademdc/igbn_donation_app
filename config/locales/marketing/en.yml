@@ -60,8 +60,8 @@ en:
     pricing:
       title: "Simple pricing for every community"
       plan: "Community"
-      price: "€30"
-      per: "per month, billed yearly (€360 a year)"
+      price: "€35"
+      per: "per month, billed yearly (€420 a year)"
       includes:
         - "Free to test for 30 days"
         - "1 terminal included"
@@ -73,12 +73,12 @@ en:
       guarantee_title: "Money-back guarantee"
       guarantee: "If your terminals take less in donations in a year than the yearly fee, we refund the fee."
       cta: "Try it free for 30 days"
-      note: "You pay your payment provider's fees directly to them."
+      note: "Paid by bank transfer. You pay your payment provider's fees directly to them."
     faq:
       title: "Common questions"
       items:
         - q: "What does it cost after the 30 days?"
-          a: "€30 per month, billed yearly, so €360 a year. One terminal is included, and each extra one costs €5 per month."
+          a: "€35 per month, billed yearly, so €420 a year. One terminal is included, and each extra one costs €5 per month. You pay by bank transfer. Without payment the terminals pause, and your account and data stay safe."
         - q: "What if we hardly get any donations?"
           a: "Then you get your money back: if your terminals take less in donations in a year than the yearly fee, we refund the fee."
         - q: "What devices do we need?"

@@ -3,6 +3,11 @@ module Admin
     def index
       @accounts_total = Account.count
       @accounts_suspended = Account.suspended.count
+      @accounts_trialing = Account.trialing.count
+      @accounts_paying = Account.paying.count
+      @accounts_lapsed = Account.trial_expired.count + Account.payment_due.count
+      @yearly_revenue_cents = Account.paying.sum(&:yearly_price_cents)
+      @awaiting_transfers = Payment.awaiting_transfer.includes(:account).order(:created_at)
       @signups_30_days = Account.where(created_at: 30.days.ago..).count
       @terminals_total = Terminal.active.count
       # Money isn't converted: each currency is shown on its own

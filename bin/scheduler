@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# Fly has no scheduler, so this process sends the billing reminders. Hourly, since they
+# only go out once and an hour's delay doesn't matter.
+require_relative "../config/environment"
+
+$stdout.sync = true
+Rails.logger.info "Scheduler started"
+
+loop do
+  begin
+    Rails.logger.info "Billing reminders sent: #{Billing::Reminders.run}"
+  rescue => e
+    Rails.logger.error "Scheduler: #{e.class}: #{e.message}"
+  end
+
+  sleep 1.hour
+end

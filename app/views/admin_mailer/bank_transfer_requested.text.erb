@@ -1,0 +1,9 @@
+<%= @account.name %> (<%= @account.host %>) will pay by bank transfer.
+
+Reference: <%= @payment.reference %>
+Amount: <%= number_to_currency(@payment.amount_cents / 100.0, unit: "€", format: "%n %u") %>
+For: <%= @payment.description %>
+Billing name: <%= @account.billing_name %>, <%= @account.billing_city %>
+
+When the money arrives, mark it as paid:
+<%= AppDomain.marketing_url("/admin/accounts/#{@account.id}") %>

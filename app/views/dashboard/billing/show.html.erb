@@ -1,0 +1,136 @@
+<% content_for :title, t("app.nav.billing") %>
+<% euros = ->(cents) { money(cents / 100.0, "EUR", precision: 0) } %>
+
+<h1 class="page-title"><%= t("app.nav.billing") %></h1>
+<p class="page-lead"><%= t("app.billing.lead") %></p>
+
+<div class="stack">
+  <% if (transfer = @account.payments.awaiting_transfer.recent.first) %>
+    <section class="panel panel--highlight" id="transfer" aria-labelledby="transfer-title">
+      <h2 class="panel__title" id="transfer-title"><%= t("app.billing.transfer.title") %></h2>
+      <%= render "bank_details", payment: transfer %>
+      <p class="muted" style="margin-top: 1rem;"><%= t("app.billing.transfer.note", days: Account::TRANSFER_GRACE.in_days.to_i) %></p>
+    </section>
+  <% end %>
+
+  <section class="panel" aria-labelledby="current-title">
+    <h2 class="panel__title" id="current-title"><%= t("app.billing.current") %></h2>
+    <dl class="summary">
+      <dt><%= t("app.billing.status") %></dt>
+      <dd>
+        <% if @account.free_of_charge? %>
+          <%= t("app.billing.status_free") %>
+        <% elsif @account.paid? %>
+          <%= t("app.billing.status_paid", date: l(@account.paid_until.to_date, format: :long)) %>
+        <% elsif @account.trial? %>
+          <%= t("app.billing.status_trial", date: l(@account.trial_ends_at.to_date, format: :long)) %>
+        <% elsif @account.billing_lapsed? %>
+          <strong class="text-alert"><%= t(@account.trial_expired? ? "app.billing.banner.trial_over" : "app.billing.banner.payment_due") %></strong>
+        <% else %>
+          <%= t("app.billing.status_transfer") %>
+        <% end %>
+      </dd>
+      <dt><%= t("app.nav.terminals") %></dt>
+      <dd><%= t("app.billing.terminals_value", active: @account.terminals.active.count, included: Account::INCLUDED_TERMINALS, extra: @account.extra_terminals) %></dd>
+      <dt><%= t("app.billing.price") %></dt>
+      <dd><%= t("app.billing.price_value", yearly: euros.(@account.yearly_price_cents([@account.extra_terminals, @account.extra_terminals_needed].max)), monthly: euros.(@account.monthly_price_cents([@account.extra_terminals, @account.extra_terminals_needed].max))) %></dd>
+    </dl>
+  </section>
+
+  <% unless @account.free_of_charge? %>
+    <section class="panel" aria-labelledby="pay-title">
+      <h2 class="panel__title" id="pay-title"><%= @account.paid? ? t("app.billing.renew_or_add") : t("app.billing.pay_title") %></h2>
+      <%= render "shared/errors", record: @account %>
+
+      <%= form_with model: @account, url: dashboard_billing_path, method: :post do |form| %>
+        <fieldset class="plain-fieldset">
+          <legend class="panel__subtitle"><%= t("app.billing.choose") %></legend>
+          <% if @account.paid? %>
+            <label class="choice">
+              <%= radio_button_tag :kind, "addon", true %>
+              <span><%= t("app.billing.kind_addon", months: @account.paid_months_left, price: euros.(Account::EXTRA_TERMINAL_PRICE_CENTS)) %></span>
+            </label>
+            <label class="choice">
+              <%= radio_button_tag :kind, "subscription", false %>
+              <span><%= t("app.billing.kind_renew", date: l(@account.paid_until.to_date + 1.year, format: :long)) %></span>
+            </label>
+          <% else %>
+            <%= hidden_field_tag :kind, "subscription" %>
+          <% end %>
+          <div class="field field--narrow">
+            <%= label_tag :extra_terminals, t("app.billing.extra_terminals") %>
+            <%= number_field_tag :extra_terminals, @account.paid? ? 1 : @account.extra_terminals_needed, min: 0, max: Account::MAX_EXTRA_TERMINALS %>
+            <p class="field__hint"><%= t("app.billing.extra_hint", included: Account::INCLUDED_TERMINALS, price: euros.(Account::EXTRA_TERMINAL_PRICE_CENTS)) %></p>
+          </div>
+        </fieldset>
+
+        <fieldset class="plain-fieldset">
+          <legend class="panel__subtitle"><%= t("app.billing.details") %></legend>
+          <div class="form-grid">
+            <div class="field">
+              <%= form.label :billing_name, t("app.billing.fields.name") %>
+              <%= form.text_field :billing_name, required: true, autocomplete: "organization" %>
+            </div>
+            <div class="field">
+              <%= form.label :billing_email, t("app.fields.email") %>
+              <%= form.email_field :billing_email, required: true, autocomplete: "email" %>
+            </div>
+            <div class="field">
+              <%= form.label :billing_address, t("app.billing.fields.address") %>
+              <%= form.text_field :billing_address, required: true, autocomplete: "street-address" %>
+            </div>
+            <div class="field">
+              <%= form.label :billing_zip, t("app.billing.fields.zip") %>
+              <%= form.text_field :billing_zip, required: true, autocomplete: "postal-code" %>
+            </div>
+            <div class="field">
+              <%= form.label :billing_city, t("app.billing.fields.city") %>
+              <%= form.text_field :billing_city, required: true, autocomplete: "address-level2" %>
+            </div>
+            <div class="field">
+              <%= form.label :country, t("app.billing.fields.country") %>
+              <%= form.select :country, Account::COUNTRY_NAMES.invert.sort, {}, required: true %>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="panel__actions">
+          <%= form.submit t("app.billing.pay_bank"), class: "button" %>
+          <p class="muted"><%= t("app.billing.transfer.hint") %></p>
+        </div>
+      <% end %>
+    </section>
+  <% end %>
+
+  <% if @payments.any? %>
+    <section class="panel" aria-labelledby="history-title">
+      <h2 class="panel__title" id="history-title"><%= t("app.billing.history") %></h2>
+      <table class="table table--responsive">
+        <thead>
+          <tr>
+            <th><%= t("app.billing.date") %></th>
+            <th><%= t("app.billing.item") %></th>
+            <th><%= t("app.billing.amount") %></th>
+            <th><%= t("app.billing.status") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @payments.each do |payment| %>
+            <tr>
+              <td><%= l(payment.created_at.to_date, format: :long) %></td>
+              <td>
+                <% if payment.subscription? %>
+                  <%= t("app.billing.item_subscription", from: l(payment.period_start.to_date), to: l(payment.period_end.to_date)) %>
+                <% else %>
+                  <%= t("app.billing.item_addon", count: payment.extra_terminals) %>
+                <% end %>
+              </td>
+              <td><%= euros.(payment.amount_cents) %></td>
+              <td><span class="tag"><%= t("app.billing.payment_status.#{payment.status}") %></span></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </section>
+  <% end %>
+</div>

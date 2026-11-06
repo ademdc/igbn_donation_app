@@ -17,7 +17,7 @@ class MarketingTest < ActionDispatch::IntegrationTest
   end
 
   test "pricing shows the yearly plan, extra terminals and the guarantee" do
-    { "de" => ["30 €", "+5 €"], "en" => ["€30", "+€5"], "bs" => ["30 €", "+5 €"] }.each do |locale, (price, addon)|
+    { "de" => ["35 €", "+5 €"], "en" => ["€35", "+€5"], "bs" => ["35 €", "+5 €"] }.each do |locale, (price, addon)|
       get "/#{locale}"
       assert_select ".plan__price", price
       assert_select ".plan__addon", /#{Regexp.escape(addon)}/

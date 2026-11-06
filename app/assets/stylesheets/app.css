@@ -686,3 +686,10 @@ body.app {
   .appearance__preview { position: static; order: -1; }
   .two-col { grid-template-columns: minmax(0, 1fr); }
 }
+
+.bank-details code { font-size: 1.05em; letter-spacing: 0.02em; }
+
+@media (max-width: 560px) {
+  .bank-details { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
+  .bank-details dd { margin-bottom: 0.6rem; }
+}

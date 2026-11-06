@@ -60,8 +60,8 @@ de:
     pricing:
       title: "Einfache Preise für jede Gemeinde"
       plan: "Gemeinde"
-      price: "30 €"
-      per: "pro Monat, jährlich abgerechnet (360 € im Jahr)"
+      price: "35 €"
+      per: "pro Monat, jährlich abgerechnet (420 € im Jahr)"
       includes:
         - "30 Tage kostenlos testen"
         - "1 Terminal inklusive"
@@ -73,12 +73,12 @@ de:
       guarantee_title: "Geld-zurück-Garantie"
       guarantee: "Gehen über Ihre Terminals in einem Jahr weniger Spenden ein, als die Jahresgebühr beträgt, erstatten wir Ihnen die Gebühr."
       cta: "30 Tage kostenlos testen"
-      note: "Die Gebühren Ihres Zahlungsanbieters zahlen Sie direkt an ihn."
+      note: "Bezahlung per Banküberweisung. Die Gebühren Ihres Zahlungsanbieters zahlen Sie direkt an ihn."
     faq:
       title: "Häufige Fragen"
       items:
         - q: "Was kostet es nach den 30 Tagen?"
-          a: "30 € pro Monat, jährlich abgerechnet, also 360 € im Jahr. Ein Terminal ist enthalten, jedes weitere kostet 5 € pro Monat."
+          a: "35 € pro Monat, jährlich abgerechnet, also 420 € im Jahr. Ein Terminal ist enthalten, jedes weitere kostet 5 € pro Monat. Bezahlt wird per Banküberweisung. Ohne Zahlung pausieren die Terminals, Ihr Konto und Ihre Daten bleiben erhalten."
         - q: "Was, wenn bei uns kaum gespendet wird?"
           a: "Dann bekommen Sie Ihr Geld zurück: Gehen über Ihre Terminals in einem Jahr weniger Spenden ein, als die Jahresgebühr beträgt, erstatten wir Ihnen die Gebühr."
         - q: "Welche Geräte brauchen wir?"

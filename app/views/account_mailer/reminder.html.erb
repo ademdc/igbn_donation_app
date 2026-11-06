@@ -1,0 +1,4 @@
+<p><%= t("mailers.greeting", name: @user.name) %></p>
+<p><%= t("mailers.reminder.#{@kind}.body", account: @account.name, date: l(@deadline, format: :long), count: @days_left) %></p>
+<%= render "user_mailer/button", url: @account.url("/dashboard/billing"), label: t("mailers.reminder.action") %>
+<p style="color:#3f5754;font-size:14px;"><%= t("mailers.reminder.price", price: money(@account.yearly_price_cents([@account.extra_terminals, @account.extra_terminals_needed].max) / 100.0, "EUR", precision: 0)) %></p>

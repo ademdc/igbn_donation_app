@@ -61,7 +61,7 @@ class DonationsController < ApplicationController
   end
 
   def require_open_terminal
-    return if @terminal.active? && @account.active?
+    return if @terminal.active? && @account.taking_donations?
     render json: { success: false, error: t("terminal.closed") }, status: :forbidden
   end
 

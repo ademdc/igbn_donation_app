@@ -1,0 +1,9 @@
+<% bank = Rails.configuration.x.bank_transfer %>
+<dl class="summary bank-details">
+  <dt><%= t("app.billing.transfer.beneficiary") %></dt><dd><%= bank[:beneficiary] %>, <%= bank[:beneficiary_address] %></dd>
+  <dt>IBAN</dt><dd><code><%= bank[:iban].scan(/.{1,4}/).join(" ") %></code></dd>
+  <dt>BIC / SWIFT</dt><dd><code><%= bank[:swift] %></code></dd>
+  <dt><%= t("app.billing.transfer.bank") %></dt><dd><%= bank[:bank] %>, <%= bank[:bank_address] %></dd>
+  <dt><%= t("app.billing.amount") %></dt><dd><strong><%= money(payment.amount_cents / 100.0, "EUR", precision: 0) %></strong></dd>
+  <dt><%= t("app.billing.transfer.reference") %></dt><dd><code><strong><%= payment.reference %></strong></code></dd>
+</dl>

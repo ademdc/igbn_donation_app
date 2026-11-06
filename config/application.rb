@@ -30,6 +30,19 @@ module DonationApp
     config.x.contact_email = ENV.fetch("CONTACT_EMAIL", "hello@#{ENV.fetch("APP_DOMAIN", "example.com")}")
     config.x.mail_from = ENV.fetch("MAIL_FROM", "#{config.x.brand_name} <#{config.x.contact_email}>")
 
+    # Where notices for the people running the service go (e.g. bank transfers to confirm)
+    config.x.admin_email = ENV.fetch("ADMIN_EMAIL", "info@everline.io")
+
+    # Bank account shown to accounts paying by transfer
+    config.x.bank_transfer = {
+      beneficiary: "Everline d.o.o.",
+      beneficiary_address: "Hadzeli 213, 71240 Hadzici, Bosnia and Herzegovina",
+      iban: "BA391610000288650089",
+      swift: "RZBABA2S",
+      bank: "Raiffeisen Bank",
+      bank_address: "Zmaja od Bosne bb, Sarajevo, Bosnia and Herzegovina"
+    }
+
     # "nested": terminal1.acme.domain.com, one Let's Encrypt certificate per terminal via the Fly API.
     # "flat":   terminal1-acme.domain.com, covered by the *.domain.com certificate.
     config.x.terminal_hosts = ENV.fetch("TERMINAL_HOSTS", "nested")

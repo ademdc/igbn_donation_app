@@ -1,0 +1,3 @@
+<p><%= t("mailers.greeting", name: @user.name) %></p>
+<p><%= t("mailers.payment_confirmed.body", reference: @payment.reference, amount: money(@payment.amount_cents / 100.0, "EUR", precision: 0), date: l(@account.paid_until.to_date, format: :long)) %></p>
+<%= render "user_mailer/button", url: @account.url("/dashboard/billing"), label: t("mailers.welcome.action") %>

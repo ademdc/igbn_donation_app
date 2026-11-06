@@ -1,0 +1,93 @@
+en:
+  activerecord:
+    attributes:
+      account:
+        billing_name: "Billing name"
+        billing_address: "Address"
+        billing_zip: "Postcode"
+        billing_city: "City"
+        billing_email: "Billing email"
+  app:
+    nav:
+      billing: "Billing"
+    billing:
+      lead: "Your plan is paid yearly by bank transfer."
+      current: "Your plan"
+      status: "Status"
+      status_trial: "Free trial until %{date}"
+      status_paid: "Paid until %{date}"
+      status_free: "Free of charge"
+      status_transfer: "Transfer on its way, terminals keep running"
+      terminals_value: "%{active} active, %{included} included + %{extra} paid"
+      price: "Price"
+      price_value: "%{yearly} a year (%{monthly} a month)"
+      pay_title: "Pay for your plan"
+      renew_or_add: "Add terminals or renew"
+      choose: "What would you like to pay for?"
+      kind_addon: "Extra terminals until the end of your paid year: %{price} per terminal per month, %{months} months"
+      kind_renew: "Another year, until %{date}"
+      extra_terminals: "Extra terminals"
+      extra_hint: "%{included} terminal is included, each extra one costs %{price} per month. You're charged for at least as many as are active."
+      details: "Billing details"
+      fields:
+        name: "Name of your community"
+        address: "Street and number"
+        zip: "Postcode"
+        city: "City"
+        country: "Country"
+      pay_bank: "Pay by bank transfer"
+      details_missing: "Please fill in all billing details."
+      nothing_to_pay: "Please choose at least one terminal."
+      terminal_limit:
+        one: "Your plan includes %{count} terminal. Add another under Billing, or turn one off."
+        other: "Your plan includes %{count} terminals. Add another under Billing, or turn one off."
+      history: "Payments"
+      date: "Date"
+      item: "Item"
+      amount: "Amount"
+      item_subscription: "Yearly plan %{from} – %{to}"
+      item_addon:
+        one: "%{count} extra terminal"
+        other: "%{count} extra terminals"
+      payment_status:
+        approved: "Paid"
+        declined: "Cancelled"
+      banner:
+        trial_over: "Your trial has ended, so your terminals are paused."
+        payment_due: "Your paid year has ended, so your terminals are paused."
+        trial_ending:
+          one: "Your trial ends tomorrow."
+          other: "Your trial ends in %{count} days."
+        pay: "Pay now"
+      transfer:
+        title: "Please transfer this amount"
+        requested: "The bank details are below, and on their way by email."
+        hint: "You'll get the bank details and a payment reference."
+        note: "Please use the reference exactly as shown. Your terminals keep running for %{days} days while the transfer is on its way. We'll confirm by email once the money arrives."
+        beneficiary: "Beneficiary"
+        bank: "Bank"
+        reference: "Reference"
+  mailers:
+    reminder:
+      action: "Go to billing"
+      price: "Your plan costs %{price} a year, paid by bank transfer."
+      trial:
+        subject:
+          one: "%{account}: your trial ends tomorrow"
+          other: "%{account}: your trial ends in %{count} days"
+        body:
+          one: "The trial for %{account} ends on %{date}. After that the terminals pause until the plan is paid."
+          other: "The trial for %{account} ends on %{date}. After that the terminals pause until the plan is paid."
+      renewal:
+        subject:
+          one: "%{account}: your plan ends tomorrow"
+          other: "%{account}: your plan ends in %{count} days"
+        body:
+          one: "The plan for %{account} ends on %{date}. After that the terminals pause until it's renewed."
+          other: "The plan for %{account} ends on %{date}. After that the terminals pause until it's renewed."
+    bank_transfer:
+      subject: "Bank details for %{account} (%{reference})"
+      body: "Here's how to pay for the %{account} plan by bank transfer:"
+    payment_confirmed:
+      subject: "Payment %{reference} received"
+      body: "We've received your payment %{reference} of %{amount}. Thank you! Your plan runs until %{date}."

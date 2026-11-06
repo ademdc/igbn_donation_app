@@ -19,6 +19,13 @@ Rails.application.routes.draw do
       resources :accounts, only: [:index, :show, :update] do
         member do
           post :impersonate
+          post :extend_trial
+        end
+      end
+      resources :payments, only: [] do
+        member do
+          post :confirm
+          post :cancel
         end
       end
       root to: redirect("/admin/dashboard")
@@ -67,6 +74,7 @@ Rails.application.routes.draw do
     resource :appearance, only: [:show, :update], controller: "appearance" do
       delete "images/:kind", action: :remove_image, as: :image
     end
+    resource :billing, only: [:show, :create], controller: "billing"
     resources :payment_connections, path: "payments", only: [:index, :edit, :update, :destroy] do
       member do
         post :verify

@@ -4,9 +4,14 @@
 
 <div class="kpis">
   <section class="panel kpi">
+    <h2 class="kpi__label">Yearly revenue</h2>
+    <p class="kpi__value"><%= money(@yearly_revenue_cents / 100.0, "EUR", precision: 0) %></p>
+    <p class="kpi__note"><%= pluralize(@accounts_paying, "paying account") %></p>
+  </section>
+  <section class="panel kpi">
     <h2 class="kpi__label">Accounts</h2>
     <p class="kpi__value"><%= @accounts_total %></p>
-    <p class="kpi__note"><%= @accounts_suspended %> suspended</p>
+    <p class="kpi__note"><%= @accounts_trialing %> in trial, <%= @accounts_lapsed %> lapsed, <%= @accounts_suspended %> suspended</p>
   </section>
   <section class="panel kpi">
     <h2 class="kpi__label">Signups, last 30 days</h2>
@@ -23,6 +28,13 @@
     <p class="kpi__note"><%= @volume_30_days.map { |currency, total| money(total, currency, precision: 0) }.join(" · ").presence || "No volume yet" %></p>
   </section>
 </div>
+
+<% if @awaiting_transfers.any? %>
+  <section class="panel" style="margin-top: 1.5rem;">
+    <h2 class="panel__title">Bank transfers to confirm (<%= @awaiting_transfers.size %>)</h2>
+    <%= render "admin/payments/awaiting", payments: @awaiting_transfers, show_account: true %>
+  </section>
+<% end %>
 
 <% if @failing_terminals.any? %>
   <section class="panel danger-zone" style="margin-top: 1.5rem;">

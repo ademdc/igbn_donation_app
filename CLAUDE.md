@@ -46,6 +46,10 @@ SumUp doesn't sign webhooks. The secret token identifies the account, and a succ
 
 Donations through `TestMode` have `test: true` and never count in statistics (`Donation.live`).
 
+### Billing
+
+`Payment` is what an account pays us, by bank transfer, and has nothing to do with donations. `Account#taking_donations?` decides whether terminals run. Dates drive the state: `trial_ends_at`, `paid_until`, and neither means free of charge. An admin marks a transfer as paid; `bin/scheduler` sends the reminders.
+
 ### Tenancy rules
 
 Always reach records through the account or terminal: `@account.terminals.find`, `@terminal.donations.find`. `test/integration/tenant_isolation_test.rb` covers this; add to it for every new tenant-owned resource.

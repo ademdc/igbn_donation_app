@@ -9,7 +9,7 @@
   </div>
   <div class="field">
     <%= form.label :status, "Status" %>
-    <%= form.select :status, [["Any", ""], ["Active", "active"], ["Suspended", "suspended"]], selected: params[:status] %>
+    <%= form.select :status, [["Any", ""], ["Trial", "trialing"], ["Trial ended", "trial_expired"], ["Paying", "paying"], ["Payment due", "payment_due"], ["Suspended", "suspended"]], selected: params[:status] %>
   </div>
   <%= form.submit "Filter", class: "button", name: nil %>
 <% end %>

@@ -8,6 +8,13 @@
 </div>
 <p class="muted"><%= link_to @account.host, @account.url, target: "_blank", rel: "noopener" %> · signed up <%= l(@account.created_at.to_date, format: :long) %></p>
 
+<% if @awaiting_transfers.any? %>
+  <section class="panel panel--highlight" style="margin-top: 1.5rem;">
+    <h2 class="panel__title">Bank transfer to confirm</h2>
+    <%= render "admin/payments/awaiting", payments: @awaiting_transfers %>
+  </section>
+<% end %>
+
 <div class="kpis">
   <section class="panel kpi">
     <h2 class="kpi__label">Today</h2>
@@ -68,6 +75,44 @@
         <% end %>
       </tbody>
     </table>
+  </section>
+  <section class="panel">
+    <h2 class="panel__title">Billing</h2>
+    <dl class="definition-list">
+      <dt>Plan</dt>
+      <dd><%= money(@account.yearly_price_cents / 100.0, "EUR", precision: 0) %> a year, <%= Account::INCLUDED_TERMINALS + @account.extra_terminals %> terminal(s)</dd>
+      <% if @account.paid_until %>
+        <dt>Paid until</dt><dd><%= l(@account.paid_until.to_date, format: :long) %></dd>
+      <% elsif @account.trial_ends_at %>
+        <dt>Trial until</dt><dd><%= l(@account.trial_ends_at.to_date, format: :long) %></dd>
+      <% end %>
+      <% if @account.billing_name.present? %>
+        <dt>Billing</dt>
+        <dd><%= [@account.billing_name, @account.billing_address, @account.billing_zip, @account.billing_city, @account.country].compact_blank.join(", ") %><br><%= mail_to @account.billing_email %></dd>
+      <% end %>
+    </dl>
+    <% if @account.paid_until.nil? %>
+      <%= form_with url: extend_trial_admin_account_path(@account), class: "action-row", style: "margin-top: 1rem;" do |form| %>
+        <div class="field">
+          <%= form.label :days, "Days" %>
+          <%= form.number_field :days, value: 14, min: 1, max: 365 %>
+        </div>
+        <%= form.submit "Extend trial", class: "button button--quiet" %>
+      <% end %>
+    <% end %>
+    <% if @payments.any? %>
+      <table class="table" style="margin-top: 1rem;">
+        <tbody>
+          <% @payments.each do |payment| %>
+            <tr>
+              <td><%= payment.reference %><br><span class="muted"><%= payment.description %></span></td>
+              <td><%= payment.status %></td>
+              <td class="num"><%= money(payment.amount_cents / 100.0, "EUR", precision: 0) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
   </section>
   <section class="panel danger-zone">
     <h2 class="panel__title">Actions</h2>

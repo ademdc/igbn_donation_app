@@ -1,0 +1,13 @@
+<% bank = Rails.configuration.x.bank_transfer %>
+<%= t("mailers.greeting", name: @user.name) %>
+
+<%= t("mailers.bank_transfer.body", account: @account.name) %>
+
+<%= t("app.billing.transfer.beneficiary") %>: <%= bank[:beneficiary] %>, <%= bank[:beneficiary_address] %>
+IBAN: <%= bank[:iban].scan(/.{1,4}/).join(" ") %>
+BIC / SWIFT: <%= bank[:swift] %>
+<%= t("app.billing.transfer.bank") %>: <%= bank[:bank] %>, <%= bank[:bank_address] %>
+<%= t("app.billing.amount") %>: <%= money(@payment.amount_cents / 100.0, "EUR", precision: 0) %>
+<%= t("app.billing.transfer.reference") %>: <%= @payment.reference %>
+
+<%= t("app.billing.transfer.note", days: Account::TRANSFER_GRACE.in_days.to_i) %>

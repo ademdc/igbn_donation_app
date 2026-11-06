@@ -28,6 +28,7 @@
             <%= link_to t("app.nav.terminals"), dashboard_terminals_path, "aria-current": (controller_name == "terminals" ? "page" : nil) %>
             <%= link_to t("app.nav.appearance"), dashboard_appearance_path, "aria-current": (controller_name == "appearance" ? "page" : nil) %>
             <%= link_to t("app.nav.payments"), dashboard_payment_connections_path, "aria-current": (controller_name == "payment_connections" ? "page" : nil) %>
+            <%= link_to t("app.nav.billing"), dashboard_billing_path, "aria-current": (controller_name == "billing" ? "page" : nil) %>
           </nav>
         <% end %>
 
@@ -46,6 +47,14 @@
       <% end %>
       <% if Current.account&.suspended? && current_user %>
         <p class="flash flash--alert" role="alert"><%= t("app.suspended", email: Rails.configuration.x.contact_email) %></p>
+      <% end %>
+      <% if current_user && Current.account && controller_name != "billing" %>
+        <% account = Current.account %>
+        <% if account.billing_lapsed? %>
+          <p class="flash flash--alert" role="alert"><%= t(account.trial_expired? ? "app.billing.banner.trial_over" : "app.billing.banner.payment_due") %> <%= link_to t("app.billing.banner.pay"), dashboard_billing_path %></p>
+        <% elsif account.trial? && account.trial_days_left <= 7 %>
+          <p class="flash"><%= t("app.billing.banner.trial_ending", count: account.trial_days_left) %> <%= link_to t("app.billing.banner.pay"), dashboard_billing_path %></p>
+        <% end %>
       <% end %>
       <%= yield %>
     </main>

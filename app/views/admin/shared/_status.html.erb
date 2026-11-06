@@ -1,1 +1,2 @@
-<span class="status status--<%= account.status %>"><span><%= account.status.capitalize %></span></span>
+<% labels = { "trialing" => "Trial", "trial_expired" => "Trial ended", "paying" => "Paying", "payment_due" => "Payment due", "suspended" => "Suspended", "free_of_charge" => "Free of charge" } %>
+<span class="status status--<%= account.display_status %>"><span><%= labels.fetch(account.display_status) %></span></span>

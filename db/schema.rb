@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_11_06_130000) do
+ActiveRecord::Schema[7.1].define(version: 2026_11_06_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,6 +32,16 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_06_130000) do
     t.text "receipt_footer"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "trial_ends_at"
+    t.datetime "paid_until"
+    t.integer "extra_terminals", default: 0, null: false
+    t.string "billing_name"
+    t.string "billing_address"
+    t.string "billing_zip"
+    t.string "billing_city"
+    t.string "billing_email"
+    t.string "country"
+    t.string "last_reminder"
     t.index ["subdomain"], name: "index_accounts_on_subdomain", unique: true
   end
 
@@ -80,6 +90,24 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_06_130000) do
     t.index ["webhook_token"], name: "index_payment_connections_on_webhook_token", unique: true
   end
 
+  create_table "payments", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "user_id"
+    t.string "kind", null: false
+    t.string "status", default: "pending", null: false
+    t.integer "amount_cents", null: false
+    t.integer "extra_terminals", default: 0, null: false
+    t.datetime "period_start"
+    t.datetime "period_end"
+    t.datetime "approved_at"
+    t.string "confirmed_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "status"], name: "index_payments_on_account_id_and_status"
+    t.index ["account_id"], name: "index_payments_on_account_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
+  end
+
   create_table "terminals", force: :cascade do |t|
     t.string "slug", null: false
     t.string "provider_reader_id"
@@ -116,6 +144,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_06_130000) do
   add_foreign_key "donations", "accounts"
   add_foreign_key "donations", "terminals"
   add_foreign_key "payment_connections", "accounts"
+  add_foreign_key "payments", "accounts"
+  add_foreign_key "payments", "users"
   add_foreign_key "terminals", "accounts"
   add_foreign_key "terminals", "payment_connections"
   add_foreign_key "users", "accounts"

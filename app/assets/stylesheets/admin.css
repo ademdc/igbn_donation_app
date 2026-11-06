@@ -51,7 +51,11 @@
   white-space: nowrap;
 }
 .status::before { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: currentColor; }
-.status--active { color: var(--teal); }
+.status--paying { color: var(--teal); }
+.status--free_of_charge { color: var(--teal); }
+.status--trialing { color: #1f5f8a; }
+.status--trial_expired { color: #9a6410; }
+.status--payment_due { color: #9a6410; }
 .status--suspended { color: var(--danger); }
 .status > span { color: var(--ink); }
 

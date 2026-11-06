@@ -1,0 +1,7 @@
+<%= t("mailers.greeting", name: @user.name) %>
+
+<%= t("mailers.reminder.#{@kind}.body", account: @account.name, date: l(@deadline, format: :long), count: @days_left) %>
+
+<%= @account.url("/dashboard/billing") %>
+
+<%= t("mailers.reminder.price", price: money(@account.yearly_price_cents([@account.extra_terminals, @account.extra_terminals_needed].max) / 100.0, "EUR", precision: 0)) %>

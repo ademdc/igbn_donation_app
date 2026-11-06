@@ -92,11 +92,14 @@ To test without delivering anything, use `POSTMARK_API_TEST` as the token. Postm
 ### 4. Deploy
 
 ```bash
-fly deploy
-fly scale count 1
+fly deploy --ha=false
 ```
 
 `bin/release` migrates over the direct connection before the new version starts.
+
+This runs two machines: `app`, and `scheduler` for the billing reminders (`bin/scheduler`), because Fly has no scheduler of its own.
+
+Notices about bank transfers to confirm go to `ADMIN_EMAIL` (default `info@everline.io`).
 
 ### 5. Domain
 
@@ -150,7 +153,7 @@ Then log in at `https://digital-donation.com/admin`.
 ### 8. Before going public
 
 - Fill in the placeholders in `app/views/marketing/imprint.html.erb`, `privacy.html.erb` and `terms.html.erb`.
-- The landing page promises 30 free days and a money-back guarantee, but nothing in the app enforces them yet: there's no billing, and accounts never expire.
+- The money-back guarantee is a manual promise: nothing in the app calculates or refunds it.
 - Connect a real SumUp account and take a real payment on a real Solo.
 
 ## Moving IGBN from Heroku (later, optional)
@@ -173,3 +176,20 @@ Account.find_by!(subdomain: "igbn").users.create!(name: "…", email: "…", pas
 ```
 
 The restored terminals keep their reader IDs and their old subdomains as slugs.
+
+## Billing
+
+Accounts get 30 days free. After that the plan is paid yearly by bank transfer:
+
+1. The owner requests a transfer under Billing and gets the bank details and a reference (`DD-123`) by email.
+2. When the money arrives, open the account in the super admin, or the overview, and choose **Mark as paid**.
+
+Terminals keep running for 14 days after a transfer is requested. Without payment they pause when the trial or paid year ends; the dashboard stays open. During the trial any number of terminals is allowed; after that each one beyond the first is paid for.
+
+An account with no trial and no paid date never expires, which is how to make one free of charge. In `bin/rails console`:
+
+```ruby
+Account.find_by!(subdomain: "igbn").update!(trial_ends_at: nil, paid_until: nil)
+```
+
+Prices are constants in `app/models/account.rb`, and the wording on the landing page is in `config/locales/marketing/`.

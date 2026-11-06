@@ -10,7 +10,7 @@ end
 Account.find_by(subdomain: "demo")&.destroy!
 
 account = Account.create!(
-  name: "Džemat Demo", subdomain: "demo", show_recent_donations: true, preset_amounts: [5, 10, 20, 50],
+  name: "Džemat Demo", subdomain: "demo", show_recent_donations: true, paid_until: 8.months.from_now, extra_terminals: 2, preset_amounts: [5, 10, 20, 50],
   terminal_copy: {
     "de" => { "title" => "Spenden Sie für unsere Moschee", "subtitle" => "Jede Spende hilft unserer Gemeinde." },
     "bs" => { "title" => "Donirajte za našu džamiju", "subtitle" => "Svaka donacija pomaže našem džematu." }

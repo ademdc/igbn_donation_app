@@ -1,0 +1,23 @@
+<%# Open bank transfers with confirm/cancel buttons; show_account adds the account's name %>
+<table class="table">
+  <tbody>
+    <% payments.each do |payment| %>
+      <% amount = money(payment.amount_cents / 100.0, "EUR", precision: 0) %>
+      <tr>
+        <td>
+          <strong><%= payment.reference %></strong>
+          <% if local_assigns[:show_account] %>
+            · <%= link_to payment.account.name, admin_account_path(payment.account) %>
+          <% end %>
+          <br><span class="muted"><%= payment.description %>, requested <%= time_ago_in_words(payment.created_at) %> ago</span>
+        </td>
+        <td class="num"><%= amount %></td>
+        <td class="num">
+          <%= button_to "Mark as paid", confirm_admin_payment_path(payment), class: "button",
+                form: { onsubmit: "return confirm('Has #{amount} with reference #{payment.reference} arrived?')" } %>
+          <%= button_to "Cancel", cancel_admin_payment_path(payment), class: "link-button" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

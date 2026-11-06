@@ -60,8 +60,8 @@ bs:
     pricing:
       title: "Jednostavne cijene za svaki džemat"
       plan: "Džemat"
-      price: "30 €"
-      per: "mjesečno, plaćanje godišnje (360 € godišnje)"
+      price: "35 €"
+      per: "mjesečno, plaćanje godišnje (420 € godišnje)"
       includes:
         - "30 dana besplatnog testiranja"
         - "1 terminal uključen"
@@ -73,12 +73,12 @@ bs:
       guarantee_title: "Garancija povrata novca"
       guarantee: "Ako preko vaših terminala za godinu dana stigne manje donacija od iznosa godišnje naknade, vraćamo vam naknadu."
       cta: "Isprobajte 30 dana besplatno"
-      note: "Naknade pružatelja plaćanja plaćate direktno njemu."
+      note: "Plaćanje bankovnim transferom. Naknade pružatelja plaćanja plaćate direktno njemu."
     faq:
       title: "Česta pitanja"
       items:
         - q: "Koliko košta nakon 30 dana?"
-          a: "30 € mjesečno, uz godišnje plaćanje, dakle 360 € godišnje. Jedan terminal je uključen, a svaki dodatni košta 5 € mjesečno."
+          a: "35 € mjesečno, uz godišnje plaćanje, dakle 420 € godišnje. Jedan terminal je uključen, a svaki dodatni košta 5 € mjesečno. Plaća se bankovnim transferom. Bez uplate terminali se pauziraju, a vaš račun i podaci ostaju sačuvani."
         - q: "Šta ako kod nas skoro da nema donacija?"
           a: "Onda vam vraćamo novac: ako preko vaših terminala za godinu dana stigne manje donacija od iznosa godišnje naknade, vraćamo vam naknadu."
         - q: "Koji uređaji su nam potrebni?"
