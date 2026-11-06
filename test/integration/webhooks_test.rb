@@ -34,6 +34,33 @@ class WebhooksTest < ActionDispatch::IntegrationTest
     assert_equal "processing", @donation.reload.status
   end
 
+  test "a verified success overrides a cancellation, because the money really moved" do
+    @donation.update!(status: "cancelled")
+    stub_request(:get, %r{/transactions}).to_return(body: { status: "SUCCESSFUL", transaction_code: "TX1" }.to_json)
+
+    deliver "successful"
+
+    assert_equal "successful", @donation.reload.status
+  end
+
+  test "an unverified success doesn't override a cancellation" do
+    @donation.update!(status: "cancelled")
+    stub_request(:get, %r{/transactions}).to_return(status: 404, body: "{}")
+
+    deliver "successful"
+
+    assert_equal "cancelled", @donation.reload.status
+  end
+
+  test "the failure SumUp sends after a cancellation changes nothing" do
+    @donation.update!(status: "cancelled")
+
+    deliver "failed"
+
+    assert_response :ok
+    assert_equal "cancelled", @donation.reload.status
+  end
+
   test "a failure applies directly" do
     deliver "failed"
 

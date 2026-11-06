@@ -41,6 +41,17 @@ class DonationsController < ApplicationController
     render json: { id: donation.id, status: donation.status, amount: helpers.money(donation.amount, donation.currency) }
   end
 
+  def cancel
+    donation = @terminal.donations.find(params[:id])
+    donation.cancel!
+
+    render json: { success: true, status: donation.status }
+  rescue PaymentProviders::Error => e
+    # Usually too late: the card is already being read, so the payment carries on
+    Rails.logger.warn "Cancel failed for donation #{donation.id}: #{e.message}"
+    render json: { success: false, error: t("terminal.cancel_failed") }, status: :unprocessable_entity
+  end
+
   def reader_status
     status = @terminal.client.reader_status(@terminal.provider_reader_id)
     render json: { online: status.online, state: status.state }

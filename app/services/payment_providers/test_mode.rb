@@ -32,6 +32,10 @@ module PaymentProviders
       CheckoutResult.new(state: outcome, transaction_code: "TEST#{checkout_id.last(8).upcase}")
     end
 
+    def cancel_checkout(reader_id)
+      true
+    end
+
     def reader_status(reader_id)
       ReaderStatus.new(online: true, state: "IDLE")
     end

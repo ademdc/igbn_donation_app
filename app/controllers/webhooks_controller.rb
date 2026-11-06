@@ -13,7 +13,7 @@ class WebhooksController < ActionController::Base
     donation = event && connection.account.donations.find_by(checkout_id: event.checkout_id)
 
     if donation
-      event.state == "failed" ? donation.apply("failed") : donation.sync_with_provider
+      event.state == "failed" ? donation.apply("failed") : donation.sync_with_provider(after_cancel: true)
     end
     head :ok
   rescue JSON::ParserError

@@ -40,6 +40,11 @@ module PaymentProviders
       raise NotImplementedError
     end
 
+    # Stops a payment waiting on the reader. Raises Error if it's too late to stop it.
+    def cancel_checkout(reader_id)
+      raise NotImplementedError
+    end
+
     # Returns a ReaderStatus
     def reader_status(reader_id)
       raise NotImplementedError

@@ -39,10 +39,20 @@ class Donation < ApplicationRecord
     raise
   end
 
+  # Stops the payment on the reader. Raises PaymentProviders::Error if it's too late.
+  def cancel!
+    return unless status == "processing"
+
+    terminal.client.cancel_checkout(terminal.provider_reader_id)
+    apply("cancelled")
+  end
+
   # Asks the provider for the outcome. Webhook and terminal polling can arrive together,
-  # so the row lock keeps the confirmation email from going out twice.
-  def sync_with_provider
-    return if final? || checkout_id.blank? || terminal.nil?
+  # so the row lock keeps the confirmation email from going out twice. SumUp doesn't confirm
+  # a cancellation, so a webhook can still report that a cancelled payment went through.
+  def sync_with_provider(after_cancel: false)
+    return if checkout_id.blank? || terminal.nil?
+    return if final? && !(after_cancel && status == "cancelled")
 
     result = terminal.client.checkout_status(checkout_id)
     apply(result.state, transaction_code: result.transaction_code) unless result.state == "pending"
@@ -50,7 +60,9 @@ class Donation < ApplicationRecord
 
   def apply(new_status, transaction_code: nil)
     with_lock do
-      update!(status: new_status, transaction_code: transaction_code || self.transaction_code) unless final?
+      next if final? && !(status == "cancelled" && new_status == "successful")
+
+      update!(status: new_status, transaction_code: transaction_code || self.transaction_code)
     end
   end
 

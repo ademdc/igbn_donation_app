@@ -79,6 +79,30 @@ class TerminalPageTest < ActionDispatch::IntegrationTest
     assert_equal "€10.00", response.parsed_body["amount"]
   end
 
+  test "a payment can be cancelled from the terminal" do
+    donate 10
+    donation = Donation.find(response.parsed_body["donation_id"])
+
+    post "/donations/#{donation.id}/cancel"
+
+    assert_response :success
+    assert_equal "cancelled", response.parsed_body["status"]
+    assert_equal "cancelled", donation.reload.status
+  end
+
+  test "a failed cancel tells the donor and keeps the payment running" do
+    terminal = create_terminal(@account, slug: "live", connection: sumup_connection(@account), provider_reader_id: "rdr_1")
+    donation = @account.donations.create!(amount: 5, terminal: terminal, status: "processing", checkout_id: "ctx_1")
+    stub_request(:post, %r{/terminate}).to_return(status: 422, body: { errors: { type: "READER_OFFLINE" } }.to_json)
+    host! terminal.hostname
+
+    post "/donations/#{donation.id}/cancel", params: { locale: "en" }
+
+    assert_response :unprocessable_entity
+    assert_match "still running", response.parsed_body["error"]
+    assert_equal "processing", donation.reload.status
+  end
+
   test "ignores a currency sent by the browser" do
     post "/donations", params: { donation: { amount: 5, currency: "USD" } }, as: :json
 

@@ -27,6 +27,16 @@ class TenantIsolationTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test "a payment can't be cancelled through another terminal" do
+    donation = @other.donations.create!(amount: 5, terminal: @other_terminal, status: "processing")
+    host! @acme_terminal.hostname
+
+    post "/donations/#{donation.id}/cancel"
+
+    assert_response :not_found
+    assert_equal "processing", donation.reload.status
+  end
+
   test "a session doesn't carry over to another account" do
     sign_in_to @acme
     assert_redirected_to "/dashboard"

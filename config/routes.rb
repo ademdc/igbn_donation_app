@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     resources :donations, only: [:create] do
       member do
         get :status
+        post :cancel
       end
     end
     get "reader_status", to: "donations#reader_status"

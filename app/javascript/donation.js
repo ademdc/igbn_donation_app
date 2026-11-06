@@ -15,6 +15,7 @@ function startTerminal(root) {
   const customAmount = root.querySelector("#customAmount")
   const donateButton = root.querySelector("#donateBtn")
   const formError = root.querySelector("#formError")
+  const cancelButton = root.querySelector("#cancelBtn")
   const states = {
     form: root.querySelector("#donationForm"),
     processing: root.querySelector("#processingState"),
@@ -92,6 +93,7 @@ function startTerminal(root) {
       if (data.success) {
         show("processing")
         poll(data.donation_id)
+        cancelButton.onclick = () => cancel(data.donation_id)
       } else {
         showError(data.error)
       }
@@ -103,6 +105,34 @@ function startTerminal(root) {
       if (donateButton) donateButton.textContent = donateLabel
       showFormError(text.textNetwork)
     }
+  }
+
+  async function cancel(donationId) {
+    const label = cancelButton.textContent
+    clearInterval(pollTimer)
+    cancelButton.disabled = true
+    cancelButton.textContent = text.textCancelling
+
+    try {
+      const response = await fetch(`/donations/${donationId}/cancel?locale=${text.locale}`, {
+        method: "POST",
+        headers: { "X-CSRF-Token": document.querySelector('[name="csrf-token"]').content }
+      })
+      const data = await response.json()
+
+      if (data.success) {
+        location.reload()
+        return
+      }
+      root.querySelector("#paymentNote").textContent = data.error
+    } catch {
+      root.querySelector("#paymentNote").textContent = text.textCancelFailed
+    }
+
+    // Too late to stop it, so keep following the payment
+    cancelButton.disabled = false
+    cancelButton.textContent = label
+    poll(donationId)
   }
 
   function poll(donationId) {

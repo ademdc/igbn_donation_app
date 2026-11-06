@@ -57,6 +57,12 @@ module PaymentProviders
       CheckoutResult.new(state: "pending")
     end
 
+    # SumUp doesn't confirm this, and it only works while the reader waits for the card
+    def cancel_checkout(reader_id)
+      request(Net::HTTP::Post, "#{readers_path}/#{reader_id}/terminate")
+      true
+    end
+
     def reader_status(reader_id)
       data = request(Net::HTTP::Get, "#{readers_path}/#{reader_id}/status").fetch("data", {})
       ReaderStatus.new(online: data["status"] == "ONLINE", state: data["state"])

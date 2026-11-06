@@ -1,6 +1,8 @@
 <div class="kiosk" id="terminal" data-terminal
      data-locale="<%= I18n.locale %>"
      data-text-working="<%= t("terminal.working") %>"
+     data-text-cancelling="<%= t("terminal.cancelling") %>"
+     data-text-cancel-failed="<%= t("terminal.cancel_failed") %>"
      data-text-ready="<%= t("terminal.ready") %>"
      data-text-offline="<%= t("terminal.offline") %>"
      data-text-busy="<%= t("terminal.busy") %>"
@@ -81,7 +83,8 @@
         <div class="spinner" aria-hidden="true"></div>
         <h2><%= t("terminal.processing_payment") %></h2>
         <p><%= t("terminal.complete_on_reader") %></p>
-        <p class="outcome__note" role="status"><%= t("terminal.waiting_payment") %></p>
+        <p class="outcome__note" id="paymentNote" role="status"><%= t("terminal.waiting_payment") %></p>
+        <button type="button" id="cancelBtn" class="donate donate--quiet donate--outline"><%= t("terminal.cancel") %></button>
       </div>
 
       <div id="successState" class="outcome" hidden>

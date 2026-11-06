@@ -56,6 +56,13 @@ class SumupTest < ActiveSupport::TestCase
     assert_equal "pending", @client.checkout_status("ctx_1").state
   end
 
+  test "cancels through the terminate endpoint, which answers 202 with no body" do
+    stub = stub_request(:post, "#{API}/v0.1/merchants/MK01A8C2/readers/rdr_1/terminate").to_return(status: 202)
+
+    assert @client.cancel_checkout("rdr_1")
+    assert_requested stub
+  end
+
   test "reads reader status from the status endpoint" do
     stub_request(:get, "#{API}/v0.1/merchants/MK01A8C2/readers/rdr_1/status")
       .to_return(body: { data: { status: "ONLINE", state: "IDLE" } }.to_json)
