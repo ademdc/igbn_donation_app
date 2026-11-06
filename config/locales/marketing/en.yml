@@ -71,7 +71,7 @@ en:
         - "No commission on donations"
       addon: "Each extra terminal: +€5 per month"
       guarantee_title: "Money-back guarantee"
-      guarantee: "If your terminals take less in donations in a year than the yearly fee, we refund the fee."
+      guarantee: "If your terminals take less in donations in a year than the yearly fee, we refund the difference. For example: with €300 in donations and a €420 fee, you get €120 back."
       cta: "Try it free for 30 days"
       note: "Paid by bank transfer. You pay your payment provider's fees directly to them."
     faq:
@@ -80,7 +80,7 @@ en:
         - q: "What does it cost after the 30 days?"
           a: "€35 per month, billed yearly, so €420 a year. One terminal is included, and each extra one costs €5 per month. You pay by bank transfer. Without payment the terminals pause, and your account and data stay safe."
         - q: "What if we hardly get any donations?"
-          a: "Then you get your money back: if your terminals take less in donations in a year than the yearly fee, we refund the fee."
+          a: "Then we cover the difference: if your terminals take less in donations in a year than the yearly fee, we refund the gap between the two. With €300 in donations and a €420 fee, you get €120 back."
         - q: "What devices do we need?"
           a: "A tablet or screen with a browser and a card reader from your payment provider. For SumUp that's the Solo. There's no app to install."
         - q: "Where does the money go?"

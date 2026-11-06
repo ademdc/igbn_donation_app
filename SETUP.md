@@ -153,7 +153,7 @@ Then log in at `https://digital-donation.com/admin`.
 ### 8. Before going public
 
 - Have the drafts in `app/views/marketing/privacy.html.erb` and `terms.html.erb` reviewed. Company details for the imprint are in `config/application.rb`.
-- The money-back guarantee is a manual promise: nothing in the app calculates or refunds it.
+- The money-back guarantee refunds the difference between the yearly fee and the donations received. It's a manual promise: nothing in the app calculates or refunds it.
 - Connect a real SumUp account and take a real payment on a real Solo.
 
 ## Moving IGBN from Heroku (later, optional)

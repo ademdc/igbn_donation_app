@@ -71,7 +71,7 @@ bs:
         - "Bez provizije na donacije"
       addon: "Svaki dodatni terminal: +5 € mjesečno"
       guarantee_title: "Garancija povrata novca"
-      guarantee: "Ako preko vaših terminala za godinu dana stigne manje donacija od iznosa godišnje naknade, vraćamo vam naknadu."
+      guarantee: "Ako preko vaših terminala za godinu dana stigne manje donacija od iznosa godišnje naknade, vraćamo vam razliku. Primjer: uz 300 € donacija i 420 € naknade dobijate 120 € nazad."
       cta: "Isprobajte 30 dana besplatno"
       note: "Plaćanje bankovnim transferom. Naknade pružatelja plaćanja plaćate direktno njemu."
     faq:
@@ -80,7 +80,7 @@ bs:
         - q: "Koliko košta nakon 30 dana?"
           a: "35 € mjesečno, uz godišnje plaćanje, dakle 420 € godišnje. Jedan terminal je uključen, a svaki dodatni košta 5 € mjesečno. Plaća se bankovnim transferom. Bez uplate terminali se pauziraju, a vaš račun i podaci ostaju sačuvani."
         - q: "Šta ako kod nas skoro da nema donacija?"
-          a: "Onda vam vraćamo novac: ako preko vaših terminala za godinu dana stigne manje donacija od iznosa godišnje naknade, vraćamo vam naknadu."
+          a: "Onda pokrivamo razliku: ako preko vaših terminala za godinu dana stigne manje donacija od iznosa godišnje naknade, vraćamo vam razliku između ta dva iznosa. Uz 300 € donacija i 420 € naknade dobijate 120 € nazad."
         - q: "Koji uređaji su nam potrebni?"
           a: "Tablet ili ekran s preglednikom i kartični čitač vašeg pružatelja plaćanja. Za SumUp je to Solo. Aplikaciju ne morate instalirati."
         - q: "Gdje ide novac?"

@@ -21,7 +21,7 @@ class MarketingTest < ActionDispatch::IntegrationTest
       get "/#{locale}"
       assert_select ".plan__price", price
       assert_select ".plan__addon", /#{Regexp.escape(addon)}/
-      assert_select ".plan__guarantee p"
+      assert_select ".plan__guarantee p", /120/
     end
   end
 

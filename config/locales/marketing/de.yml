@@ -71,7 +71,7 @@ de:
         - "Keine Provision auf Spenden"
       addon: "Jedes weitere Terminal: +5 € pro Monat"
       guarantee_title: "Geld-zurück-Garantie"
-      guarantee: "Gehen über Ihre Terminals in einem Jahr weniger Spenden ein, als die Jahresgebühr beträgt, erstatten wir Ihnen die Gebühr."
+      guarantee: "Gehen über Ihre Terminals in einem Jahr weniger Spenden ein, als die Jahresgebühr beträgt, erstatten wir Ihnen die Differenz. Beispiel: Bei 300 € Spenden und 420 € Gebühr erhalten Sie 120 € zurück."
       cta: "30 Tage kostenlos testen"
       note: "Bezahlung per Banküberweisung. Die Gebühren Ihres Zahlungsanbieters zahlen Sie direkt an ihn."
     faq:
@@ -80,7 +80,7 @@ de:
         - q: "Was kostet es nach den 30 Tagen?"
           a: "35 € pro Monat, jährlich abgerechnet, also 420 € im Jahr. Ein Terminal ist enthalten, jedes weitere kostet 5 € pro Monat. Bezahlt wird per Banküberweisung. Ohne Zahlung pausieren die Terminals, Ihr Konto und Ihre Daten bleiben erhalten."
         - q: "Was, wenn bei uns kaum gespendet wird?"
-          a: "Dann bekommen Sie Ihr Geld zurück: Gehen über Ihre Terminals in einem Jahr weniger Spenden ein, als die Jahresgebühr beträgt, erstatten wir Ihnen die Gebühr."
+          a: "Dann übernehmen wir die Differenz: Gehen über Ihre Terminals in einem Jahr weniger Spenden ein, als die Jahresgebühr beträgt, erstatten wir den Unterschied zwischen beidem. Bei 300 € Spenden und 420 € Gebühr erhalten Sie also 120 € zurück."
         - q: "Welche Geräte brauchen wir?"
           a: "Ein Tablet oder einen Bildschirm mit Browser und einen Kartenleser Ihres Zahlungsanbieters. Für SumUp ist das der Solo. Eine App müssen Sie nicht installieren."
         - q: "Wohin geht das Geld?"
