@@ -1,6 +1,5 @@
 <div class="kiosk" id="terminal" data-terminal
      data-locale="<%= I18n.locale %>"
-     data-currency-symbol="<%= currency_symbol(@account.currency) %>"
      data-text-working="<%= t("terminal.working") %>"
      data-text-ready="<%= t("terminal.ready") %>"
      data-text-offline="<%= t("terminal.offline") %>"
@@ -38,6 +37,19 @@
       <p class="kiosk__closed"><%= t("terminal.closed") %></p>
     <% else %>
       <div id="donationForm">
+        <% if @account.collect_donor_details? %>
+          <div class="donor">
+            <div>
+              <label class="kiosk__label" for="donorName"><%= t("terminal.name_optional") %></label>
+              <input type="text" id="donorName" autocomplete="off">
+            </div>
+            <div>
+              <label class="kiosk__label" for="donorEmail"><%= t("terminal.email_optional") %></label>
+              <input type="email" id="donorEmail" autocomplete="off">
+            </div>
+          </div>
+        <% end %>
+
         <p class="kiosk__label" id="amount-label"><%= t("terminal.select_amount") %></p>
         <div class="amounts" role="group" aria-labelledby="amount-label">
           <% @account.preset_amounts.each do |amount| %>
@@ -53,19 +65,6 @@
           </div>
         <% end %>
 
-        <% if @account.collect_donor_details? %>
-          <div class="donor">
-            <div>
-              <label class="kiosk__label" for="donorName"><%= t("terminal.name_optional") %></label>
-              <input type="text" id="donorName" autocomplete="off">
-            </div>
-            <div>
-              <label class="kiosk__label" for="donorEmail"><%= t("terminal.email_optional") %></label>
-              <input type="email" id="donorEmail" autocomplete="off">
-            </div>
-          </div>
-        <% end %>
-
         <p id="readerStatus" class="reader" hidden>
           <span class="reader__dot" aria-hidden="true"></span>
           <%= t("terminal.card_reader") %>: <span id="readerStatusText"><%= t("terminal.checking") %></span>
@@ -73,7 +72,9 @@
 
         <p id="formError" class="kiosk__error" role="alert" hidden></p>
 
-        <button type="button" id="donateBtn" class="donate"><%= t("terminal.donate_now") %></button>
+        <% if @account.allow_custom_amount? %>
+          <button type="button" id="donateBtn" class="donate"><%= t("terminal.donate_now") %></button>
+        <% end %>
       </div>
 
       <div id="processingState" class="outcome" hidden>

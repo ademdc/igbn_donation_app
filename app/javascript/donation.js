@@ -24,7 +24,8 @@ function startTerminal(root) {
 
   if (!states.form) return
 
-  let selectedAmount = null
+  const donateLabel = donateButton?.textContent
+  let sending = false
 
   const show = (state) => {
     Object.entries(states).forEach(([name, element]) => { element.hidden = name !== state })
@@ -34,36 +35,46 @@ function startTerminal(root) {
     show("error")
     returnToStart()
   }
-  const money = (amount) => `${text.currencySymbol}${new Intl.NumberFormat(text.locale, { minimumFractionDigits: 2 }).format(amount)}`
   // The next donor shouldn't find the previous donor's result on screen
   const returnToStart = () => setTimeout(() => location.reload(), RETURN_TO_START_MS)
   const value = (selector) => root.querySelector(selector)?.value ?? ""
 
+  // One tap sends a preset amount to the reader, so everything locks until the outcome is
+  // known: a second tap mustn't start a second payment.
   presetButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      presetButtons.forEach((other) => other.setAttribute("aria-pressed", "false"))
       button.setAttribute("aria-pressed", "true")
-      selectedAmount = parseFloat(button.dataset.amount)
-      if (customAmount) customAmount.value = ""
+      donate(parseFloat(button.dataset.amount), button)
     })
   })
 
-  customAmount?.addEventListener("input", () => {
-    presetButtons.forEach((button) => button.setAttribute("aria-pressed", "false"))
-    selectedAmount = parseFloat(customAmount.value)
-  })
+  donateButton?.addEventListener("click", () => {
+    const amount = parseFloat(customAmount.value)
 
-  donateButton.addEventListener("click", async () => {
-    if (!selectedAmount || selectedAmount <= 0) {
-      formError.textContent = text.textNoAmount
-      formError.hidden = false
+    if (!amount || amount <= 0) {
+      showFormError(text.textNoAmount)
       return
     }
-
-    formError.hidden = true
-    const label = donateButton.textContent
-    donateButton.disabled = true
     donateButton.textContent = text.textWorking
+    donate(amount, donateButton)
+  })
+
+  const lock = (locked) => {
+    presetButtons.forEach((button) => { button.disabled = locked })
+    if (donateButton) donateButton.disabled = locked
+    if (customAmount) customAmount.disabled = locked
+  }
+
+  function showFormError(message) {
+    formError.textContent = message
+    formError.hidden = false
+  }
+
+  async function donate(amount, trigger) {
+    if (sending) return
+    sending = true
+    formError.hidden = true
+    lock(true)
 
     try {
       const response = await fetch(`/donations?locale=${text.locale}`, {
@@ -73,7 +84,7 @@ function startTerminal(root) {
           "X-CSRF-Token": document.querySelector('[name="csrf-token"]').content
         },
         body: JSON.stringify({
-          donation: { amount: selectedAmount, donor_name: value("#donorName"), donor_email: value("#donorEmail") }
+          donation: { amount: amount, donor_name: value("#donorName"), donor_email: value("#donorEmail") }
         })
       })
       const data = await response.json()
@@ -85,12 +96,14 @@ function startTerminal(root) {
         showError(data.error)
       }
     } catch {
-      donateButton.disabled = false
-      donateButton.textContent = label
-      formError.textContent = text.textNetwork
-      formError.hidden = false
+      // Nothing reached the reader, so the donor can simply try again
+      sending = false
+      lock(false)
+      trigger.setAttribute("aria-pressed", "false")
+      if (donateButton) donateButton.textContent = donateLabel
+      showFormError(text.textNetwork)
     }
-  })
+  }
 
   function poll(donationId) {
     let polls = 0
@@ -99,12 +112,12 @@ function startTerminal(root) {
       polls += 1
 
       try {
-        const response = await fetch(`/donations/${donationId}/status`)
+        const response = await fetch(`/donations/${donationId}/status?locale=${text.locale}`)
         const data = await response.json()
 
         if (data.status === "successful") {
           clearInterval(pollTimer)
-          root.querySelector("#successAmount").textContent = money(data.amount)
+          root.querySelector("#successAmount").textContent = data.amount
           show("success")
           returnToStart()
           return

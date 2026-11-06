@@ -25,6 +25,24 @@ class TerminalPageTest < ActionDispatch::IntegrationTest
     assert_select ".kiosk__test"
   end
 
+  test "donor details come before the amounts, because a preset amount starts the payment" do
+    get "/"
+
+    assert_operator response.body.index('id="donorName"'), :<, response.body.index("preset-amount-btn")
+  end
+
+  test "the donate button is only there to confirm a custom amount" do
+    get "/"
+    assert_select "#customAmount"
+    assert_select "#donateBtn"
+
+    @account.update!(allow_custom_amount: false)
+    get "/"
+    assert_select "#customAmount", 0
+    assert_select "#donateBtn", 0
+    assert_select ".preset-amount-btn", 3
+  end
+
   test "language switch stays within the account's languages" do
     @account.update!(locales: %w[de en])
 
@@ -49,6 +67,16 @@ class TerminalPageTest < ActionDispatch::IntegrationTest
       get "/donations/#{donation.id}/status"
     end
     assert_equal "successful", response.parsed_body["status"]
+  end
+
+  test "the status formats the amount in the terminal's language" do
+    donation = @account.donations.create!(amount: 10, terminal: @terminal, status: "processing", checkout_id: "test_successful_0_ab")
+
+    get "/donations/#{donation.id}/status", params: { locale: "bs" }
+    assert_equal "€10,00", response.parsed_body["amount"]
+
+    get "/donations/#{donation.id}/status", params: { locale: "en" }
+    assert_equal "€10.00", response.parsed_body["amount"]
   end
 
   test "ignores a currency sent by the browser" do

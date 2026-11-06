@@ -123,6 +123,8 @@ body.terminal {
 }
 .amount:hover { border-color: var(--primary); }
 .amount[aria-pressed="true"] { border-color: var(--primary); background: var(--primary); color: var(--on-primary); }
+.amount:disabled { cursor: default; }
+.amount:disabled:not([aria-pressed="true"]) { opacity: 0.5; }
 
 .custom-amount { position: relative; margin-bottom: 1.5rem; }
 .custom-amount span {

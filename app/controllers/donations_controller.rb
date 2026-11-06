@@ -38,7 +38,7 @@ class DonationsController < ApplicationController
       Rails.logger.warn "Status check failed for donation #{donation.id}: #{e.message}"
     end
 
-    render json: { id: donation.id, status: donation.status, amount: donation.amount.to_f, currency: donation.currency }
+    render json: { id: donation.id, status: donation.status, amount: helpers.money(donation.amount, donation.currency) }
   end
 
   def reader_status
