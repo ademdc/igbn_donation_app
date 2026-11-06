@@ -39,6 +39,21 @@ class MarketingTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "signing up confirms the authority to act for the community" do
+    { "de" => "berechtigt", "en" => "authorised", "bs" => "ovlašten" }.each do |locale, word|
+      get "/#{locale}/signup"
+      assert_select ".signup-terms", /#{word}/
+    end
+  end
+
+  test "the privacy policy names Postmark and covers transfers outside the EU" do
+    get "/de/privacy"
+
+    assert_select ".legal", /Postmark/
+    assert_select ".legal", /Standard Contractual Clauses/
+    assert_select ".legal", /Bosnia and Herzegovina/
+  end
+
   test "legal pages and login lookup render" do
     %w[impressum privacy terms login signup].each do |page|
       get "/de/#{page}"

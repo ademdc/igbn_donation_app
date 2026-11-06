@@ -138,7 +138,7 @@ en:
       you: "Your login"
       submit: "Create account"
       subdomain_hint: "This is the address of your dashboard."
-      terms_html: "I accept the %{terms} and have read the %{privacy}."
+      terms_html: "I am at least 18 and authorised to act for this community. I accept the %{terms} and have read the %{privacy}."
       terms_link: "terms"
       fields:
         organisation_name: "Name of your community"

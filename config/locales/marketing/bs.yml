@@ -138,7 +138,7 @@ bs:
       you: "Vaša prijava"
       submit: "Otvori račun"
       subdomain_hint: "Ovo je adresa vaše kontrolne ploče."
-      terms_html: "Prihvatam %{terms} i pročitao/la sam %{privacy}."
+      terms_html: "Imam najmanje 18 godina i ovlašten/a sam zastupati džemat. Prihvatam %{terms} i pročitao/la sam %{privacy}."
       terms_link: "uslove"
       fields:
         organisation_name: "Naziv džemata"

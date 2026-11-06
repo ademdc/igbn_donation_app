@@ -17,7 +17,17 @@
     <p>For accounts we store the community's name, the contact person's name and email address, the payment provider credentials the community enters, which are encrypted, and the billing details needed to invoice the plan.</p>
 
     <h2>Service providers</h2>
-    <p>Payments are processed by the community's payment provider, such as SumUp. The app runs on Fly.io and its database on Neon.</p>
+    <p>Payments are processed by the community's payment provider, such as SumUp, under its own contract with the community.</p>
+    <p>We use these service providers:</p>
+    <ul>
+      <li>Fly.io hosts the app, in its Frankfurt region.</li>
+      <li>Neon (Databricks) hosts the database, in AWS's Frankfurt region.</li>
+      <li>Postmark (AC PM LLC, Chicago, USA) sends our emails, including donation confirmations. It receives the recipient's email address and the content of the email, and its servers are in the USA.</li>
+    </ul>
+
+    <h2>International transfers</h2>
+    <p>We are based in Bosnia and Herzegovina, which is outside the EU and has no EU adequacy decision. Our staff can access the data from there to run and support the service. Transfers from the EU to us are based on the European Commission's Standard Contractual Clauses.</p>
+    <p>Transfers to our service providers in the USA are based on the EU-US Data Privacy Framework or on Standard Contractual Clauses.</p>
 
     <h2>Cookies</h2>
     <p>We only use a technically necessary session cookie. There is no tracking across websites, no analytics service and no advertising cookies.</p>

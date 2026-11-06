@@ -138,7 +138,7 @@ de:
       you: "Ihre Zugangsdaten"
       submit: "Konto anlegen"
       subdomain_hint: "Unter dieser Adresse erreichen Sie Ihr Dashboard."
-      terms_html: "Ich akzeptiere die %{terms} und habe die %{privacy} gelesen."
+      terms_html: "Ich bin mindestens 18 Jahre alt und berechtigt, die Gemeinde zu vertreten. Ich akzeptiere die %{terms} und habe die %{privacy} gelesen."
       terms_link: "AGB"
       fields:
         organisation_name: "Name der Gemeinde"
