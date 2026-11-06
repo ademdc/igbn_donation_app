@@ -38,11 +38,29 @@ class TerminalCertificateJobTest < ActiveJob::TestCase
     assert_equal "pending", @terminal.reload.certificate_status
   end
 
-  test "gives up after enough attempts" do
+  test "keeps waiting while DNS may still be on its way" do
     stub_request(:post, @add).to_return(body: { status: "pending" }.to_json)
 
     TerminalCertificateJob.perform_now(@terminal, TerminalCertificateJob::MAX_ATTEMPTS)
 
+    assert_equal "pending", @terminal.reload.certificate_status
+  end
+
+  test "gives up an hour after the terminal was created" do
+    stub_request(:post, @add).to_return(body: { status: "pending" }.to_json)
+    @terminal.update!(created_at: 2.hours.ago)
+
+    TerminalCertificateJob.perform_now(@terminal, TerminalCertificateJob::MAX_ATTEMPTS)
+
     assert_equal "failed", @terminal.reload.certificate_status
+  end
+
+  test "a failed terminal recovers once Fly has the certificate" do
+    stub_request(:post, @add).to_return(body: { status: "Ready" }.to_json)
+    @terminal.update!(certificate_status: "failed")
+
+    TerminalCertificateJob.perform_now(@terminal)
+
+    assert_equal "issued", @terminal.reload.certificate_status
   end
 end

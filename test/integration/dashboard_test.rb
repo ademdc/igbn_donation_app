@@ -1,6 +1,8 @@
 require "test_helper"
 
 class DashboardTest < ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
+
   setup do
     @account = create_account
     connect_test_mode(@account)
@@ -113,6 +115,19 @@ class DashboardTest < ActionDispatch::IntegrationTest
     sumup_connection(@account)
     get "/dashboard/terminals/new"
     assert_select ".flash a", 0
+  end
+
+  test "the terminals page checks unfinished certificates once, without starting a new chain" do
+    pending = create_terminal(@account, slug: "pending")
+    pending.update_column(:certificate_status, "pending")
+    failed = create_terminal(@account, slug: "failed")
+    failed.update_column(:certificate_status, "failed")
+    create_terminal(@account, slug: "done").update_column(:certificate_status, "issued")
+
+    assert_enqueued_jobs 2, only: TerminalCertificateJob do
+      get "/dashboard/terminals"
+    end
+    assert_enqueued_with job: TerminalCertificateJob, args: [pending, TerminalCertificateJob::MAX_ATTEMPTS]
   end
 
   test "the address of a terminal can't be changed" do

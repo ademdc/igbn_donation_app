@@ -4,8 +4,10 @@ module Dashboard
 
     def index
       @terminals = @account.terminals.includes(:payment_connection).order(:created_at)
-      # Restarts checks a deploy interrupted; the job is a no-op once a certificate is issued
-      @terminals.select { |terminal| terminal.certificate_status == "pending" }.each { |terminal| TerminalCertificateJob.perform_later(terminal) }
+      # A single check each, for terminals a deploy or slow DNS left behind
+      @terminals.select { |terminal| terminal.certificate_status.in?(%w[pending failed]) }.each do |terminal|
+        TerminalCertificateJob.perform_later(terminal, TerminalCertificateJob::MAX_ATTEMPTS)
+      end
     end
 
     def new
