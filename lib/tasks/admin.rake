@@ -12,7 +12,6 @@ namespace :admin do
     user = User.find_or_initialize_by(email: email.downcase, admin: true, account_id: nil)
     user.name = ENV["NAME"].presence || user.name || email
     user.password = password
-    user.confirmed_at ||= Time.current
 
     if user.save
       puts "Admin #{user.email} saved."
