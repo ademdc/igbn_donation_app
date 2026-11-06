@@ -674,7 +674,7 @@ body.app {
   font-weight: 700;
 }
 
-/* The SumUp guide, shared with the marketing site */
+/* The SumUp guide */
 
 .guide__steps { display: grid; gap: 1.25rem; margin: 0; padding-left: 1.3rem; }
 .guide__steps h3 { font-size: 1.05rem; }

@@ -3,16 +3,16 @@ require "test_helper"
 class MarketingTest < ActionDispatch::IntegrationTest
   setup { host! "localhost" }
 
-  test "landing page in every language, with the SumUp guide" do
+  test "landing page in every language, without the SumUp guide" do
     get "/"
     assert_redirected_to "/de"
 
-    { "de" => "SumUp einrichten", "en" => "Set up SumUp", "bs" => "Podešavanje SumUp-a" }.each do |locale, heading|
+    %w[de en bs].each do |locale|
       get "/#{locale}"
       assert_response :success
-      assert_select "#sumup h2", heading
-      assert_select ".guide__steps li", 5
       assert_select "#how .step", 4
+      assert_select "#sumup", 0
+      assert_select ".site-nav a[href$='#sumup']", 0
     end
   end
 

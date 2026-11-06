@@ -86,6 +86,13 @@ class DashboardTest < ActionDispatch::IntegrationTest
     assert_match "••••5678", response.body
   end
 
+  test "the SumUp guide lives on the connection page" do
+    get "/dashboard/payments/sumup/edit"
+
+    assert_select ".guide__steps li", 5
+    assert_select "a[href*='developer.sumup.com']"
+  end
+
   test "a connection in use can't be removed" do
     connection = sumup_connection(@account)
     create_terminal(@account, connection: connection, provider_reader_id: "rdr_1")

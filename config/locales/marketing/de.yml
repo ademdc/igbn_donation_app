@@ -6,7 +6,6 @@ de:
     nav:
       skip: "Zum Inhalt springen"
       how: "So funktioniert's"
-      sumup: "SumUp einrichten"
       pricing: "Preis"
       faq: "Fragen"
       language: "Sprache"
@@ -33,7 +32,7 @@ de:
         - title: "Terminal gestalten"
           text: "Logo, Farben, Überschrift, Unterzeile und Beträge legen Sie selbst fest, in jeder Sprache Ihrer Gemeinde."
         - title: "Zahlungsanbieter verbinden"
-          text: "Tragen Sie die Zugangsdaten Ihres Anbieters ein und koppeln Sie den Kartenleser. Die Anleitung für SumUp finden Sie unten."
+          text: "Tragen Sie die Zugangsdaten Ihres Anbieters ein und koppeln Sie den Kartenleser. Die Anleitung für SumUp finden Sie im Dashboard."
         - title: "Tablet aufstellen"
           text: "Öffnen Sie die Adresse des Terminals auf einem Tablet oder Bildschirm. Jeder Kartenleser bekommt seine eigene Adresse."
       addresses: "Eine Adresse pro Terminal"
@@ -58,23 +57,6 @@ de:
           text: "Logo, Farben, Hintergrundbild und Texte. Spender sehen Ihren Namen, nicht unseren."
         - title: "So viele Terminals, wie Sie brauchen"
           text: "Eingang, Frauenbereich, Café: Jedes Terminal hat seine eigene Adresse und seinen eigenen Kartenleser."
-    sumup:
-      title: "SumUp einrichten"
-      lead: "Sie brauchen ein SumUp-Händlerkonto und einen Solo-Kartenleser. Die Einrichtung dauert etwa zehn Minuten. SumUp stellt die Zugangsdaten selbst aus, es ist kein Antrag nötig."
-      steps:
-        - title: "API-Schlüssel erstellen"
-          text: "Melden Sie sich auf me.sumup.com an. Öffnen Sie Ihr Profil, dann Settings > For Developers > Toolkit > API Keys. Wählen Sie „Create“, vergeben Sie einen Namen und nutzen Sie den geheimen Schlüssel (Secret Key)."
-          note: "Kopieren Sie den Schlüssel sofort: SumUp zeigt ihn nur einmal an."
-        - title: "Händlercode notieren"
-          text: "Ihr Händlercode steht in Ihrem SumUp-Konto und sieht zum Beispiel so aus: MK01A8C2."
-        - title: "Affiliate-Schlüssel erstellen"
-          text: "Im selben Toolkit öffnen Sie „Affiliate Keys“. Tragen Sie eine Anwendungskennung ein, zum Beispiel org.ihre-gemeinde.spenden, und wählen Sie „Add“. SumUp verlangt diesen Schlüssel für Zahlungen über Kartenleser."
-        - title: "Zugangsdaten eintragen"
-          text: "Tragen Sie alles im Dashboard unter „Zahlungen“ ein. Wir prüfen die Daten direkt bei SumUp."
-        - title: "Solo-Leser koppeln"
-          text: "Schalten Sie den Solo ein und melden Sie ihn ab, falls er angemeldet ist. Öffnen Sie oben das Menü, dann Connections, verbinden Sie ihn mit dem WLAN und wählen Sie API > Connect. Geben Sie den angezeigten Code unter „Terminals“ ein."
-          note: "Der Code läuft nach fünf Minuten ab. Lassen Sie den Solo am besten am Strom."
-      docs: "Offizielle Anleitung von SumUp"
     pricing:
       title: "Einfache Preise für jede Gemeinde"
       plan: "Gemeinde"
@@ -120,6 +102,21 @@ de:
       terms: "AGB"
       contact: "Kontakt"
   app:
+    sumup_guide:
+      steps:
+        - title: "API-Schlüssel erstellen"
+          text: "Melden Sie sich auf me.sumup.com an. Öffnen Sie Ihr Profil, dann Settings > For Developers > Toolkit > API Keys. Wählen Sie „Create“, vergeben Sie einen Namen und nutzen Sie den geheimen Schlüssel (Secret Key)."
+          note: "Kopieren Sie den Schlüssel sofort: SumUp zeigt ihn nur einmal an."
+        - title: "Händlercode notieren"
+          text: "Ihr Händlercode steht in Ihrem SumUp-Konto und sieht zum Beispiel so aus: MK01A8C2."
+        - title: "Affiliate-Schlüssel erstellen"
+          text: "Im selben Toolkit öffnen Sie „Affiliate Keys“. Tragen Sie eine Anwendungskennung ein, zum Beispiel org.ihre-gemeinde.spenden, und wählen Sie „Add“. SumUp verlangt diesen Schlüssel für Zahlungen über Kartenleser."
+        - title: "Zugangsdaten eintragen"
+          text: "Tragen Sie alles im Dashboard unter „Zahlungen“ ein. Wir prüfen die Daten direkt bei SumUp."
+        - title: "Solo-Leser koppeln"
+          text: "Schalten Sie den Solo ein und melden Sie ihn ab, falls er angemeldet ist. Öffnen Sie oben das Menü, dann Connections, verbinden Sie ihn mit dem WLAN und wählen Sie API > Connect. Geben Sie den angezeigten Code unter „Terminals“ ein."
+          note: "Der Code läuft nach fünf Minuten ab. Lassen Sie den Solo am besten am Strom."
+      docs: "Offizielle Anleitung von SumUp"
     signup:
       title: "Konto anlegen"
       lead: "In wenigen Minuten haben Sie ein eigenes Spendenterminal im Testmodus."

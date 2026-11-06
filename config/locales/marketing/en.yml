@@ -6,7 +6,6 @@ en:
     nav:
       skip: "Skip to content"
       how: "How it works"
-      sumup: "Set up SumUp"
       pricing: "Pricing"
       faq: "Questions"
       language: "Language"
@@ -33,7 +32,7 @@ en:
         - title: "Design your terminal"
           text: "Set the logo, colours, header, subheader and amounts yourself, in every language your community speaks."
         - title: "Connect your payment provider"
-          text: "Enter your provider's credentials and pair the card reader. You'll find the SumUp guide below."
+          text: "Enter your provider's credentials and pair the card reader. You'll find the SumUp guide in your dashboard."
         - title: "Set up the tablet"
           text: "Open the terminal's address on a tablet or screen. Each card reader gets its own address."
       addresses: "One address per terminal"
@@ -58,23 +57,6 @@ en:
           text: "Logo, colours, background image and wording. Donors see your name, not ours."
         - title: "As many terminals as you need"
           text: "Entrance, women's area, café: each terminal has its own address and its own card reader."
-    sumup:
-      title: "Set up SumUp"
-      lead: "You need a SumUp merchant account and a Solo card reader. Setup takes about ten minutes. SumUp issues the credentials itself, so there's nothing to apply for."
-      steps:
-        - title: "Create an API key"
-          text: "Log in at me.sumup.com. Open your profile, then Settings > For Developers > Toolkit > API Keys. Choose Create, name the key and use the secret key."
-          note: "Copy the key straight away: SumUp only shows it once."
-        - title: "Note your merchant code"
-          text: "Your merchant code is in your SumUp account and looks like this: MK01A8C2."
-        - title: "Create an affiliate key"
-          text: "In the same Toolkit, open Affiliate Keys. Enter an application identifier, for example org.your-community.donations, and choose Add. SumUp requires this key for card reader payments."
-        - title: "Enter your credentials"
-          text: "Enter everything under Payments in your dashboard. We check it with SumUp straight away."
-        - title: "Pair the Solo reader"
-          text: "Turn the Solo on and log it out if it's logged in. Open the top menu, then Connections, connect it to Wi-Fi and choose API > Connect. Enter the code it shows under Terminals."
-          note: "The code expires after five minutes. It's best to keep the Solo plugged in."
-      docs: "SumUp's official guide"
     pricing:
       title: "Simple pricing for every community"
       plan: "Community"
@@ -120,6 +102,21 @@ en:
       terms: "Terms"
       contact: "Contact"
   app:
+    sumup_guide:
+      steps:
+        - title: "Create an API key"
+          text: "Log in at me.sumup.com. Open your profile, then Settings > For Developers > Toolkit > API Keys. Choose Create, name the key and use the secret key."
+          note: "Copy the key straight away: SumUp only shows it once."
+        - title: "Note your merchant code"
+          text: "Your merchant code is in your SumUp account and looks like this: MK01A8C2."
+        - title: "Create an affiliate key"
+          text: "In the same Toolkit, open Affiliate Keys. Enter an application identifier, for example org.your-community.donations, and choose Add. SumUp requires this key for card reader payments."
+        - title: "Enter your credentials"
+          text: "Enter everything under Payments in your dashboard. We check it with SumUp straight away."
+        - title: "Pair the Solo reader"
+          text: "Turn the Solo on and log it out if it's logged in. Open the top menu, then Connections, connect it to Wi-Fi and choose API > Connect. Enter the code it shows under Terminals."
+          note: "The code expires after five minutes. It's best to keep the Solo plugged in."
+      docs: "SumUp's official guide"
     signup:
       title: "Create your account"
       lead: "In a few minutes you'll have your own donation terminal in test mode."

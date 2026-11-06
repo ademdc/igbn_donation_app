@@ -6,7 +6,6 @@ bs:
     nav:
       skip: "Preskoči na sadržaj"
       how: "Kako radi"
-      sumup: "Podešavanje SumUp-a"
       pricing: "Cijena"
       faq: "Pitanja"
       language: "Jezik"
@@ -33,7 +32,7 @@ bs:
         - title: "Uredite terminal"
           text: "Logo, boje, naslov, podnaslov i iznose birate sami, na svakom jeziku vašeg džemata."
         - title: "Povežite pružatelja plaćanja"
-          text: "Unesite pristupne podatke svog pružatelja i uparite kartični čitač. Uputstvo za SumUp je ispod."
+          text: "Unesite pristupne podatke svog pružatelja i uparite kartični čitač. Uputstvo za SumUp nalazi se na kontrolnoj ploči."
         - title: "Postavite tablet"
           text: "Otvorite adresu terminala na tabletu ili ekranu. Svaki kartični čitač dobija vlastitu adresu."
       addresses: "Jedna adresa po terminalu"
@@ -58,23 +57,6 @@ bs:
           text: "Logo, boje, pozadinska slika i tekstovi. Donatori vide vaše ime, a ne naše."
         - title: "Onoliko terminala koliko vam treba"
           text: "Ulaz, ženski dio, kafić: svaki terminal ima vlastitu adresu i vlastiti kartični čitač."
-    sumup:
-      title: "Podešavanje SumUp-a"
-      lead: "Potrebni su vam SumUp trgovački račun i Solo kartični čitač. Podešavanje traje oko deset minuta. SumUp sam izdaje pristupne podatke, pa ne morate ništa tražiti."
-      steps:
-        - title: "Napravite API ključ"
-          text: "Prijavite se na me.sumup.com. Otvorite profil, zatim Settings > For Developers > Toolkit > API Keys. Izaberite Create, dajte ključu ime i koristite tajni ključ (Secret Key)."
-          note: "Odmah kopirajte ključ: SumUp ga prikazuje samo jednom."
-        - title: "Zapišite kod trgovca"
-          text: "Kod trgovca nalazi se u vašem SumUp računu i izgleda ovako: MK01A8C2."
-        - title: "Napravite affiliate ključ"
-          text: "U istom Toolkitu otvorite Affiliate Keys. Unesite identifikator aplikacije, npr. org.vas-dzemat.donacije, i izaberite Add. SumUp traži ovaj ključ za plaćanja preko čitača."
-        - title: "Unesite pristupne podatke"
-          text: "Unesite sve na kontrolnoj ploči pod Plaćanja. Odmah to provjeravamo kod SumUp-a."
-        - title: "Uparite Solo čitač"
-          text: "Uključite Solo i odjavite ga ako je prijavljen. Otvorite gornji meni, zatim Connections, povežite ga na WiFi i izaberite API > Connect. Prikazani kod unesite pod Terminali."
-          note: "Kod ističe nakon pet minuta. Najbolje je da Solo ostane na struji."
-      docs: "Službeno uputstvo SumUp-a"
     pricing:
       title: "Jednostavne cijene za svaki džemat"
       plan: "Džemat"
@@ -120,6 +102,21 @@ bs:
       terms: "Uslovi"
       contact: "Kontakt"
   app:
+    sumup_guide:
+      steps:
+        - title: "Napravite API ključ"
+          text: "Prijavite se na me.sumup.com. Otvorite profil, zatim Settings > For Developers > Toolkit > API Keys. Izaberite Create, dajte ključu ime i koristite tajni ključ (Secret Key)."
+          note: "Odmah kopirajte ključ: SumUp ga prikazuje samo jednom."
+        - title: "Zapišite kod trgovca"
+          text: "Kod trgovca nalazi se u vašem SumUp računu i izgleda ovako: MK01A8C2."
+        - title: "Napravite affiliate ključ"
+          text: "U istom Toolkitu otvorite Affiliate Keys. Unesite identifikator aplikacije, npr. org.vas-dzemat.donacije, i izaberite Add. SumUp traži ovaj ključ za plaćanja preko čitača."
+        - title: "Unesite pristupne podatke"
+          text: "Unesite sve na kontrolnoj ploči pod Plaćanja. Odmah to provjeravamo kod SumUp-a."
+        - title: "Uparite Solo čitač"
+          text: "Uključite Solo i odjavite ga ako je prijavljen. Otvorite gornji meni, zatim Connections, povežite ga na WiFi i izaberite API > Connect. Prikazani kod unesite pod Terminali."
+          note: "Kod ističe nakon pet minuta. Najbolje je da Solo ostane na struji."
+      docs: "Službeno uputstvo SumUp-a"
     signup:
       title: "Otvorite račun"
       lead: "Za nekoliko minuta imate vlastiti terminal za donacije u testnom načinu."

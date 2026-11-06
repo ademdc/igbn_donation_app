@@ -974,44 +974,7 @@ body.marketing {
 }
 .stats-mock__bars span { flex: 1; background: var(--teal); border-radius: 4px 4px 0 0; }
 
-/* SumUp guide, also shown in the dashboard */
-
-.guide { padding-block: var(--section-space); }
-.guide__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: start;
-}
-.guide__lead { margin-block: 1rem; color: var(--ink-soft); }
-.guide__inner a { color: var(--teal); }
-.guide__steps { display: grid; gap: 1.5rem; padding: 0; list-style: none; counter-reset: guide; }
-.guide__steps li { counter-increment: guide; position: relative; padding-left: 3rem; }
-.guide__steps li::before {
-  content: counter(guide);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 2rem;
-  height: 2rem;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--plaster);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1rem;
-}
-.guide__steps h3 { font-family: var(--font-display); font-size: 1.2rem; letter-spacing: -0.02em; }
-.guide__steps p { color: var(--ink-soft); }
-.guide__note { margin-top: 0.4rem; font-size: 0.975rem; border-left: 3px solid var(--saffron); padding-left: 0.75rem; }
-
 .plans--single { grid-template-columns: minmax(0, 30rem); justify-content: center; }
-
-@media (max-width: 860px) {
-  .guide__inner { grid-template-columns: minmax(0, 1fr); }
-}
 
 .plan__guarantee {
   margin-top: 1.25rem;
