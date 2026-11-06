@@ -1,23 +1,28 @@
 <% content_for :title, "#{t("marketing.footer.imprint")} – #{brand_name}" %>
+<% company = Rails.configuration.x.company %>
 
 <section class="legal">
   <div class="wrap">
     <h1><%= t("marketing.footer.imprint") %></h1>
 
-    <%# TODO: replace placeholders with the company details before launch (required by § 5 DDG for German visitors) %>
     <address>
-      [Company name]<br>
-      [Street and number]<br>
-      [Postcode] [City]
+      <%= company[:legal_name] %> (<%= company[:name] %>)<br>
+      <%= company[:address] %><br>
+      <%= company[:city] %><br>
+      <%= t("marketing.imprint.country") %>
     </address>
 
-    <h2>Contact</h2>
-    <p>Email: <%= mail_to Rails.configuration.x.contact_email %></p>
+    <h2><%= t("marketing.imprint.contact") %></h2>
+    <p><%= t("marketing.imprint.email") %>: <%= mail_to Rails.configuration.x.contact_email %></p>
 
-    <h2>Register</h2>
-    <p>[Court register / ID number]</p>
+    <h2><%= t("marketing.imprint.director") %></h2>
+    <p><%= company[:director] %></p>
 
-    <h2>Managing director</h2>
-    <p>[Name]</p>
+    <h2><%= t("marketing.imprint.register") %></h2>
+    <p>
+      <%= t("marketing.imprint.jib") %>: <%= company[:jib] %><br>
+      <%= t("marketing.imprint.mbs") %>: <%= company[:mbs] %><br>
+      <%= t("marketing.imprint.pdv") %>: <%= company[:pdv] %>
+    </p>
   </div>
 </section>

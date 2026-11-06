@@ -8,7 +8,7 @@
     <p>[Draft – to be completed before launch.]</p>
 
     <h2>Controller</h2>
-    <p>[Company name], [address]. Email: <%= mail_to Rails.configuration.x.contact_email %></p>
+    <p><% company = Rails.configuration.x.company %><%= company[:name] %>, <%= company[:address] %>, <%= company[:city] %>, <%= company[:country] %>. Email: <%= mail_to Rails.configuration.x.contact_email %></p>
 
     <h2>Donors</h2>
     <p>Donors can give their name and email address, both optional. We store them with the amount, on behalf of the community the donation goes to, and use the email address only to send a confirmation. Card details are entered on the payment provider's reader and never reach us.</p>

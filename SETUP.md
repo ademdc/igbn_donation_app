@@ -64,7 +64,7 @@ fly secrets set \
   DATABASE_URL="$(grep '^DATABASE_URL=' .env.neon | cut -d= -f2- | tr -d \'\")" \
   DATABASE_URL_UNPOOLED="$(grep '^DATABASE_URL_UNPOOLED=' .env.neon | cut -d= -f2- | tr -d \'\")" \
   APP_DOMAIN=digital-donation.com \
-  CONTACT_EMAIL=info@digital-donation.com \
+  CONTACT_EMAIL=info@everline.io \
   MAIL_FROM='Digital Donation <info@digital-donation.com>' \
   POSTMARK_API_KEY=…
 fly secrets set FLY_API_TOKEN="$(fly tokens create deploy -x 87600h)"
@@ -152,7 +152,7 @@ Then log in at `https://digital-donation.com/admin`.
 
 ### 8. Before going public
 
-- Fill in the placeholders in `app/views/marketing/imprint.html.erb`, `privacy.html.erb` and `terms.html.erb`.
+- Have the drafts in `app/views/marketing/privacy.html.erb` and `terms.html.erb` reviewed. Company details for the imprint are in `config/application.rb`.
 - The money-back guarantee is a manual promise: nothing in the app calculates or refunds it.
 - Connect a real SumUp account and take a real payment on a real Solo.
 

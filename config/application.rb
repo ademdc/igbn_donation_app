@@ -33,6 +33,19 @@ module DonationApp
     # Where notices for the people running the service go (e.g. bank transfers to confirm)
     config.x.admin_email = ENV.fetch("ADMIN_EMAIL", "info@everline.io")
 
+    # The company behind the service, for the imprint and privacy policy
+    config.x.company = {
+      name: "Everline d.o.o.",
+      legal_name: "Everline društvo sa ograničenom odgovornošću",
+      address: "Hadzeli 213",
+      city: "71240 Hadzici",
+      country: "Bosnia and Herzegovina",
+      director: "Samra Hodzic",
+      jib: "4203057970009",
+      mbs: "65-01-0536-22",
+      pdv: "423057970009"
+    }
+
     # Bank account shown to accounts paying by transfer
     config.x.bank_transfer = {
       beneficiary: "Everline d.o.o.",

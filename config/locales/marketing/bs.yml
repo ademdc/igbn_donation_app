@@ -95,6 +95,16 @@ bs:
           a: "Ko ostavi email adresu, automatski dobija potvrdu u ime vašeg džemata. Ona ne zamjenjuje službenu potvrdu o donaciji za poreske svrhe."
         - q: "Može li se prikazati više jezika?"
           a: "Da. Terminal postoji na njemačkom, bosanskom i engleskom, a svoje tekstove unosite za svaki jezik posebno."
+    imprint:
+      contact: "Kontakt"
+      email: "Email"
+      representative: "Zastupa"
+      director: "Direktor"
+      register: "Registarski podaci"
+      jib: "Identifikacioni broj (JIB)"
+      mbs: "Matični broj subjekta (MBS)"
+      pdv: "PDV broj"
+      country: "Bosna i Hercegovina"
     footer:
       tagline: "Donacije karticom za džamije i džemate."
       imprint: "Impresum"

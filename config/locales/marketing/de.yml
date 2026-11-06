@@ -95,6 +95,16 @@ de:
           a: "Wer seine E-Mail-Adresse angibt, erhält automatisch eine Bestätigung im Namen Ihrer Gemeinde. Sie ersetzt keine Zuwendungsbestätigung für das Finanzamt."
         - q: "Können mehrere Sprachen angezeigt werden?"
           a: "Ja. Das Terminal gibt es auf Deutsch, Bosnisch und Englisch, und Ihre Texte tragen Sie für jede Sprache einzeln ein."
+    imprint:
+      contact: "Kontakt"
+      email: "E-Mail"
+      representative: "Vertreten durch"
+      director: "Geschäftsführung"
+      register: "Registerangaben"
+      jib: "Identifikationsnummer (JIB)"
+      mbs: "Registernummer (MBS)"
+      pdv: "Umsatzsteuernummer (PDV, Bosnien und Herzegowina)"
+      country: "Bosnien und Herzegowina"
     footer:
       tagline: "Kartenspenden für Moscheen und Gemeinden."
       imprint: "Impressum"

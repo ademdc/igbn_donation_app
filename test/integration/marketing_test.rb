@@ -25,6 +25,20 @@ class MarketingTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "the imprint names the company, in every language, with no placeholders left" do
+    { "de" => "Geschäftsführung", "en" => "Director", "bs" => "Direktor" }.each do |locale, label|
+      get "/#{locale}/impressum"
+
+      assert_select ".legal", /Everline društvo sa ograničenom odgovornošću/
+      assert_select ".legal", /Samra Hodzic/
+      assert_select ".legal", /4203057970009/
+      assert_select ".legal", /65-01-0536-22/
+      assert_select ".legal", /423057970009/
+      assert_select ".legal h2", label
+      assert_no_match(/\[[A-Z][a-z]+/, css_select(".legal").text)
+    end
+  end
+
   test "legal pages and login lookup render" do
     %w[impressum privacy terms login signup].each do |page|
       get "/de/#{page}"

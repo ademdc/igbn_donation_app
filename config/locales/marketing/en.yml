@@ -95,6 +95,16 @@ en:
           a: "Anyone who gives an email address automatically gets a confirmation in your community's name. It doesn't replace an official donation receipt for tax purposes."
         - q: "Can we show several languages?"
           a: "Yes. The terminal comes in German, Bosnian and English, and you enter your wording for each language separately."
+    imprint:
+      contact: "Contact"
+      email: "Email"
+      representative: "Represented by"
+      director: "Director"
+      register: "Company register"
+      jib: "Identification number (JIB)"
+      mbs: "Registration number (MBS)"
+      pdv: "VAT number (PDV, Bosnia and Herzegovina)"
+      country: "Bosnia and Herzegovina"
     footer:
       tagline: "Card donations for mosques and communities."
       imprint: "Legal notice"
