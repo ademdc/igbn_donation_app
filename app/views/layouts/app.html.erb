@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <meta charset="utf-8">
+    <title><%= [content_for(:title), Current.account&.name, brand_name].compact_blank.join(" – ") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex">
+    <meta name="color-scheme" content="light">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= render "layouts/fonts" %>
+    <%= stylesheet_link_tag "app", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "dashboard", type: "module", defer: true %>
+  </head>
+
+  <body class="app">
+    <header class="app-bar">
+      <div class="app-bar__inner">
+        <p class="app-bar__brand">
+          <span class="wordmark__dot" aria-hidden="true"></span>
+          <span><%= Current.account&.name || brand_name %></span>
+        </p>
+
+        <% if current_user %>
+          <nav class="app-nav" aria-label="<%= t("app.nav.label") %>">
+            <%= link_to t("app.nav.overview"), dashboard_path, "aria-current": (controller_name == "overview" ? "page" : nil) %>
+            <%= link_to t("app.nav.donations"), dashboard_donations_path, "aria-current": (controller_name == "donations" ? "page" : nil) %>
+            <%= link_to t("app.nav.terminals"), dashboard_terminals_path, "aria-current": (controller_name == "terminals" ? "page" : nil) %>
+            <%= link_to t("app.nav.appearance"), dashboard_appearance_path, "aria-current": (controller_name == "appearance" ? "page" : nil) %>
+            <%= link_to t("app.nav.payments"), dashboard_payment_connections_path, "aria-current": (controller_name == "payment_connections" ? "page" : nil) %>
+          </nav>
+        <% end %>
+
+        <div class="app-bar__end">
+          <%= render "layouts/locale_switch", locales: nil %>
+          <% if current_user %>
+            <%= button_to t("app.nav.sign_out"), logout_path, method: :delete, class: "link-button" %>
+          <% end %>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-main" id="main">
+      <% flash.each do |type, message| %>
+        <p class="flash flash--<%= type == "alert" ? "alert" : "notice" %>" role="<%= type == "alert" ? "alert" : "status" %>"><%= message %></p>
+      <% end %>
+      <% if Current.account&.suspended? && current_user %>
+        <p class="flash flash--alert" role="alert"><%= t("app.suspended", email: Rails.configuration.x.contact_email) %></p>
+      <% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

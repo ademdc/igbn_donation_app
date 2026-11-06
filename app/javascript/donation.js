@@ -1,161 +1,156 @@
-console.log('Donation JS loaded');
+// The donation terminal: amount selection, starting the payment, then polling until the
+// reader has an outcome. Worded through data-text-* attributes, so it speaks the page's language.
 
-let currentDonationId = null;
-let statusCheckInterval = null;
+const POLL_INTERVAL_MS = 5000
+const MAX_POLLS = 60 // 5 minutes
+const RETURN_TO_START_MS = 30000
 
-document.addEventListener('turbo:load', () => {
-  console.log('turbo:load fired');
-  const presetBtns = document.querySelectorAll('.preset-amount-btn');
-  console.log('Found preset buttons:', presetBtns.length);
-  const customAmountInput = document.getElementById('customAmount');
-  const donateBtn = document.getElementById('donateBtn');
-  const donorNameInput = document.getElementById('donorName');
-  const donorEmailInput = document.getElementById('donorEmail');
+let pollTimer = null
 
-  const donationForm = document.getElementById('donationForm');
-  const processingState = document.getElementById('processingState');
-  const successState = document.getElementById('successState');
-  const errorState = document.getElementById('errorState');
+function startTerminal(root) {
+  clearInterval(pollTimer)
 
-  // Clear any existing interval from previous page
-  if (statusCheckInterval) {
-    clearInterval(statusCheckInterval);
-    statusCheckInterval = null;
+  const text = root.dataset
+  const presetButtons = root.querySelectorAll(".preset-amount-btn")
+  const customAmount = root.querySelector("#customAmount")
+  const donateButton = root.querySelector("#donateBtn")
+  const formError = root.querySelector("#formError")
+  const states = {
+    form: root.querySelector("#donationForm"),
+    processing: root.querySelector("#processingState"),
+    success: root.querySelector("#successState"),
+    error: root.querySelector("#errorState")
   }
 
-  let selectedAmount = null;
+  if (!states.form) return
 
-  // Check reader status on load
-  checkReaderStatus();
+  let selectedAmount = null
 
-  // Preset amount selection
-  presetBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      presetBtns.forEach(b => b.classList.remove('border-indigo-500', 'bg-indigo-50'));
-      btn.classList.add('border-indigo-500', 'bg-indigo-50');
-      selectedAmount = parseFloat(btn.dataset.amount);
-      customAmountInput.value = '';
-    });
-  });
+  const show = (state) => {
+    Object.entries(states).forEach(([name, element]) => { element.hidden = name !== state })
+  }
+  const showError = (message) => {
+    root.querySelector("#errorMessage").textContent = message
+    show("error")
+    returnToStart()
+  }
+  const money = (amount) => `${text.currencySymbol}${new Intl.NumberFormat(text.locale, { minimumFractionDigits: 2 }).format(amount)}`
+  // The next donor shouldn't find the previous donor's result on screen
+  const returnToStart = () => setTimeout(() => location.reload(), RETURN_TO_START_MS)
+  const value = (selector) => root.querySelector(selector)?.value ?? ""
 
-  // Custom amount input
-  customAmountInput.addEventListener('input', () => {
-    presetBtns.forEach(b => b.classList.remove('border-indigo-500', 'bg-indigo-50'));
-    selectedAmount = parseFloat(customAmountInput.value);
-  });
+  presetButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      presetButtons.forEach((other) => other.setAttribute("aria-pressed", "false"))
+      button.setAttribute("aria-pressed", "true")
+      selectedAmount = parseFloat(button.dataset.amount)
+      if (customAmount) customAmount.value = ""
+    })
+  })
 
-  // Donate button
-  donateBtn.addEventListener('click', async () => {
-    const amount = selectedAmount || parseFloat(customAmountInput.value);
-    
-    if (!amount || amount <= 0) {
-      alert('Please select or enter a donation amount');
-      return;
+  customAmount?.addEventListener("input", () => {
+    presetButtons.forEach((button) => button.setAttribute("aria-pressed", "false"))
+    selectedAmount = parseFloat(customAmount.value)
+  })
+
+  donateButton.addEventListener("click", async () => {
+    if (!selectedAmount || selectedAmount <= 0) {
+      formError.textContent = text.textNoAmount
+      formError.hidden = false
+      return
     }
 
-    donateBtn.disabled = true;
-    donateBtn.textContent = 'U obradi...';
+    formError.hidden = true
+    const label = donateButton.textContent
+    donateButton.disabled = true
+    donateButton.textContent = text.textWorking
 
     try {
-      const response = await fetch('/donations', {
-        method: 'POST',
+      const response = await fetch(`/donations?locale=${text.locale}`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('[name="csrf-token"]').content
         },
         body: JSON.stringify({
-          donation: {
-            amount: amount,
-            currency: 'EUR',
-            donor_name: donorNameInput.value,
-            donor_email: donorEmailInput.value
-          }
+          donation: { amount: selectedAmount, donor_name: value("#donorName"), donor_email: value("#donorEmail") }
         })
-      });
-
-      const data = await response.json();
+      })
+      const data = await response.json()
 
       if (data.success) {
-        currentDonationId = data.donation_id;
-        showProcessingState();
-        startStatusPolling();
+        show("processing")
+        poll(data.donation_id)
       } else {
-        showError(data.error || 'Payment failed');
+        showError(data.error)
       }
-    } catch (error) {
-      showError('Network error. Please try again.');
+    } catch {
+      donateButton.disabled = false
+      donateButton.textContent = label
+      formError.textContent = text.textNetwork
+      formError.hidden = false
     }
-  });
+  })
 
-  function showProcessingState() {
-    donationForm.classList.add('hidden');
-    processingState.classList.remove('hidden');
-  }
+  function poll(donationId) {
+    let polls = 0
 
-  function showSuccess(amount) {
-    processingState.classList.add('hidden');
-    successState.classList.remove('hidden');
-    document.getElementById('successAmount').textContent = `€${amount.toFixed(2)}`;
-  }
-
-  function showError(message) {
-    donationForm.classList.add('hidden');
-    processingState.classList.add('hidden');
-    errorState.classList.remove('hidden');
-    document.getElementById('errorMessage').textContent = message;
-  }
-
-  function startStatusPolling() {
-    let attempts = 0;
-    const maxAttempts = 60; // 5 minutes
-
-    statusCheckInterval = setInterval(async () => {
-      attempts++;
+    pollTimer = setInterval(async () => {
+      polls += 1
 
       try {
-        const response = await fetch(`/donations/${currentDonationId}/status`);
-        const data = await response.json();
+        const response = await fetch(`/donations/${donationId}/status`)
+        const data = await response.json()
 
-        document.getElementById('paymentStatus').textContent = 
-          `Status: ${data.status}... (${attempts}s)`;
-
-        if (data.status === 'successful') {
-          clearInterval(statusCheckInterval);
-          showSuccess(data.amount);
-        } else if (data.status === 'failed' || data.status === 'cancelled') {
-          clearInterval(statusCheckInterval);
-          showError(`Payment ${data.status}`);
+        if (data.status === "successful") {
+          clearInterval(pollTimer)
+          root.querySelector("#successAmount").textContent = money(data.amount)
+          show("success")
+          returnToStart()
+          return
         }
-
-        if (attempts >= maxAttempts) {
-          clearInterval(statusCheckInterval);
-          showError('Payment timeout. Please check with staff.');
+        if (data.status === "failed" || data.status === "cancelled") {
+          clearInterval(pollTimer)
+          showError(text.textDeclined)
+          return
         }
       } catch (error) {
-        console.error('Status check failed:', error);
+        console.error("Status check failed:", error)
       }
-    }, 5000); // Check every 5 seconds
+
+      if (polls >= MAX_POLLS) {
+        clearInterval(pollTimer)
+        showError(text.textTimeout)
+      }
+    }, POLL_INTERVAL_MS)
   }
 
-  async function checkReaderStatus() {
+  async function checkReader() {
+    const status = root.querySelector("#readerStatus")
+    const statusText = root.querySelector("#readerStatusText")
+
     try {
-      const response = await fetch('/reader_status');
-      const data = await response.json();
-      
-      const statusEl = document.getElementById('readerStatus');
-      const statusTextEl = document.getElementById('readerStatusText');
-      
-      if (data.status === 'ready' || data.status === 'idle') {
-        statusTextEl.textContent = 'Ready';
-        statusTextEl.classList.add('text-green-600');
-        statusEl.classList.remove('hidden');
-      } else {
-        statusTextEl.textContent = data.status || 'Unknown';
-        statusTextEl.classList.add('text-yellow-600');
-        statusEl.classList.remove('hidden');
-      }
+      const response = await fetch("/reader_status")
+      if (!response.ok) return
+      const data = await response.json()
+
+      const state = !data.online ? "offline" : data.state === "IDLE" ? "ready" : "busy"
+      status.dataset.state = state
+      statusText.textContent = { ready: text.textReady, offline: text.textOffline, busy: text.textBusy }[state]
+      status.hidden = false
     } catch (error) {
-      console.error('Failed to check reader status:', error);
+      console.error("Reader status check failed:", error)
     }
   }
-});
+
+  root.querySelectorAll("[data-restart]").forEach((button) => {
+    button.addEventListener("click", () => location.reload())
+  })
+
+  checkReader()
+}
+
+document.addEventListener("turbo:load", () => {
+  const root = document.querySelector("[data-terminal]")
+  if (root) startTerminal(root)
+})

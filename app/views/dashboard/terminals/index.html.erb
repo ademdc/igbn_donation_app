@@ -1,0 +1,33 @@
+<% content_for :title, t("app.nav.terminals") %>
+
+<div class="page-head">
+  <div>
+    <h1 class="page-title"><%= t("app.nav.terminals") %></h1>
+    <p class="page-lead"><%= t("app.terminals.lead") %></p>
+  </div>
+  <%= link_to t("app.terminals.add"), new_dashboard_terminal_path, class: "button" %>
+</div>
+
+<div class="stack">
+  <% @terminals.each do |terminal| %>
+    <section class="panel terminal-row">
+      <div>
+        <h2 class="panel__title"><%= terminal.name %></h2>
+        <p>
+          <% if terminal.live? %>
+            <%= link_to terminal.hostname, terminal.url, target: "_blank", rel: "noopener" %>
+          <% else %>
+            <code><%= terminal.hostname %></code>
+          <% end %>
+        </p>
+        <p class="tags">
+          <span class="tag"><%= t("payment_providers.#{terminal.payment_connection.provider}.name") %></span>
+          <% unless terminal.active? %><span class="tag"><%= t("app.terminals.inactive") %></span><% end %>
+          <% if terminal.certificate_status == "pending" %><span class="tag tag--pending"><%= t("app.terminals.certificate_pending") %></span><% end %>
+          <% if terminal.certificate_status == "failed" %><span class="tag tag--pending"><%= t("app.terminals.certificate_failed", email: Rails.configuration.x.contact_email) %></span><% end %>
+        </p>
+      </div>
+      <%= link_to t("app.terminals.edit"), edit_dashboard_terminal_path(terminal), class: "button button--quiet" %>
+    </section>
+  <% end %>
+</div>

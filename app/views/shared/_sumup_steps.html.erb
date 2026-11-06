@@ -1,0 +1,11 @@
+<ol class="guide__steps">
+  <% t("marketing.sumup.steps").each do |step| %>
+    <li>
+      <h3><%= step[:title] %></h3>
+      <p><%= step[:text] %></p>
+      <% if step[:note] %>
+        <p class="guide__note"><%= step[:note] %></p>
+      <% end %>
+    </li>
+  <% end %>
+</ol>

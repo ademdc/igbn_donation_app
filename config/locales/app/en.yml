@@ -1,0 +1,214 @@
+en:
+  date:
+    formats: { short: "%b %-d", long: "%B %-d, %Y" }
+  time:
+    formats: { short: "%b %-d, %H:%M" }
+  activerecord:
+    attributes:
+      account:
+        subdomain: "Address"
+        preset_amounts: "Amounts"
+        locales: "Languages"
+        terminal_copy: "Wording"
+      terminal:
+        slug: "Address"
+        provider_reader_id: "Reader ID"
+        payment_connection: "Payment provider"
+      payment_connection:
+        credentials: "Required fields"
+  activemodel:
+    attributes:
+      signup:
+        organisation_name: "Community name"
+        subdomain: "Address"
+  app:
+    save: "Save"
+    cancel: "Cancel"
+    suspended: "This account is suspended and its terminals aren't taking donations. Please write to us: %{email}"
+    errors:
+      heading: "Please check the following:"
+    nav:
+      label: "Main menu"
+      overview: "Overview"
+      donations: "Donations"
+      terminals: "Terminals"
+      appearance: "Appearance"
+      payments: "Payments"
+      sign_out: "Log out"
+    fields:
+      name: "Name"
+      email: "Email"
+      password: "Password"
+      password_hint: "At least 10 characters."
+      new_password: "New password"
+      password_confirmation: "Repeat password"
+      status: "Status"
+      terminal: "Terminal"
+      donor: "Donor"
+      amount: "Amount"
+    statuses:
+      pending: "Pending"
+      processing: "Processing"
+      successful: "Successful"
+      failed: "Failed"
+      cancelled: "Cancelled"
+    sessions:
+      title: "Log in"
+      lead: "Log in to %{account}."
+      submit: "Log in"
+      forgot: "Forgot your password?"
+      invalid: "Wrong email or password."
+      signed_out: "You've been logged out."
+    password_resets:
+      title: "Reset your password"
+      lead: "We'll send a link to your email address."
+      submit: "Send link"
+      back: "Back to login"
+      sent: "If we know this address, the link is on its way."
+      edit_title: "New password"
+      save: "Save password"
+      updated: "Your password has been changed."
+      invalid_link: "This link is invalid or has expired."
+    overview:
+      greeting: "Salam, %{name}"
+      lead: "Here's how your donations are doing."
+      today: "Today"
+      this_month: "This month"
+      all_time: "All time"
+      by_terminal: "By terminal"
+      recent: "Latest donations"
+      all_donations: "All donations"
+      no_donations: "No donations yet."
+      setup:
+        title: "Three steps to real donations"
+        connect: "Connect a payment provider"
+        terminal: "Connect a terminal to a card reader"
+        appearance: "Add your logo and wording"
+      chart:
+        title: "Donations per day"
+        summary:
+          one: "%{total} from one donation, %{average} on average"
+          other: "%{total} from %{count} donations, %{average} on average"
+        period: "Period"
+        days: { one: "%{count} day", other: "%{count} days" }
+        empty: "No donations in this period yet."
+        as_table: "Show as a table"
+        date: "Date"
+    donations:
+      any: "All"
+      filter: "Filter"
+      count: { one: "1 donation", other: "%{count} donations" }
+      date: "Date"
+      test: "Test"
+      pages: "Pages"
+      previous: "Previous"
+      next: "Next"
+    terminals:
+      no_provider: "No payment provider is connected yet, so this terminal runs in test mode. Your API key and merchant code go under Payments."
+      no_provider_link: "Connect SumUp"
+      lead: "Each terminal has its own address and its own card reader. Open the address on the tablet."
+      add: "Add a terminal"
+      edit: "Edit"
+      inactive: "Turned off"
+      created: "Terminal created: %{host}"
+      saved: "Saved."
+      deleted: "Terminal deleted."
+      has_donations: "This terminal already has donations and can't be deleted. Turn it off instead."
+      certificate_pending: "Address is being set up, usually within a few minutes"
+      certificate_failed: "The address couldn't be set up. Please write to us: %{email}"
+      slug: "Address"
+      slug_hint: "Can't be changed later. For example %{example}"
+      provider: "Payment provider"
+      provider_hint: "Connect more providers under"
+      pairing_code: "Pairing code"
+      pairing_hint: "For a new reader. The Solo shows it under Connections > API > Connect."
+      reader_id: "Or an existing reader ID"
+      reader_hint: "If the reader is already paired. In test mode, leave both fields empty."
+      active: "Terminal takes donations"
+      delete_title: "Delete terminal"
+      delete_hint: "Only possible while it has no donations."
+      delete: "Delete terminal"
+      delete_confirm: "Really delete this terminal?"
+    appearance:
+      lead: "This is how donors see your terminal. Changes apply to all terminals."
+      saved: "Saved."
+      preview: "Preview"
+      brand: "Brand"
+      primary_color: "Main colour"
+      accent_color: "Accent colour"
+      background_color: "Background"
+      logo: "Logo"
+      background: "Background image (optional)"
+      image_hint: "PNG, JPG or WebP, up to %{size} MB."
+      image_invalid: "The image must be a PNG, JPG or WebP file of up to %{size} MB."
+      remove_image: "Remove image"
+      texts: "Wording"
+      texts_hint: "Empty fields show the standard wording you see as a placeholder."
+      copy:
+        title: "Header"
+        subtitle: "Subheader"
+        thank_you: "Thank-you message after donating"
+      amounts: "Amounts"
+      preset_amounts: "Preset amounts"
+      preset_hint: "Separated by commas, %{count} at most."
+      currency: "Currency"
+      currency_hint: "Must match your merchant account."
+      allow_custom_amount: "Allow a custom amount"
+      collect_donor_details: "Ask for name and email (optional for donors)"
+      show_recent_donations: "Show latest donations with names on the terminal"
+      general: "General"
+      languages: "Terminal languages (the first is the default)"
+      time_zone: "Time zone"
+      receipt_footer: "Footer of the donation confirmation"
+      receipt_hint: "For example your community's name and address."
+    payments:
+      lead: "Payments run through your own account with the provider. Connect it here."
+      connected: "%{provider} is connected."
+      verified: "The credentials work."
+      removed: "Connection removed."
+      in_use: "A terminal is still using this connection."
+      status_verified: "Connected, checked on %{date}"
+      status_unverified: "Not checked yet"
+      status_none: "Not connected"
+      connect: "Connect"
+      change: "Change"
+      check: "Check"
+      keys_note: "Your keys are stored encrypted and never shown again."
+      keep_blank: "Leave empty to keep the saved value."
+      save_and_check: "Save and check"
+      guide_title: "How to find your credentials"
+      other_providers: "Using a different provider? Write to us:"
+      remove_title: "Remove connection"
+      remove_hint: "Deletes the saved keys. Only possible when no terminal uses this connection."
+      remove: "Remove connection"
+      remove_confirm: "Really remove this connection?"
+  payment_providers:
+    sumup:
+      name: "SumUp"
+      description: "Card payments through SumUp Solo readers."
+      fields:
+        api_key: { label: "API key", hint: "The secret key from your SumUp Toolkit." }
+        merchant_code: { label: "Merchant code", hint: "For example MK01A8C2." }
+        affiliate_key: { label: "Affiliate key", hint: "Required by SumUp for card reader payments." }
+        affiliate_app_id: { label: "Application identifier", hint: "The identifier you entered for the affiliate key." }
+    test:
+      name: "Test mode"
+      description: "Always available: payments are simulated and don't count as income. Amounts ending in .13 fail, so you can try that too."
+  mailers:
+    greeting: "Salam %{name},"
+    password_reset:
+      subject: "New password for %{account}"
+      body: "Use this link to set a new password for %{account}."
+      action: "Set a new password"
+      expiry: "The link works for one hour. If you didn't ask for this, you can ignore this email."
+    welcome:
+      subject: "Welcome, %{account}"
+      body: "Your account for %{account} is ready, with a first terminal in test mode."
+      action: "Go to your dashboard"
+      next: "Next, connect your payment provider and design your terminal."
+    login_links:
+      subject: "Your login link"
+      body: "Log in here:"
+    donation:
+      subject: "Thank you for your donation to %{account}"
+      body: "Your donation of %{amount} to %{account} has been received."

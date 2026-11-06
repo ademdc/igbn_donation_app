@@ -4,79 +4,60 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A Rails 7 donation application for IGBN (Islamische Gemeinde Bosnien Nürnberg) that processes card payments via SumUp card readers. Donors select preset or custom amounts, and payments are processed through physical SumUp card terminals.
+A multi-tenant SaaS for card donations: communities sign up, connect a payment provider and run donation terminals on tablets next to their card readers. It's the SaaS version of the single-tenant IGBN app, which stays on Heroku on `main`. **This branch deploys to Fly.io with a Neon database. Never push it to the `heroku` remote.** See SETUP.md.
+
+The design and tenancy follow the Hutba translation app (`../igbd-translations-app`, hutba.app, locally on port 3020).
 
 ## Development Commands
 
 ```bash
-# Start development server (runs Rails, JS bundler, and CSS bundler)
-bin/dev
-
-# Run tests
+bin/dev                      # port 3030: Rails and the JS bundler
+bin/rails db:seed            # demo account, see SETUP.md for the URLs
 bin/rails test
-
-# Run a single test file
 bin/rails test test/models/donation_test.rb
-
-# Run a specific test
-bin/rails test test/models/donation_test.rb:10
-
-# Database commands
-bin/rails db:create
-bin/rails db:migrate
-bin/rails db:seed
-
-# Console
-bin/rails console
-
-# Build assets manually
-yarn build           # JavaScript
-yarn build:css       # Tailwind CSS
+yarn build
 ```
 
 ## Architecture
 
-### Payment Flow
+### Hosts
 
-1. User selects amount on `home#index` (donation form)
-2. `DonationsController#create` creates a `Donation` record and initiates a SumUp reader checkout via `SumupClient`
-3. Frontend polls `DonationsController#status` every 5 seconds to check payment status
-4. SumUp sends webhook to `SumupController#checkout_return_url` when transaction completes
-5. On success, `DonationMailer` sends confirmation email if donor provided email
+`config/routes.rb` splits by host:
 
-### Key Components
+- `digital-donation.com`: marketing site (`/de`, `/en`, `/bs`) and super admin (`/admin`), via the `AppDomain` constraint
+- `terminal1.acme.digital-donation.com`: donation terminal (`DonationsController`), via the `TerminalHost` constraint and `terminals.hostname`
+- `acme.digital-donation.com`: login and owner dashboard (`Dashboard::*`), via `AccountScoped`
 
-- **SumupClient** (`app/models/sumup_client.rb`): HTTP client for SumUp API v0.1. Handles reader checkouts, status checks, and reader status. Uses `SUMUP_API_KEY`, `SUMUP_MERCHANT_CODE`, and reader IDs from environment.
+Session cookies are per host. `HandoversController` moves a user across hosts with a short-lived token, after signup and for impersonation. `TERMINAL_HOSTS=flat` switches new terminals to `terminal1-acme.digital-donation.com`.
 
-- **DonationsController**: Handles donation creation, status polling, and reader status checks. Reader ID can be set based on subdomain or params.
+### Payment providers
 
-- **SumupController**: Webhook endpoint for SumUp transaction updates. Verifies webhook signatures using HMAC-SHA256.
+Everything provider-specific sits behind `PaymentProviders::Base` (`app/services/payment_providers/`). `Sumup` is the real one, `TestMode` simulates payments and is what every account starts with. To add a provider: subclass `Base`, register it in `PROVIDERS`, add its name and fields under `payment_providers` in `config/locales/app/*.yml`.
 
-- **Donation model**: States are `pending`, `processing`, `successful`, `failed`, `cancelled`. Sends confirmation email on status change to `successful`.
+`PaymentConnection` holds an account's encrypted credentials. Never render them; `masked` exists for that. Each terminal belongs to one connection.
 
-### Environment Variables
+### Payment flow
 
-Required in `.env`:
-- `SUMUP_API_KEY` - SumUp API bearer token
-- `SUMUP_MERCHANT_CODE` - SumUp merchant identifier
-- `SUMUP_READER1_ID` - Default card reader ID
-- `APP_HOST` - Application hostname for webhook return URLs
+1. `DonationsController#create` saves a `Donation`, whose `start_checkout!` starts the payment on the reader
+2. The terminal polls `#status` every 5 seconds, which calls `sync_with_provider`
+3. The provider also posts to `/webhooks/:provider/:webhook_token`
 
-Webhook secret stored in Rails credentials: `Rails.application.credentials.sumup[:webhook_secret]`
+SumUp doesn't sign webhooks. The secret token identifies the account, and a success only counts once `sync_with_provider` has confirmed it with SumUp's API. `Donation#apply` takes a row lock, so polling and webhook can't send the confirmation email twice.
+
+Donations through `TestMode` have `test: true` and never count in statistics (`Donation.live`).
+
+### Tenancy rules
+
+Always reach records through the account or terminal: `@account.terminals.find`, `@terminal.donations.find`. `test/integration/tenant_isolation_test.rb` covers this; add to it for every new tenant-owned resource.
 
 ### Frontend
 
-- **Hotwire**: Turbo and Stimulus for SPA-like behavior
-- **Tailwind CSS 4**: Styling via `@tailwindcss/cli`
-- **esbuild**: JavaScript bundling
-- `app/javascript/donation.js`: Handles donation form interactions, payment initiation, status polling, and UI state transitions
+Plain CSS through Sprockets, with tokens shared with Hutba: `marketing.css`, `app.css`, `admin.css` (builds on `app.css`) and `terminal.css`, which takes the account's colours as CSS variables from `layouts/terminal`. No Tailwind. esbuild bundles `app/javascript/*.js`: `application.js` for the terminal, `marketing.js`, `dashboard.js`.
+
+Email goes through SendGrid's SMTP interface (`SENDGRID_API_KEY`, `SENDGRID_DOMAIN`, `MAIL_FROM`).
+
+Brand images live in the database (`BrandImage`) because Fly machines have no persistent disk.
 
 ### Internationalization
 
-Locales: Bosnian (`bs`), German (`de`), English (`en`). Translation keys under `donations.index.*`.
-
-### Database
-
-PostgreSQL with a single `donations` table:
-- `amount`, `currency`, `donor_name`, `donor_email`
-- `status`, `checkout_reference`, `checkout_id`, `transaction_code`
+Locales: `de` (default), `bs`, `en`, in `config/locales/{marketing,app,terminal}/`. Every user-facing string needs all three. The super admin is English only.

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= [content_for(:title), "#{brand_name} Admin"].compact_blank.join(" – ") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex">
+    <meta name="color-scheme" content="light">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= render "layouts/fonts" %>
+    <%= stylesheet_link_tag "app", "admin", "data-turbo-track": "reload" %>
+  </head>
+
+  <body class="app admin">
+    <header class="app-bar app-bar--admin">
+      <div class="app-bar__inner">
+        <p class="app-bar__brand">
+          <span class="wordmark__dot" aria-hidden="true"></span>
+          <span><%= brand_name.downcase %> admin</span>
+        </p>
+
+        <% if current_user&.admin? %>
+          <nav class="app-nav" aria-label="Admin">
+            <%= link_to "Overview", admin_dashboard_path, "aria-current": (controller_name == "dashboard" ? "page" : nil) %>
+            <%= link_to "Accounts", admin_accounts_path, "aria-current": (controller_name == "accounts" ? "page" : nil) %>
+          </nav>
+          <div class="app-bar__end">
+            <span class="muted"><%= current_user.email %></span>
+            <%= button_to "Log out", admin_logout_path, method: :delete, class: "link-button" %>
+          </div>
+        <% end %>
+      </div>
+    </header>
+
+    <main class="app-main app-main--wide" id="main">
+      <% flash.each do |type, message| %>
+        <p class="flash flash--<%= type == "alert" ? "alert" : "notice" %>" role="<%= type == "alert" ? "alert" : "status" %>"><%= message %></p>
+      <% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

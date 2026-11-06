@@ -1,0 +1,7 @@
+<% content_for :title, t("app.password_resets.edit_title") %>
+
+<div class="auth">
+  <h1 class="page-title"><%= t("app.password_resets.edit_title") %></h1>
+  <p class="page-lead"><%= @user.email %></p>
+  <%= render "password_resets/password_form", url: password_reset_path(params[:token]), submit_label: t("app.password_resets.save") %>
+</div>

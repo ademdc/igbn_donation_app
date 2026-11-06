@@ -1,0 +1,7 @@
+<%= t("mailers.greeting", name: @user.name) %>
+
+<%= t("mailers.welcome.body", account: @account.name) %>
+
+<%= @account.url("/dashboard") %>
+
+<%= t("mailers.welcome.next") %>

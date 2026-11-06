@@ -1,0 +1,18 @@
+<% content_for :title, t("app.password_resets.title") %>
+
+<div class="auth">
+  <h1 class="page-title"><%= t("app.password_resets.title") %></h1>
+  <p class="page-lead"><%= t("app.password_resets.lead") %></p>
+
+  <%= form_with url: password_resets_path, class: "auth__form" do |form| %>
+    <div class="field">
+      <%= form.label :email, t("app.fields.email") %>
+      <%= form.email_field :email, autocomplete: "username", required: true, autofocus: true %>
+    </div>
+    <%= form.submit t("app.password_resets.submit"), class: "button button--block" %>
+  <% end %>
+
+  <div class="auth__links">
+    <%= link_to t("app.password_resets.back"), login_path %>
+  </div>
+</div>

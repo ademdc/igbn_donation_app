@@ -1,0 +1,121 @@
+<% content_for :title, t("app.nav.appearance") %>
+
+<h1 class="page-title"><%= t("app.nav.appearance") %></h1>
+<p class="page-lead"><%= t("app.appearance.lead") %></p>
+
+<%= form_with model: @account, url: dashboard_appearance_path, method: :patch, multipart: true, class: "appearance", data: { appearance: true } do |form| %>
+  <div class="appearance__form">
+    <%= render "shared/errors", record: @account %>
+
+    <section class="panel">
+      <h2 class="panel__title"><%= t("app.appearance.brand") %></h2>
+      <div class="colors">
+        <% { primary_color: "primary", accent_color: "accent", background_color: "background" }.each do |attribute, slot| %>
+          <div class="field">
+            <%= form.label attribute, t("app.appearance.#{attribute}") %>
+            <%= form.color_field attribute, data: { preview_color: slot } %>
+          </div>
+        <% end %>
+      </div>
+
+      <% BrandImage::KINDS.each do |kind| %>
+        <div class="field">
+          <%= form.label kind, t("app.appearance.#{kind}") %>
+          <%= form.file_field kind, accept: "image/png,image/jpeg,image/webp", "aria-describedby": "#{kind}-hint" %>
+          <p class="field__hint" id="<%= kind %>-hint"><%= t("app.appearance.image_hint", size: BrandImage::MAX_BYTES / 1.megabyte) %></p>
+          <% if @account.image_digest(kind) %>
+            <div class="image-current">
+              <%= image_tag brand_image_path(kind, v: @account.image_digest(kind)), alt: "" %>
+              <button type="submit" form="remove-<%= kind %>" class="link-button"><%= t("app.appearance.remove_image") %></button>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title"><%= t("app.appearance.texts") %></h2>
+      <p class="muted"><%= t("app.appearance.texts_hint") %></p>
+      <% Account::LOCALES.each_with_index do |locale, index| %>
+        <details class="copy-locale"<%= " open" if locale == @account.default_locale %>>
+          <summary><%= Account::LOCALE_NAMES.fetch(locale) %></summary>
+          <% Account::COPY_KEYS.each do |key| %>
+            <div class="field">
+              <%= label_tag "copy_#{locale}_#{key}", t("app.appearance.copy.#{key}") %>
+              <% preview = { "data-preview-text": key } if locale == @account.default_locale %>
+              <%= text_field_tag "account[terminal_copy][#{locale}][#{key}]", @account.terminal_copy.dig(locale, key), id: "copy_#{locale}_#{key}",
+                    maxlength: Account::COPY_MAX_LENGTH, placeholder: t("terminal.defaults.#{key}", locale: locale), **(preview || {}) %>
+            </div>
+          <% end %>
+        </details>
+      <% end %>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title"><%= t("app.appearance.amounts") %></h2>
+      <div class="form-grid">
+        <div class="field">
+          <%= form.label :preset_amounts_text, t("app.appearance.preset_amounts") %>
+          <%= form.text_field :preset_amounts_text, data: { preview_amounts: true }, "aria-describedby": "amounts-hint" %>
+          <p class="field__hint" id="amounts-hint"><%= t("app.appearance.preset_hint", count: Account::MAX_PRESET_AMOUNTS) %></p>
+        </div>
+        <div class="field">
+          <%= form.label :currency, t("app.appearance.currency") %>
+          <%= form.select :currency, Account::CURRENCIES %>
+          <p class="field__hint"><%= t("app.appearance.currency_hint") %></p>
+        </div>
+      </div>
+      <label class="choice"><%= form.check_box :allow_custom_amount %><span><%= t("app.appearance.allow_custom_amount") %></span></label>
+      <label class="choice"><%= form.check_box :collect_donor_details %><span><%= t("app.appearance.collect_donor_details") %></span></label>
+      <label class="choice"><%= form.check_box :show_recent_donations %><span><%= t("app.appearance.show_recent_donations") %></span></label>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__title"><%= t("app.appearance.general") %></h2>
+      <fieldset class="language-picker">
+        <legend class="panel__subtitle"><%= t("app.appearance.languages") %></legend>
+        <%= hidden_field_tag "account[locales][]", "", id: nil %>
+        <% Account::LOCALES.each do |locale| %>
+          <label class="language-option">
+            <%= check_box_tag "account[locales][]", locale, @account.locales.include?(locale), id: "locale_#{locale}" %>
+            <span><%= Account::LOCALE_NAMES.fetch(locale) %></span>
+          </label>
+        <% end %>
+      </fieldset>
+      <div class="field field--spaced">
+        <%= form.label :time_zone, t("app.appearance.time_zone") %>
+        <%= form.time_zone_select :time_zone %>
+      </div>
+      <div class="field">
+        <%= form.label :receipt_footer, t("app.appearance.receipt_footer") %>
+        <%= form.text_area :receipt_footer, rows: 3, "aria-describedby": "receipt-hint" %>
+        <p class="field__hint" id="receipt-hint"><%= t("app.appearance.receipt_hint") %></p>
+      </div>
+    </section>
+
+    <%= form.submit t("app.save"), class: "button" %>
+  </div>
+
+  <aside class="appearance__preview" aria-label="<%= t("app.appearance.preview") %>">
+    <p class="muted"><%= t("app.appearance.preview") %></p>
+    <div class="preview" data-preview>
+      <% if @account.image_digest(:logo) %>
+        <%= image_tag brand_image_path("logo", v: @account.image_digest(:logo)), alt: "", class: "preview__logo" %>
+      <% else %>
+        <p class="preview__name"><%= @account.name %></p>
+      <% end %>
+      <p class="preview__title" data-preview-slot="title"></p>
+      <p class="preview__subtitle" data-preview-slot="subtitle"></p>
+      <div class="preview__card">
+        <div class="preview__amounts" data-preview-slot="amounts" data-symbol="<%= currency_symbol(@account.currency) %>"></div>
+        <p class="preview__donate"><%= t("terminal.donate_now", locale: @account.default_locale) %></p>
+      </div>
+      <p class="preview__thanks" data-preview-slot="thank_you" hidden></p>
+    </div>
+  </aside>
+<% end %>
+
+<%# Outside the main form, which can't contain these; the buttons point here with form="…" %>
+<% BrandImage::KINDS.each do |kind| %>
+  <%= form_with url: image_dashboard_appearance_path(kind: kind), method: :delete, id: "remove-#{kind}" do %><% end %>
+<% end %>

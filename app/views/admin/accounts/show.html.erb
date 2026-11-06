@@ -1,0 +1,84 @@
+<% content_for :title, @account.name %>
+
+<p><%= link_to "All accounts", admin_accounts_path %></p>
+
+<div class="section-head">
+  <h1 class="page-title"><%= @account.name %></h1>
+  <%= render "admin/shared/status", account: @account %>
+</div>
+<p class="muted"><%= link_to @account.host, @account.url, target: "_blank", rel: "noopener" %> · signed up <%= l(@account.created_at.to_date, format: :long) %></p>
+
+<div class="kpis">
+  <section class="panel kpi">
+    <h2 class="kpi__label">Today</h2>
+    <p class="kpi__value"><%= money(@stats.today, @stats.currency, precision: 0) %></p>
+  </section>
+  <section class="panel kpi">
+    <h2 class="kpi__label">Last 30 days</h2>
+    <p class="kpi__value"><%= money(@stats.period_total, @stats.currency, precision: 0) %></p>
+    <p class="kpi__note"><%= pluralize(@stats.period_count, "donation") %></p>
+  </section>
+  <section class="panel kpi">
+    <h2 class="kpi__label">All time</h2>
+    <p class="kpi__value"><%= money(@stats.all_time, @stats.currency, precision: 0) %></p>
+  </section>
+</div>
+
+<div class="two-col" style="margin-top: 1.5rem;">
+  <section class="panel">
+    <h2 class="panel__title">Terminals</h2>
+    <table class="table">
+      <tbody>
+        <% @terminals.each do |terminal| %>
+          <tr>
+            <td><%= terminal.name %><br><span class="muted"><%= terminal.hostname %></span></td>
+            <td><%= terminal.payment_connection.provider %></td>
+            <td class="num"><%= terminal.active? ? "On" : "Off" %><% if terminal.certificate_status %> · cert <%= terminal.certificate_status %><% end %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+  <section class="panel">
+    <h2 class="panel__title">Payment providers</h2>
+    <table class="table">
+      <tbody>
+        <% @connections.each do |connection| %>
+          <tr>
+            <td><%= connection.provider %></td>
+            <td class="num">
+              <% if connection.client_class.test_mode? %>Built in
+              <% elsif connection.verified_at %>Verified <%= l(connection.verified_at.to_date, format: :short) %>
+              <% else %>Not verified<% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+  <section class="panel">
+    <h2 class="panel__title">Users</h2>
+    <table class="table">
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.name %><br><%= mail_to user.email %></td>
+            <td class="num"><%= user.last_login_at ? "Last login #{l(user.last_login_at.to_date, format: :short)}" : "Never logged in" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+  <section class="panel danger-zone">
+    <h2 class="panel__title">Actions</h2>
+    <div class="action-row">
+      <%= button_to "Open dashboard as owner", impersonate_admin_account_path(@account), class: "button button--quiet", data: { turbo: false } %>
+      <% if @account.suspended? %>
+        <%= button_to "Reactivate", admin_account_path(@account), method: :patch, params: { account: { status: "active" } }, class: "button" %>
+      <% else %>
+        <%= button_to "Suspend", admin_account_path(@account), method: :patch, params: { account: { status: "suspended" } }, class: "button button--quiet",
+              form: { onsubmit: "return confirm('Suspend this account? Its terminals stop taking donations.')" } %>
+      <% end %>
+    </div>
+  </section>
+</div>

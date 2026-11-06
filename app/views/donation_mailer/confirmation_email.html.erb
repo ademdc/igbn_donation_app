@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  </head>
-  <body>
-    <p>Vaša donacija od <%= @donation.amount %> <%= @donation.currency %> je uspešno primljena.</p>
-
-    <p>
-    <i style="font-size: 11px;">Islamska zajednica Bosnjaka u Nurnbergu</i>
-    <br />
-    <i style="font-size: 11px;">Turnerheimstr. 48, 90441 Nurnberg</i>
-    </p>
-  </body>
-</html>
+<p><%= @account.terminal_text(:thank_you) %></p>
+<p><%= t("mailers.donation.body", amount: money(@donation.amount, @donation.currency), account: @account.name) %></p>
+<% if @account.receipt_footer.present? %>
+  <p style="color:#3f5754;font-size:13px;"><%= simple_format(h(@account.receipt_footer), {}, wrapper_tag: "span") %></p>
+<% end %>

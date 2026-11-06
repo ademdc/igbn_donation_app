@@ -1,0 +1,231 @@
+de:
+  date:
+    formats: { short: "%d.%m.", long: "%-d. %B %Y" }
+  time:
+    formats: { short: "%d.%m., %H:%M" }
+  activerecord:
+    models:
+      terminal: "Terminal"
+    attributes:
+      account:
+        name: "Name"
+        subdomain: "Adresse"
+        preset_amounts: "Beträge"
+        locales: "Sprachen"
+        terminal_copy: "Texte"
+        primary_color: "Hauptfarbe"
+        accent_color: "Akzentfarbe"
+        background_color: "Hintergrundfarbe"
+      terminal:
+        name: "Name"
+        slug: "Adresse"
+        provider_reader_id: "Leser-ID"
+        pairing_code: "Kopplungscode"
+        payment_connection: "Zahlungsanbieter"
+      payment_connection:
+        credentials: "Pflichtfelder"
+      user:
+        name: "Name"
+        email: "E-Mail"
+        password: "Passwort"
+        password_confirmation: "Passwort-Bestätigung"
+  activemodel:
+    attributes:
+      signup:
+        organisation_name: "Name der Gemeinde"
+        subdomain: "Adresse"
+        name: "Name"
+        email: "E-Mail"
+        password: "Passwort"
+        terms: "AGB"
+  app:
+    save: "Speichern"
+    cancel: "Abbrechen"
+    suspended: "Dieses Konto ist gesperrt, die Terminals nehmen keine Spenden an. Bitte schreiben Sie uns: %{email}"
+    errors:
+      heading: "Bitte prüfen Sie Ihre Eingaben:"
+    nav:
+      label: "Hauptmenü"
+      overview: "Übersicht"
+      donations: "Spenden"
+      terminals: "Terminals"
+      appearance: "Gestaltung"
+      payments: "Zahlungen"
+      sign_out: "Abmelden"
+    fields:
+      name: "Name"
+      email: "E-Mail"
+      password: "Passwort"
+      password_hint: "Mindestens 10 Zeichen."
+      new_password: "Neues Passwort"
+      password_confirmation: "Passwort wiederholen"
+      status: "Status"
+      terminal: "Terminal"
+      donor: "Spender"
+      amount: "Betrag"
+    statuses:
+      pending: "Offen"
+      processing: "In Bearbeitung"
+      successful: "Erfolgreich"
+      failed: "Fehlgeschlagen"
+      cancelled: "Abgebrochen"
+    sessions:
+      title: "Anmelden"
+      lead: "Melden Sie sich bei %{account} an."
+      submit: "Anmelden"
+      forgot: "Passwort vergessen?"
+      invalid: "E-Mail oder Passwort ist falsch."
+      signed_out: "Sie wurden abgemeldet."
+    password_resets:
+      title: "Passwort zurücksetzen"
+      lead: "Wir senden Ihnen einen Link an Ihre E-Mail-Adresse."
+      submit: "Link senden"
+      back: "Zurück zur Anmeldung"
+      sent: "Wenn wir diese Adresse kennen, ist der Link unterwegs."
+      edit_title: "Neues Passwort"
+      save: "Passwort speichern"
+      updated: "Ihr Passwort wurde geändert."
+      invalid_link: "Dieser Link ist ungültig oder abgelaufen."
+    overview:
+      greeting: "Salam, %{name}"
+      lead: "So laufen Ihre Spenden."
+      today: "Heute"
+      this_month: "Dieser Monat"
+      all_time: "Insgesamt"
+      by_terminal: "Nach Terminal"
+      recent: "Letzte Spenden"
+      all_donations: "Alle Spenden"
+      no_donations: "Noch keine Spenden."
+      setup:
+        title: "Noch drei Schritte bis zu echten Spenden"
+        connect: "Zahlungsanbieter verbinden"
+        terminal: "Terminal mit Kartenleser verbinden"
+        appearance: "Logo und Texte hinzufügen"
+      chart:
+        title: "Spenden pro Tag"
+        summary:
+          one: "%{total} aus einer Spende, im Schnitt %{average}"
+          other: "%{total} aus %{count} Spenden, im Schnitt %{average}"
+        period: "Zeitraum"
+        days: { one: "%{count} Tag", other: "%{count} Tage" }
+        empty: "In diesem Zeitraum sind noch keine Spenden eingegangen."
+        as_table: "Als Tabelle anzeigen"
+        date: "Datum"
+    donations:
+      any: "Alle"
+      filter: "Filtern"
+      count: { one: "1 Spende", other: "%{count} Spenden" }
+      date: "Datum"
+      test: "Test"
+      pages: "Seiten"
+      previous: "Zurück"
+      next: "Weiter"
+    terminals:
+      no_provider: "Noch ist kein Zahlungsanbieter verbunden, daher läuft dieses Terminal im Testmodus. API-Schlüssel und Händlercode tragen Sie unter „Zahlungen“ ein."
+      no_provider_link: "SumUp verbinden"
+      lead: "Jedes Terminal hat seine eigene Adresse und seinen eigenen Kartenleser. Öffnen Sie die Adresse auf dem Tablet."
+      add: "Terminal hinzufügen"
+      edit: "Bearbeiten"
+      inactive: "Deaktiviert"
+      created: "Terminal angelegt: %{host}"
+      saved: "Gespeichert."
+      deleted: "Terminal gelöscht."
+      has_donations: "Dieses Terminal hat bereits Spenden und kann nicht gelöscht werden. Deaktivieren Sie es stattdessen."
+      certificate_pending: "Adresse wird eingerichtet, das dauert meist wenige Minuten"
+      certificate_failed: "Adresse konnte nicht eingerichtet werden. Bitte schreiben Sie uns: %{email}"
+      slug: "Adresse"
+      slug_hint: "Kann später nicht geändert werden. Zum Beispiel %{example}"
+      provider: "Zahlungsanbieter"
+      provider_hint: "Weitere Anbieter verbinden Sie unter"
+      pairing_code: "Kopplungscode"
+      pairing_hint: "Für einen neuen Leser. Der Solo zeigt ihn unter Connections > API > Connect an."
+      reader_id: "Oder vorhandene Leser-ID"
+      reader_hint: "Falls der Leser schon gekoppelt ist. Im Testmodus bleiben beide Felder leer."
+      active: "Terminal nimmt Spenden an"
+      delete_title: "Terminal löschen"
+      delete_hint: "Nur möglich, solange es keine Spenden hat."
+      delete: "Terminal löschen"
+      delete_confirm: "Dieses Terminal wirklich löschen?"
+    appearance:
+      lead: "So sehen Spender Ihr Terminal. Die Änderungen gelten für alle Terminals."
+      saved: "Gespeichert."
+      preview: "Vorschau"
+      brand: "Marke"
+      primary_color: "Hauptfarbe"
+      accent_color: "Akzentfarbe"
+      background_color: "Hintergrund"
+      logo: "Logo"
+      background: "Hintergrundbild (optional)"
+      image_hint: "PNG, JPG oder WebP, höchstens %{size} MB."
+      image_invalid: "Das Bild muss eine PNG-, JPG- oder WebP-Datei mit höchstens %{size} MB sein."
+      remove_image: "Bild entfernen"
+      texts: "Texte"
+      texts_hint: "Leere Felder zeigen den Standardtext, der als Platzhalter zu sehen ist."
+      copy:
+        title: "Überschrift"
+        subtitle: "Unterzeile"
+        thank_you: "Dankestext nach der Spende"
+      amounts: "Beträge"
+      preset_amounts: "Vorgegebene Beträge"
+      preset_hint: "Mit Komma getrennt, höchstens %{count}."
+      currency: "Währung"
+      currency_hint: "Muss zu Ihrem Händlerkonto passen."
+      allow_custom_amount: "Eigenen Betrag erlauben"
+      collect_donor_details: "Nach Name und E-Mail fragen (optional für Spender)"
+      show_recent_donations: "Letzte Spenden mit Namen auf dem Terminal zeigen"
+      general: "Allgemein"
+      languages: "Sprachen des Terminals (die erste ist die Standardsprache)"
+      time_zone: "Zeitzone"
+      receipt_footer: "Fußzeile der Spendenbestätigung"
+      receipt_hint: "Zum Beispiel Name und Anschrift Ihrer Gemeinde."
+    payments:
+      lead: "Zahlungen laufen über Ihr eigenes Konto beim Anbieter. Verbinden Sie es hier."
+      connected: "%{provider} ist verbunden."
+      verified: "Die Zugangsdaten funktionieren."
+      removed: "Verbindung entfernt."
+      in_use: "Diese Verbindung wird noch von einem Terminal genutzt."
+      status_verified: "Verbunden, geprüft am %{date}"
+      status_unverified: "Noch nicht geprüft"
+      status_none: "Nicht verbunden"
+      connect: "Verbinden"
+      change: "Ändern"
+      check: "Prüfen"
+      keys_note: "Ihre Schlüssel werden verschlüsselt gespeichert und nie wieder angezeigt."
+      keep_blank: "Leer lassen, um den gespeicherten Wert zu behalten."
+      save_and_check: "Speichern und prüfen"
+      guide_title: "So finden Sie Ihre Zugangsdaten"
+      other_providers: "Sie nutzen einen anderen Anbieter? Schreiben Sie uns:"
+      remove_title: "Verbindung entfernen"
+      remove_hint: "Löscht die gespeicherten Schlüssel. Nur möglich, wenn kein Terminal diese Verbindung nutzt."
+      remove: "Verbindung entfernen"
+      remove_confirm: "Verbindung wirklich entfernen?"
+  payment_providers:
+    sumup:
+      name: "SumUp"
+      description: "Kartenzahlungen über SumUp-Solo-Leser."
+      fields:
+        api_key: { label: "API-Schlüssel", hint: "Der geheime Schlüssel (Secret Key) aus Ihrem SumUp-Toolkit." }
+        merchant_code: { label: "Händlercode", hint: "Zum Beispiel MK01A8C2." }
+        affiliate_key: { label: "Affiliate-Schlüssel", hint: "Von SumUp für Zahlungen über Kartenleser verlangt." }
+        affiliate_app_id: { label: "Anwendungskennung", hint: "Die Kennung, die Sie beim Affiliate-Schlüssel eingetragen haben." }
+    test:
+      name: "Testmodus"
+      description: "Immer verfügbar: Zahlungen werden simuliert und zählen nicht als Einnahmen. Beträge, die auf ,13 enden, schlagen zum Ausprobieren fehl."
+  mailers:
+    greeting: "Salam %{name},"
+    password_reset:
+      subject: "Neues Passwort für %{account}"
+      body: "Mit diesem Link legen Sie ein neues Passwort für %{account} fest."
+      action: "Neues Passwort festlegen"
+      expiry: "Der Link gilt eine Stunde. Wenn Sie das nicht angefordert haben, ignorieren Sie diese E-Mail."
+    welcome:
+      subject: "Willkommen, %{account}"
+      body: "Ihr Konto für %{account} ist bereit, mit einem ersten Terminal im Testmodus."
+      action: "Zum Dashboard"
+      next: "Als Nächstes verbinden Sie Ihren Zahlungsanbieter und gestalten Ihr Terminal."
+    login_links:
+      subject: "Ihr Anmeldelink"
+      body: "Hier melden Sie sich an:"
+    donation:
+      subject: "Danke für Ihre Spende an %{account}"
+      body: "Ihre Spende von %{amount} an %{account} ist eingegangen."

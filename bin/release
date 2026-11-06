@@ -1,0 +1,3 @@
+#!/bin/bash -e
+# Fly release command. Neon's pooled connection can't run migrations, so use the direct one.
+DATABASE_URL="${DATABASE_URL_UNPOOLED:-$DATABASE_URL}" exec ./bin/rails db:migrate

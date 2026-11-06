@@ -1,24 +1,5 @@
-# README
+# Digital Donation
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Card donations for mosques and communities: a branded terminal on a tablet, the community's own payment provider, and a dashboard with statistics.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+See [SETUP.md](SETUP.md) to run or deploy it.

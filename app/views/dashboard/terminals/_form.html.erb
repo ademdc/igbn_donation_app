@@ -1,0 +1,50 @@
+<%= render "shared/errors", record: terminal %>
+
+<% if @account.live_connections.empty? %>
+  <p class="flash"><%= t("app.terminals.no_provider") %> <%= link_to t("app.terminals.no_provider_link"), dashboard_payment_connections_path %></p>
+<% end %>
+
+<%= form_with model: terminal, url: terminal.persisted? ? dashboard_terminal_path(terminal) : dashboard_terminals_path, class: "panel" do |form| %>
+  <div class="form-grid">
+    <div class="field">
+      <%= form.label :name, t("app.fields.name") %>
+      <%= form.text_field :name, required: true, placeholder: t("marketing.how.address_labels.main") %>
+    </div>
+    <div class="field">
+      <%= form.label :slug, t("app.terminals.slug") %>
+      <%= form.text_field :slug, required: true, disabled: terminal.persisted?, autocapitalize: "off", spellcheck: false, pattern: "[a-z0-9]([a-z0-9\\-]*[a-z0-9])?", maxlength: 30, "aria-describedby": "slug-hint" %>
+      <p class="field__hint" id="slug-hint">
+        <% if terminal.persisted? %><%= terminal.hostname %><% else %><%= t("app.terminals.slug_hint", example: "terminal1.#{@account.subdomain}.#{AppDomain.host}") %><% end %>
+      </p>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :payment_connection_id, t("app.terminals.provider") %>
+    <%= form.select :payment_connection_id, @account.payment_connections.map { |connection| [t("payment_providers.#{connection.provider}.name"), connection.id] } %>
+    <p class="field__hint"><%= t("app.terminals.provider_hint") %> <%= link_to t("app.nav.payments"), dashboard_payment_connections_path %></p>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <%= form.label :pairing_code, t("app.terminals.pairing_code") %>
+      <%= form.text_field :pairing_code, autocomplete: "off", autocapitalize: "characters", spellcheck: false, "aria-describedby": "pairing-hint" %>
+      <p class="field__hint" id="pairing-hint"><%= t("app.terminals.pairing_hint") %></p>
+    </div>
+    <div class="field">
+      <%= form.label :provider_reader_id, t("app.terminals.reader_id") %>
+      <%= form.text_field :provider_reader_id, autocomplete: "off", spellcheck: false, placeholder: "rdr_…", "aria-describedby": "reader-hint" %>
+      <p class="field__hint" id="reader-hint"><%= t("app.terminals.reader_hint") %></p>
+    </div>
+  </div>
+
+  <label class="choice">
+    <%= form.check_box :active %>
+    <span><%= t("app.terminals.active") %></span>
+  </label>
+
+  <div class="panel__actions">
+    <%= form.submit t("app.save"), class: "button" %>
+    <%= link_to t("app.cancel"), dashboard_terminals_path %>
+  </div>
+<% end %>

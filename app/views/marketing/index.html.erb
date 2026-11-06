@@ -1,0 +1,161 @@
+<%
+  demo_colors = { teal: ["#23716b", "#12302d"], blue: ["#2563a8", "#14304f"], plum: ["#7a3e6c", "#34182e"], clay: ["#b4532a", "#42200f"] }
+  # Shape of a typical month, for the dashboard illustration
+  demo_days = [12, 8, 20, 15, 6, 34, 96, 18, 10, 24, 14, 9, 40, 88, 16, 12, 22, 18, 7, 36, 100, 20, 13, 26, 11, 10, 44, 92, 21, 30]
+%>
+
+<section class="hero">
+  <div class="wrap hero__inner">
+    <div class="hero__copy">
+      <h1 class="hero__title"><%= t("marketing.hero.title") %></h1>
+      <p class="hero__lead"><%= t("marketing.hero.lead") %></p>
+      <div class="hero__actions">
+        <%= link_to t("marketing.hero.cta"), signup_path(locale: I18n.locale), class: "button" %>
+        <p class="hero__note"><%= t("marketing.hero.note") %></p>
+      </div>
+    </div>
+
+    <figure class="demo" data-color-demo aria-label="<%= t("marketing.demo.label") %>">
+      <div class="term-mock" data-color-target>
+        <p class="term-mock__name">Džemat Demo</p>
+        <p class="term-mock__header"><%= t("marketing.demo.header") %></p>
+        <p class="term-mock__sub"><%= t("marketing.demo.subheader") %></p>
+        <div class="term-mock__card" aria-hidden="true">
+          <div class="term-mock__amounts">
+            <span>€5</span><span class="is-selected">€10</span><span>€20</span>
+          </div>
+          <p class="term-mock__custom"><%= t("marketing.demo.custom") %></p>
+          <p class="term-mock__donate"><%= t("marketing.demo.donate") %></p>
+        </div>
+      </div>
+
+      <div class="demo__languages" role="group" aria-label="<%= t("marketing.demo.colors") %>">
+        <span class="demo__languages-label"><%= t("marketing.demo.colors") %></span>
+        <% demo_colors.each_with_index do |(key, (primary, background)), index| %>
+          <button type="button" class="chip" data-color="<%= primary %>" data-background="<%= background %>" aria-pressed="<%= index.zero? %>">
+            <span class="chip__swatch" style="background: <%= primary %>" aria-hidden="true"></span> <%= t("marketing.demo.color_names.#{key}") %>
+          </button>
+        <% end %>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section class="how" id="how" aria-labelledby="how-title">
+  <div class="wrap">
+    <h2 class="section-title" id="how-title"><%= t("marketing.how.title") %></h2>
+
+    <div class="how__layout">
+      <ol class="steps">
+        <% t("marketing.how.steps").each do |step| %>
+          <li class="step">
+            <h3 class="step__title"><%= step[:title] %></h3>
+            <p><%= step[:text] %></p>
+          </li>
+        <% end %>
+      </ol>
+
+      <div class="poster">
+        <p class="poster__mosque"><%= t("marketing.how.addresses") %></p>
+        <ul class="addresses">
+          <% { "eingang" => :main, "frauen" => :women, "cafe" => :cafe }.each do |slug, label| %>
+            <li>
+              <span><%= t("marketing.how.address_labels.#{label}") %></span>
+              <code><%= slug %>.dzemat-demo.<%= AppDomain.host %></code>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" aria-labelledby="screen-title">
+  <div class="wrap screen__inner">
+    <div>
+      <h2 class="section-title" id="screen-title"><%= t("marketing.stats.title") %></h2>
+      <p class="screen__text"><%= t("marketing.stats.text") %></p>
+      <ul class="screen__points">
+        <% t("marketing.stats.points").each do |point| %>
+          <li><%= point %></li>
+        <% end %>
+      </ul>
+    </div>
+
+    <figure class="stats-mock" aria-hidden="true">
+      <p class="stats-mock__label"><%= t("marketing.stats.mock_label") %></p>
+      <div class="stats-mock__bars">
+        <% demo_days.each do |height| %>
+          <span style="height: <%= height %>%"></span>
+        <% end %>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section class="benefits" aria-labelledby="benefits-title">
+  <div class="wrap">
+    <h2 class="section-title" id="benefits-title"><%= t("marketing.benefits.title") %></h2>
+    <div class="benefits__list">
+      <% t("marketing.benefits.items").each do |item| %>
+        <div class="benefit">
+          <h3><%= item[:title] %></h3>
+          <p><%= item[:text] %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<section class="guide" id="sumup" aria-labelledby="sumup-title">
+  <div class="wrap guide__inner">
+    <div>
+      <h2 class="section-title" id="sumup-title"><%= t("marketing.sumup.title") %></h2>
+      <p class="guide__lead"><%= t("marketing.sumup.lead") %></p>
+      <p><a href="https://developer.sumup.com/terminal-payments/cloud-api/" rel="noopener" target="_blank"><%= t("marketing.sumup.docs") %></a></p>
+    </div>
+    <%= render "shared/sumup_steps" %>
+  </div>
+</section>
+
+<section class="pricing" id="pricing" aria-labelledby="pricing-title">
+  <div class="wrap">
+    <h2 class="section-title" id="pricing-title"><%= t("marketing.pricing.title") %></h2>
+
+    <div class="plans plans--single">
+      <article class="plan plan--full" aria-labelledby="plan-title">
+        <h3 class="plan__name" id="plan-title"><%= t("marketing.pricing.plan") %></h3>
+        <p class="plan__price"><%= t("marketing.pricing.price") %></p>
+        <p class="plan__per"><%= t("marketing.pricing.per") %></p>
+        <ul class="plan__includes">
+          <% t("marketing.pricing.includes").each do |line| %>
+            <li><%= line %></li>
+          <% end %>
+        </ul>
+        <p class="plan__addon"><%= t("marketing.pricing.addon") %></p>
+        <div class="plan__guarantee">
+          <h4><%= t("marketing.pricing.guarantee_title") %></h4>
+          <p><%= t("marketing.pricing.guarantee") %></p>
+        </div>
+        <div class="plan__footer">
+          <%= link_to t("marketing.pricing.cta"), signup_path(locale: I18n.locale), class: "button button--accent" %>
+          <p class="plan__note"><%= t("marketing.pricing.note") %></p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq" aria-labelledby="faq-title">
+  <div class="wrap faq__inner">
+    <h2 class="section-title" id="faq-title"><%= t("marketing.faq.title") %></h2>
+    <div class="faq__list">
+      <% t("marketing.faq.items").each do |item| %>
+        <details class="faq__item">
+          <summary><%= item[:q] %></summary>
+          <p><%= item[:a] %></p>
+        </details>
+      <% end %>
+    </div>
+  </div>
+</section>

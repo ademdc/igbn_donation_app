@@ -1,0 +1,25 @@
+<% content_for :title, "#{t("marketing.footer.privacy")} – #{brand_name}" %>
+
+<section class="legal">
+  <div class="wrap">
+    <h1><%= t("marketing.footer.privacy") %></h1>
+
+    <%# TODO: have this reviewed before launch. It describes what the app actually does today. %>
+    <p>[Draft – to be completed before launch.]</p>
+
+    <h2>Controller</h2>
+    <p>[Company name], [address]. Email: <%= mail_to Rails.configuration.x.contact_email %></p>
+
+    <h2>Donors</h2>
+    <p>Donors can give their name and email address, both optional. We store them with the amount, on behalf of the community the donation goes to, and use the email address only to send a confirmation. Card details are entered on the payment provider's reader and never reach us.</p>
+
+    <h2>Community accounts</h2>
+    <p>For accounts we store the community's name, the contact person's name and email address, and the payment provider credentials the community enters, which are encrypted.</p>
+
+    <h2>Service providers</h2>
+    <p>Payments are processed by the community's payment provider, such as SumUp. The app runs on Fly.io and its database on Neon.</p>
+
+    <h2>Cookies</h2>
+    <p>We only use a technically necessary session cookie. There is no tracking across websites, no analytics service and no advertising cookies.</p>
+  </div>
+</section>

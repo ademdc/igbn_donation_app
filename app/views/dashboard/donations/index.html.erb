@@ -1,0 +1,56 @@
+<% content_for :title, t("app.nav.donations") %>
+
+<h1 class="page-title"><%= t("app.nav.donations") %></h1>
+
+<%= form_with url: dashboard_donations_path, method: :get, class: "filters" do |form| %>
+  <div class="field">
+    <%= form.label :status, t("app.fields.status") %>
+    <%= form.select :status, [[t("app.donations.any"), ""]] + Donation::STATUSES.map { |status| [t("app.statuses.#{status}"), status] }, selected: params[:status] %>
+  </div>
+  <div class="field">
+    <%= form.label :terminal_id, t("app.fields.terminal") %>
+    <%= form.select :terminal_id, [[t("app.donations.any"), ""]] + @terminals.map { |terminal| [terminal.name, terminal.id] }, selected: params[:terminal_id] %>
+  </div>
+  <%= form.submit t("app.donations.filter"), class: "button", name: nil %>
+<% end %>
+
+<p class="muted"><%= t("app.donations.count", count: @total) %></p>
+
+<div class="panel table-panel">
+  <table class="table table--responsive">
+    <thead>
+      <tr>
+        <th><%= t("app.donations.date") %></th>
+        <th><%= t("app.fields.donor") %></th>
+        <th><%= t("app.fields.terminal") %></th>
+        <th><%= t("app.fields.status") %></th>
+        <th class="num"><%= t("app.fields.amount") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @donations.each do |donation| %>
+        <tr>
+          <td><%= l(donation.created_at.in_time_zone(@account.time_zone), format: :short) %></td>
+          <td><%= donation.donor_name.presence || t("terminal.anonymous") %><% if donation.donor_email.present? %><br><span class="muted"><%= donation.donor_email %></span><% end %></td>
+          <td><%= donation.terminal&.name || "—" %></td>
+          <td>
+            <span class="tag"><%= t("app.statuses.#{donation.status}") %></span>
+            <% if donation.test? %><span class="tag tag--pending"><%= t("app.donations.test") %></span><% end %>
+          </td>
+          <td class="num"><%= money(donation.amount, donation.currency) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% if @donations.empty? %>
+    <p class="muted"><%= t("app.overview.no_donations") %></p>
+  <% end %>
+</div>
+
+<% if @total > Dashboard::DonationsController::PER_PAGE %>
+  <nav class="pagination" aria-label="<%= t("app.donations.pages") %>">
+    <% if @page > 1 %><%= link_to t("app.donations.previous"), request.query_parameters.merge(page: @page - 1) %><% end %>
+    <span class="muted"><%= @page %> / <%= (@total.to_f / Dashboard::DonationsController::PER_PAGE).ceil %></span>
+    <% if @page * Dashboard::DonationsController::PER_PAGE < @total %><%= link_to t("app.donations.next"), request.query_parameters.merge(page: @page + 1) %><% end %>
+  </nav>
+<% end %>

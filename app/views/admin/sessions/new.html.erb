@@ -1,0 +1,17 @@
+<% content_for :title, "Log in" %>
+
+<div class="auth">
+  <h1 class="page-title">Admin login</h1>
+
+  <%= form_with url: admin_login_path, method: :post, class: "auth__form" do |form| %>
+    <div class="field">
+      <%= form.label :email, "Email" %>
+      <%= form.email_field :email, autocomplete: "username", autofocus: true, required: true %>
+    </div>
+    <div class="field">
+      <%= form.label :password, "Password" %>
+      <%= form.password_field :password, autocomplete: "current-password", required: true %>
+    </div>
+    <%= form.submit "Log in", class: "button button--block" %>
+  <% end %>
+</div>

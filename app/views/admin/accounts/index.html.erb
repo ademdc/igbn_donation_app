@@ -1,0 +1,56 @@
+<% content_for :title, "Accounts" %>
+
+<h1 class="page-title">Accounts</h1>
+
+<%= form_with url: admin_accounts_path, method: :get, class: "filters" do |form| %>
+  <div class="field field--grow">
+    <%= form.label :q, "Search" %>
+    <%= form.search_field :q, value: params[:q], placeholder: "Name or address" %>
+  </div>
+  <div class="field">
+    <%= form.label :status, "Status" %>
+    <%= form.select :status, [["Any", ""], ["Active", "active"], ["Suspended", "suspended"]], selected: params[:status] %>
+  </div>
+  <%= form.submit "Filter", class: "button", name: nil %>
+<% end %>
+
+<p class="muted"><%= pluralize(@total, "account") %></p>
+
+<div class="panel table-panel">
+  <table class="table table--responsive">
+    <thead>
+      <tr>
+        <th>Account</th>
+        <th>Status</th>
+        <th>Providers</th>
+        <th class="num">Terminals</th>
+        <th>Owner</th>
+        <th class="num">Signed up</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @accounts.each do |account| %>
+        <% owner = account.users.min_by(&:created_at) %>
+        <tr>
+          <td><%= link_to account.name, admin_account_path(account) %><br><span class="muted"><%= account.host %></span></td>
+          <td><%= render "admin/shared/status", account: account %></td>
+          <td><%= account.payment_connections.map(&:provider).join(", ").presence || "—" %></td>
+          <td class="num"><%= account.terminals.size %></td>
+          <td><%= owner ? mail_to(owner.email) : "—" %></td>
+          <td class="num"><%= l(account.created_at.to_date, format: :short) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% if @accounts.empty? %>
+    <p class="muted">No accounts match these filters.</p>
+  <% end %>
+</div>
+
+<% if @total > Admin::AccountsController::PER_PAGE %>
+  <nav class="pagination" aria-label="Pages">
+    <% if @page > 1 %><%= link_to "Previous", request.query_parameters.merge(page: @page - 1) %><% end %>
+    <span class="muted">Page <%= @page %> of <%= (@total.to_f / Admin::AccountsController::PER_PAGE).ceil %></span>
+    <% if @page * Admin::AccountsController::PER_PAGE < @total %><%= link_to "Next", request.query_parameters.merge(page: @page + 1) %><% end %>
+  </nav>
+<% end %>

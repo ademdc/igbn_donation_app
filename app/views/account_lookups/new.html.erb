@@ -1,0 +1,20 @@
+<% content_for :title, "#{t("app.account_lookups.title")}" %>
+<% content_for :noindex, true %>
+
+<section class="legal">
+  <div class="wrap">
+    <h1><%= t("app.account_lookups.title") %></h1>
+    <% if notice %>
+      <p class="lookup-notice" role="status"><%= notice %></p>
+    <% end %>
+    <p><%= t("app.account_lookups.lead") %></p>
+
+    <%= form_with url: marketing_login_path(locale: I18n.locale), class: "lookup-form" do |form| %>
+      <%= form.label :email, t("app.fields.email") %>
+      <div class="lookup-form__row">
+        <%= form.email_field :email, autocomplete: "email", required: true %>
+        <%= form.submit t("app.account_lookups.submit"), class: "button" %>
+      </div>
+    <% end %>
+  </div>
+</section>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <meta charset="utf-8">
+    <title><%= @account.name %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="<%= @account.background_color %>">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= render "layouts/fonts" %>
+    <%# Colours are validated as #rrggbb on the account %>
+    <style>
+      :root {
+        --primary: <%= @account.primary_color %>;
+        --on-primary: <%= readable_on(@account.primary_color) %>;
+        --accent: <%= @account.accent_color %>;
+        --background: <%= @account.background_color %>;
+        --on-background: <%= readable_on(@account.background_color) %>;
+      }
+    </style>
+    <%= stylesheet_link_tag "terminal", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="terminal"<% if @account.image_digest(:background) %> style="background-image: url(<%= brand_image_path("background", v: @account.image_digest(:background)) %>)"<% end %>>
+    <%= yield %>
+  </body>
+</html>

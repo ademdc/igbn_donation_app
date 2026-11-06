@@ -1,0 +1,7 @@
+<%= @account.terminal_text(:thank_you) %>
+
+<%= t("mailers.donation.body", amount: money(@donation.amount, @donation.currency), account: @account.name) %>
+<% if @account.receipt_footer.present? %>
+
+<%= @account.receipt_footer %>
+<% end %>

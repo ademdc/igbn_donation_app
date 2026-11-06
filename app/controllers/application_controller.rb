@@ -1,13 +1,10 @@
 class ApplicationController < ActionController::Base
-  before_action :set_locale
+  before_action :keep_tenant_pages_out_of_search
 
   private
 
-  def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
-  end
-
-  def default_url_options
-    { locale: I18n.locale }
+  # Terminals and dashboards live on account hosts and should not show up in Google
+  def keep_tenant_pages_out_of_search
+    response.headers["X-Robots-Tag"] = "noindex, nofollow" unless AppDomain.marketing_host?(request.host)
   end
 end

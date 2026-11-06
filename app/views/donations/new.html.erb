@@ -1,0 +1,115 @@
+<div class="kiosk" id="terminal" data-terminal
+     data-locale="<%= I18n.locale %>"
+     data-currency-symbol="<%= currency_symbol(@account.currency) %>"
+     data-text-working="<%= t("terminal.working") %>"
+     data-text-ready="<%= t("terminal.ready") %>"
+     data-text-offline="<%= t("terminal.offline") %>"
+     data-text-busy="<%= t("terminal.busy") %>"
+     data-text-no-amount="<%= t("terminal.errors.no_amount") %>"
+     data-text-network="<%= t("terminal.errors.network") %>"
+     data-text-timeout="<%= t("terminal.errors.timeout") %>"
+     data-text-declined="<%= t("terminal.errors.declined") %>">
+  <header class="kiosk__bar">
+    <% if @account.image_digest(:logo) %>
+      <%= image_tag brand_image_path("logo", v: @account.image_digest(:logo)), alt: @account.name, class: "kiosk__logo" %>
+    <% else %>
+      <p class="kiosk__name"><%= @account.name %></p>
+    <% end %>
+    <% if @account.locales.size > 1 %>
+      <nav class="kiosk__locales" aria-label="<%= t("marketing.nav.language") %>">
+        <% @account.locales.each do |locale| %>
+          <%= link_to locale.upcase, url_for(locale: locale), lang: locale, "aria-current": (locale == I18n.locale.to_s ? "true" : nil) %>
+        <% end %>
+      </nav>
+    <% end %>
+  </header>
+
+  <div class="kiosk__heading">
+    <h1><%= @account.terminal_text(:title) %></h1>
+    <p><%= @account.terminal_text(:subtitle) %></p>
+  </div>
+
+  <% if @terminal.test_mode? %>
+    <p class="kiosk__test"><%= t("terminal.test_mode") %></p>
+  <% end %>
+
+  <section class="kiosk__card">
+    <% if !@terminal.active? || @account.suspended? %>
+      <p class="kiosk__closed"><%= t("terminal.closed") %></p>
+    <% else %>
+      <div id="donationForm">
+        <p class="kiosk__label" id="amount-label"><%= t("terminal.select_amount") %></p>
+        <div class="amounts" role="group" aria-labelledby="amount-label">
+          <% @account.preset_amounts.each do |amount| %>
+            <button type="button" class="amount preset-amount-btn" data-amount="<%= amount.to_f %>"><%= preset_money(amount, @account.currency) %></button>
+          <% end %>
+        </div>
+
+        <% if @account.allow_custom_amount? %>
+          <label class="kiosk__label" for="customAmount"><%= t("terminal.custom_amount") %></label>
+          <div class="custom-amount">
+            <span aria-hidden="true"><%= currency_symbol(@account.currency) %></span>
+            <input type="number" id="customAmount" step="0.01" min="1" max="<%= Donation::MAX_AMOUNT %>" inputmode="decimal" placeholder="0.00">
+          </div>
+        <% end %>
+
+        <% if @account.collect_donor_details? %>
+          <div class="donor">
+            <div>
+              <label class="kiosk__label" for="donorName"><%= t("terminal.name_optional") %></label>
+              <input type="text" id="donorName" autocomplete="off">
+            </div>
+            <div>
+              <label class="kiosk__label" for="donorEmail"><%= t("terminal.email_optional") %></label>
+              <input type="email" id="donorEmail" autocomplete="off">
+            </div>
+          </div>
+        <% end %>
+
+        <p id="readerStatus" class="reader" hidden>
+          <span class="reader__dot" aria-hidden="true"></span>
+          <%= t("terminal.card_reader") %>: <span id="readerStatusText"><%= t("terminal.checking") %></span>
+        </p>
+
+        <p id="formError" class="kiosk__error" role="alert" hidden></p>
+
+        <button type="button" id="donateBtn" class="donate"><%= t("terminal.donate_now") %></button>
+      </div>
+
+      <div id="processingState" class="outcome" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <h2><%= t("terminal.processing_payment") %></h2>
+        <p><%= t("terminal.complete_on_reader") %></p>
+        <p class="outcome__note" role="status"><%= t("terminal.waiting_payment") %></p>
+      </div>
+
+      <div id="successState" class="outcome" hidden>
+        <div class="outcome__icon outcome__icon--good" aria-hidden="true">✓</div>
+        <h2><%= @account.terminal_text(:thank_you) %></h2>
+        <p><%= t("terminal.donation_received") %> <strong id="successAmount"></strong></p>
+        <button type="button" class="donate donate--quiet" data-restart><%= t("terminal.make_another") %></button>
+      </div>
+
+      <div id="errorState" class="outcome" hidden>
+        <div class="outcome__icon outcome__icon--bad" aria-hidden="true">✕</div>
+        <h2><%= t("terminal.payment_failed") %></h2>
+        <p id="errorMessage"></p>
+        <button type="button" class="donate donate--quiet" data-restart><%= t("terminal.try_again") %></button>
+      </div>
+    <% end %>
+  </section>
+
+  <% if @recent_donations.present? %>
+    <section class="kiosk__card kiosk__recent">
+      <h2><%= t("terminal.recent_donations") %></h2>
+      <ul>
+        <% @recent_donations.each do |donation| %>
+          <li>
+            <span><%= donation.donor_name.presence || t("terminal.anonymous") %></span>
+            <strong><%= money(donation.amount, donation.currency) %></strong>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+</div>

@@ -1,0 +1,128 @@
+<% content_for :title, t("app.nav.overview") %>
+
+<h1 class="page-title"><%= t("app.overview.greeting", name: current_user.name) %></h1>
+<p class="page-lead"><%= t("app.overview.lead") %></p>
+
+<% steps = @stats.setup_steps %>
+<% unless steps.values.all? %>
+  <section class="welcome" aria-labelledby="setup-title">
+    <h2 id="setup-title"><%= t("app.overview.setup.title") %></h2>
+    <ol class="setup-list">
+      <li data-done="<%= steps[:connect] %>"><%= link_to t("app.overview.setup.connect"), dashboard_payment_connections_path %></li>
+      <li data-done="<%= steps[:terminal] %>"><%= link_to t("app.overview.setup.terminal"), dashboard_terminals_path %></li>
+      <li data-done="<%= steps[:appearance] %>"><%= link_to t("app.overview.setup.appearance"), dashboard_appearance_path %></li>
+    </ol>
+  </section>
+<% end %>
+
+<div class="overview">
+  <section class="panel stat">
+    <h2 class="stat__label"><%= t("app.overview.today") %></h2>
+    <p class="stat__value"><%= money(@stats.today, @stats.currency) %></p>
+  </section>
+  <section class="panel stat">
+    <h2 class="stat__label"><%= t("app.overview.this_month") %></h2>
+    <p class="stat__value"><%= money(@stats.this_month, @stats.currency) %></p>
+  </section>
+  <section class="panel stat">
+    <h2 class="stat__label"><%= t("app.overview.all_time") %></h2>
+    <p class="stat__value"><%= money(@stats.all_time, @stats.currency) %></p>
+  </section>
+</div>
+
+<div class="stack">
+  <section class="panel" aria-labelledby="chart-title">
+    <div class="panel__head">
+      <div>
+        <h2 class="panel__title" id="chart-title"><%= t("app.overview.chart.title") %></h2>
+        <p class="muted"><%= t("app.overview.chart.summary", total: money(@stats.period_total, @stats.currency), count: @stats.period_count, average: money(@stats.average, @stats.currency)) %></p>
+      </div>
+      <nav class="period" aria-label="<%= t("app.overview.chart.period") %>">
+        <% Dashboard::OverviewController::PERIODS.each do |days| %>
+          <%= link_to t("app.overview.chart.days", count: days), dashboard_path(days: days), "aria-current": (days == @days ? "true" : nil) %>
+        <% end %>
+      </nav>
+    </div>
+
+    <% if @stats.period_count.zero? %>
+      <p class="muted"><%= t("app.overview.chart.empty") %></p>
+    <% else %>
+      <% max = @stats.best_day_total %>
+      <div class="chart">
+        <p class="chart__max"><%= money(max, @stats.currency, precision: 0) %></p>
+        <div class="chart__plot" style="--days: <%= @stats.daily.size %>">
+          <% @stats.daily.each_with_index do |day, index| %>
+            <div class="chart__day<%= " chart__day--end" if index > @stats.daily.size * 0.7 %>" tabindex="0"
+                 data-tip="<%= l(day.date, format: :long) %>: <%= money(day.total, @stats.currency) %> (<%= day.count %>)">
+              <span class="chart__bar" style="height: <%= max.zero? ? 0 : (day.total * 100 / max).round(1) %>%"></span>
+            </div>
+          <% end %>
+        </div>
+        <div class="chart__axis">
+          <span><%= l(@stats.daily.first.date, format: :short) %></span>
+          <span><%= l(@stats.daily.last.date, format: :short) %></span>
+        </div>
+      </div>
+      <details class="chart__table">
+        <summary><%= t("app.overview.chart.as_table") %></summary>
+        <table class="table">
+          <thead>
+            <tr>
+              <th><%= t("app.overview.chart.date") %></th>
+              <th class="num"><%= t("app.fields.amount") %></th>
+              <th class="num"><%= t("app.nav.donations") %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @stats.daily.reverse.reject { |day| day.count.zero? }.each do |day| %>
+              <tr>
+                <td><%= l(day.date, format: :long) %></td>
+                <td class="num"><%= money(day.total, @stats.currency) %></td>
+                <td class="num"><%= day.count %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </details>
+    <% end %>
+  </section>
+
+  <div class="two-col">
+    <section class="panel" aria-labelledby="terminals-title">
+      <h2 class="panel__title" id="terminals-title"><%= t("app.overview.by_terminal") %></h2>
+      <ul class="shares">
+        <% @stats.by_terminal.each do |row| %>
+          <li>
+            <div class="shares__row">
+              <span><%= row.terminal.name %></span>
+              <strong><%= money(row.total, @stats.currency) %></strong>
+            </div>
+            <div class="meter" aria-hidden="true"><span class="meter__fill" style="width: <%= row.share %>%"></span></div>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+
+    <section class="panel" aria-labelledby="recent-title">
+      <div class="panel__head">
+        <h2 class="panel__title" id="recent-title"><%= t("app.overview.recent") %></h2>
+        <%= link_to t("app.overview.all_donations"), dashboard_donations_path %>
+      </div>
+      <% if @stats.recent.any? %>
+        <table class="table">
+          <tbody>
+            <% @stats.recent.each do |donation| %>
+              <tr>
+                <td><%= donation.donor_name.presence || t("terminal.anonymous") %><br><span class="muted"><%= l(donation.created_at.in_time_zone(@account.time_zone), format: :short) %></span></td>
+                <td><span class="tag"><%= t("app.statuses.#{donation.status}") %></span></td>
+                <td class="num"><%= money(donation.amount, donation.currency) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="muted"><%= t("app.overview.no_donations") %></p>
+      <% end %>
+    </section>
+  </div>
+</div>

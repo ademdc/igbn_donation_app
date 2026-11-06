@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+# The database is migrated by bin/release, Fly's release command.
+exec "${@}"

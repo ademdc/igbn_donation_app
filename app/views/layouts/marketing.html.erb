@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#12302d">
+    <%= render "layouts/seo" %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= render "layouts/fonts" %>
+    <%= stylesheet_link_tag "marketing", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "marketing", type: "module", defer: true %>
+  </head>
+
+  <body class="marketing">
+    <a class="skip-link" href="#main"><%= t("marketing.nav.skip") %></a>
+
+    <header class="site-header">
+      <div class="wrap site-header__inner">
+        <%= link_to marketing_path(locale: I18n.locale), class: "wordmark", "aria-label": brand_name do %>
+          <span class="wordmark__dot" aria-hidden="true"></span><%= brand_name.downcase %>
+        <% end %>
+
+        <nav class="site-nav" aria-label="Main">
+          <a href="<%= marketing_path(locale: I18n.locale) %>#how"><%= t("marketing.nav.how") %></a>
+          <a href="<%= marketing_path(locale: I18n.locale) %>#sumup"><%= t("marketing.nav.sumup") %></a>
+          <a href="<%= marketing_path(locale: I18n.locale) %>#pricing"><%= t("marketing.nav.pricing") %></a>
+          <a href="<%= marketing_path(locale: I18n.locale) %>#faq"><%= t("marketing.nav.faq") %></a>
+        </nav>
+
+        <%= render "layouts/locale_switch", locales: nil %>
+
+        <%= link_to t("marketing.nav.login"), marketing_login_path(locale: I18n.locale), class: "site-header__login" %>
+        <%= link_to t("marketing.nav.cta"), signup_path(locale: I18n.locale), class: "button button--small site-header__cta" %>
+      </div>
+    </header>
+
+    <main id="main">
+      <%= yield %>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap site-footer__inner">
+        <div>
+          <p class="wordmark wordmark--small"><span class="wordmark__dot" aria-hidden="true"></span><%= brand_name.downcase %></p>
+          <p class="site-footer__tagline"><%= t("marketing.footer.tagline") %></p>
+        </div>
+        <nav aria-label="Footer">
+          <%= link_to t("marketing.nav.login"), marketing_login_path(locale: I18n.locale) %>
+          <%= link_to t("marketing.footer.imprint"), marketing_imprint_path(locale: I18n.locale) %>
+          <%= link_to t("marketing.footer.privacy"), marketing_privacy_path(locale: I18n.locale) %>
+          <%= link_to t("marketing.footer.terms"), marketing_terms_path(locale: I18n.locale) %>
+          <%= mail_to Rails.configuration.x.contact_email, t("marketing.footer.contact") %>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

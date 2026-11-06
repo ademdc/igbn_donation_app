@@ -1,0 +1,19 @@
+<% title = content_for(:title).presence || "#{t("marketing.meta.title")} – #{Rails.configuration.x.brand_name}" %>
+<% description = content_for(:description).presence || t("marketing.meta.description") %>
+<%# Always the apex host, so www counts as the same site %>
+<% canonical = AppDomain.marketing_url(request.path) %>
+<title><%= title %></title>
+<meta name="description" content="<%= description %>">
+<% if content_for?(:noindex) %>
+  <meta name="robots" content="noindex">
+<% else %>
+  <link rel="canonical" href="<%= canonical %>">
+  <% MarketingController::LOCALES.each do |locale| %>
+    <link rel="alternate" hreflang="<%= locale %>" href="<%= AppDomain.marketing_url(url_for(locale: locale, only_path: true)) %>">
+  <% end %>
+<% end %>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="<%= Rails.configuration.x.brand_name %>">
+<meta property="og:title" content="<%= title %>">
+<meta property="og:description" content="<%= description %>">
+<meta property="og:url" content="<%= canonical %>">

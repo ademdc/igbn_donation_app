@@ -1,0 +1,73 @@
+<% content_for :title, "#{t("app.signup.title")} – #{brand_name}" %>
+
+<section class="signup">
+  <div class="wrap signup__inner">
+    <div class="signup__intro">
+      <h1 class="signup__title"><%= t("app.signup.title") %></h1>
+      <p class="signup__lead"><%= t("app.signup.lead") %></p>
+      <ul class="signup__facts">
+        <% t("app.signup.facts").each do |fact| %>
+          <li><%= fact %></li>
+        <% end %>
+      </ul>
+    </div>
+
+    <%= form_with model: @signup, url: signup_path(locale: I18n.locale), scope: :signup, class: "signup-form", data: { signup: true } do |form| %>
+      <% if @signup.errors.any? %>
+        <div class="signup-form__errors" role="alert">
+          <strong><%= t("app.errors.heading") %></strong>
+          <ul>
+            <% @signup.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <fieldset>
+        <legend><%= t("app.signup.organisation") %></legend>
+
+        <div class="signup-field">
+          <%= form.label :organisation_name, t("app.signup.fields.organisation_name") %>
+          <%= form.text_field :organisation_name, required: true, autocomplete: "organization", data: { signup_name: true } %>
+        </div>
+
+        <div class="signup-field">
+          <%= form.label :subdomain, t("app.signup.fields.subdomain") %>
+          <div class="subdomain-input">
+            <%= form.text_field :subdomain, required: true, autocapitalize: "off", spellcheck: false, pattern: "[a-z0-9]([a-z0-9\\-]*[a-z0-9])?", minlength: 3, maxlength: 40,
+                  "aria-describedby": "subdomain-status", data: { signup_subdomain: true, check_url: signup_check_path(locale: I18n.locale) } %>
+            <span class="subdomain-input__suffix">.<%= AppDomain.host %></span>
+          </div>
+          <p class="signup-field__hint" id="subdomain-status" aria-live="polite" data-signup-status><%= t("app.signup.subdomain_hint") %></p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><%= t("app.signup.you") %></legend>
+
+        <div class="signup-field">
+          <%= form.label :name, t("app.fields.name") %>
+          <%= form.text_field :name, required: true, autocomplete: "name" %>
+        </div>
+        <div class="signup-field">
+          <%= form.label :email, t("app.fields.email") %>
+          <%= form.email_field :email, required: true, autocomplete: "email" %>
+        </div>
+        <div class="signup-field">
+          <%= form.label :password, t("app.fields.password") %>
+          <%= form.password_field :password, required: true, minlength: 10, autocomplete: "new-password", "aria-describedby": "password-hint" %>
+          <p class="signup-field__hint" id="password-hint"><%= t("app.fields.password_hint") %></p>
+        </div>
+      </fieldset>
+
+      <label class="signup-terms">
+        <%= form.check_box :terms, { required: true }, "1", "0" %>
+        <span><%= t("app.signup.terms_html", terms: link_to(t("app.signup.terms_link"), marketing_terms_path(locale: I18n.locale), target: "_blank"), privacy: link_to(t("marketing.footer.privacy"), marketing_privacy_path(locale: I18n.locale), target: "_blank")) %></span>
+      </label>
+
+      <%= form.submit t("app.signup.submit"), class: "button signup-form__submit" %>
+      <p class="signup-form__note"><%= t("marketing.hero.note") %></p>
+    <% end %>
+  </div>
+</section>

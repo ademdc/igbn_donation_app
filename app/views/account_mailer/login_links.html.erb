@@ -1,0 +1,4 @@
+<p><%= t("mailers.login_links.body") %></p>
+<% @accounts.each do |account| %>
+  <%= render "user_mailer/button", url: account.url("/login"), label: account.name %>
+<% end %>

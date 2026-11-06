@@ -1,0 +1,8 @@
+<details class="locale-switch">
+  <summary aria-label="<%= t("marketing.nav.language") %>"><%= I18n.locale.upcase %></summary>
+  <ul>
+    <% (locales || Account::LOCALES).each do |locale| %>
+      <li><%= link_to Account::LOCALE_NAMES.fetch(locale), url_for(locale: locale), lang: locale, "aria-current": (locale == I18n.locale.to_s ? "true" : nil) %></li>
+    <% end %>
+  </ul>
+</details>

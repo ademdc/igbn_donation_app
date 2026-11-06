@@ -35,3 +35,8 @@
 !/app/assets/builds/.keep
 
 /node_modules
+
+# Neon: holds production connection strings, and dotenv would load it in development
+.env*.local
+.env.neon
+.neon

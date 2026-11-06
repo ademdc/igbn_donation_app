@@ -1,0 +1,72 @@
+<% content_for :title, "Overview" %>
+
+<h1 class="page-title">Overview</h1>
+
+<div class="kpis">
+  <section class="panel kpi">
+    <h2 class="kpi__label">Accounts</h2>
+    <p class="kpi__value"><%= @accounts_total %></p>
+    <p class="kpi__note"><%= @accounts_suspended %> suspended</p>
+  </section>
+  <section class="panel kpi">
+    <h2 class="kpi__label">Signups, last 30 days</h2>
+    <p class="kpi__value"><%= @signups_30_days %></p>
+    <p class="kpi__note"><%= @awaiting_provider %> without a payment provider</p>
+  </section>
+  <section class="panel kpi">
+    <h2 class="kpi__label">Active terminals</h2>
+    <p class="kpi__value"><%= @terminals_total %></p>
+  </section>
+  <section class="panel kpi">
+    <h2 class="kpi__label">Donations, last 30 days</h2>
+    <p class="kpi__value"><%= @donations_30_days %></p>
+    <p class="kpi__note"><%= @volume_30_days.map { |currency, total| money(total, currency, precision: 0) }.join(" · ").presence || "No volume yet" %></p>
+  </section>
+</div>
+
+<% if @failing_terminals.any? %>
+  <section class="panel danger-zone" style="margin-top: 1.5rem;">
+    <h2 class="panel__title">Certificates that failed (<%= @failing_terminals.size %>)</h2>
+    <table class="table">
+      <tbody>
+        <% @failing_terminals.each do |terminal| %>
+          <tr>
+            <td><code><%= terminal.hostname %></code></td>
+            <td class="num"><%= link_to terminal.account.name, admin_account_path(terminal.account) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+<% end %>
+
+<div class="two-col" style="margin-top: 1.5rem;">
+  <section class="panel">
+    <h2 class="panel__title">Newest accounts</h2>
+    <table class="table">
+      <tbody>
+        <% @recent_accounts.each do |account| %>
+          <tr>
+            <td><%= link_to account.name, admin_account_path(account) %><br><span class="muted"><%= account.host %></span></td>
+            <td class="num"><%= l(account.created_at.to_date, format: :short) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @recent_accounts.empty? %><p class="muted">No accounts yet.</p><% end %>
+  </section>
+  <section class="panel">
+    <h2 class="panel__title">Most donations, last 30 days</h2>
+    <table class="table">
+      <tbody>
+        <% @top_accounts.each do |account| %>
+          <tr>
+            <td><%= link_to account.name, admin_account_path(account) %></td>
+            <td class="num"><%= account.donation_count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @top_accounts.empty? %><p class="muted">No donations yet.</p><% end %>
+  </section>
+</div>

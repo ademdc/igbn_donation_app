@@ -1,98 +1,76 @@
+# The public donation terminal. Everything is scoped to the terminal the host belongs to.
 class DonationsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:create]
-  before_action :set_reader, only: [:create, :reader_status]
+  layout "terminal"
+
+  before_action :set_terminal
+  around_action :switch_locale
+  before_action :require_open_terminal, only: :create
+
+  def new
+    @recent_donations = @account.donations.successful.live.recent.limit(5) if @account.show_recent_donations?
+  end
 
   def create
-    @donation = Donation.new(donation_params)
+    @donation = @account.donations.new(donation_params.merge(terminal: @terminal, locale: I18n.locale.to_s))
+
+    unless allowed_amount?(@donation.amount)
+      return render json: { success: false, error: t("terminal.errors.invalid_amount") }, status: :unprocessable_entity
+    end
 
     if @donation.save
-      begin
-        sumup = SumupClient.new
-        checkout = sumup.create_reader_checkout(
-          amount: @donation.amount,
-          currency: @donation.currency,
-          email: @donation.donor_email,
-          reader_id: @reader.sumup_reader_id
-        )
-        
-        @donation.update(
-          checkout_id: checkout['data']['client_transaction_id'],
-          checkout_reference: checkout['checkout_reference'],
-          status: 'processing'
-        )
-        
-        render json: {
-          success: true,
-          donation_id: @donation.id,
-          checkout_id: checkout['id'],
-          message: 'Please complete payment on the card reader'
-        }
-      rescue => e
-        @donation.update(status: 'failed')
-        render json: {
-          success: false,
-          error: e.message
-        }, status: :unprocessable_entity
-      end
+      @donation.start_checkout!
+      render json: { success: true, donation_id: @donation.id }
     else
-      render json: {
-        success: false,
-        errors: @donation.errors.full_messages
-      }, status: :unprocessable_entity
+      render json: { success: false, error: @donation.errors.full_messages.to_sentence }, status: :unprocessable_entity
     end
+  rescue PaymentProviders::Error => e
+    Rails.logger.warn "Checkout failed on #{@terminal.hostname}: #{e.message}"
+    render json: { success: false, error: t("payment_errors.#{e.code}", default: t("payment_errors.provider_error")) }, status: :unprocessable_entity
   end
-  
+
   def status
-    @donation = Donation.find(params[:id])
-    
-    if @donation.checkout_id.present?
-      begin
-        sumup = SumupClient.new
-        checkout = sumup.get_checkout_status(@donation.checkout_id)
+    donation = @terminal.donations.find(params[:id])
 
-        if checkout['status'] == 'successful'
-          @donation.update(
-            status: 'successful',
-            transaction_code: checkout.dig('transactions', 0, 'transaction_code')
-          )
-        elsif checkout['status'] == 'FAILED'
-          @donation.update(status: 'failed')
-        end
-      rescue => e
-        # Handle error
-      end
+    begin
+      donation.sync_with_provider
+    rescue PaymentProviders::Error => e
+      # The webhook or the next poll will settle it
+      Rails.logger.warn "Status check failed for donation #{donation.id}: #{e.message}"
     end
-    
-    render json: {
-      id: @donation.id,
-      status: @donation.status,
-      amount: @donation.amount,
-      currency: @donation.currency
-    }
-  end
-  
-  def reader_status
-    sumup = SumupClient.new
-    response = sumup.get_reader_status(reader_id: @reader.sumup_reader_id)
 
-    render json: response
-  rescue => e
-    render json: { error: e.message }, status: :unprocessable_entity
+    render json: { id: donation.id, status: donation.status, amount: donation.amount.to_f, currency: donation.currency }
+  end
+
+  def reader_status
+    status = @terminal.client.reader_status(@terminal.provider_reader_id)
+    render json: { online: status.online, state: status.state }
+  rescue PaymentProviders::Error => e
+    render json: { error: e.code }, status: :unprocessable_entity
   end
 
   private
 
-  def set_reader
-    subdomain = request.subdomain.presence
-    puts "Using subdomain: #{subdomain}"
-    @reader = if subdomain && (reader = Reader.find_by(subdomain: subdomain))
-                reader
-              else
-                Reader.new(sumup_reader_id: ENV['SUMUP_READER_ID'])
-              end
+  def set_terminal
+    @terminal = Current.terminal = request.env.fetch("app.terminal")
+    @account = Current.account = @terminal.account
+  end
+
+  def switch_locale(&action)
+    locale = params[:locale].presence_in(@account.locales) || @account.default_locale
+    I18n.with_locale(locale, &action)
+  end
+
+  def require_open_terminal
+    return if @terminal.active? && @account.active?
+    render json: { success: false, error: t("terminal.closed") }, status: :forbidden
+  end
+
+  def allowed_amount?(amount)
+    @account.allow_custom_amount? || amount.in?(@account.preset_amounts)
   end
 
   def donation_params
-    params.require(:donation).permit(:amount, :currency, :donor_name, :donor_email)
+    fields = @account.collect_donor_details? ? [:amount, :donor_name, :donor_email] : [:amount]
+    params.require(:donation).permit(*fields)
   end
 end

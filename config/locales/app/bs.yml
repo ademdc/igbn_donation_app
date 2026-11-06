@@ -1,0 +1,227 @@
+bs:
+  date:
+    formats: { short: "%d.%m.", long: "%-d. %B %Y." }
+  time:
+    formats: { short: "%d.%m., %H:%M" }
+  activerecord:
+    attributes:
+      account:
+        name: "Naziv"
+        subdomain: "Adresa"
+        preset_amounts: "Iznosi"
+        locales: "Jezici"
+        terminal_copy: "Tekstovi"
+      terminal:
+        name: "Naziv"
+        slug: "Adresa"
+        provider_reader_id: "ID čitača"
+        pairing_code: "Kod za uparivanje"
+        payment_connection: "Pružatelj plaćanja"
+      payment_connection:
+        credentials: "Obavezna polja"
+      user:
+        name: "Ime"
+        email: "Email"
+        password: "Lozinka"
+        password_confirmation: "Potvrda lozinke"
+  activemodel:
+    attributes:
+      signup:
+        organisation_name: "Naziv džemata"
+        subdomain: "Adresa"
+        name: "Ime"
+        email: "Email"
+        password: "Lozinka"
+        terms: "Uslovi"
+  app:
+    save: "Sačuvaj"
+    cancel: "Otkaži"
+    suspended: "Ovaj račun je suspendovan i terminali ne primaju donacije. Molimo pišite nam: %{email}"
+    errors:
+      heading: "Molimo provjerite sljedeće:"
+    nav:
+      label: "Glavni meni"
+      overview: "Pregled"
+      donations: "Donacije"
+      terminals: "Terminali"
+      appearance: "Izgled"
+      payments: "Plaćanja"
+      sign_out: "Odjava"
+    fields:
+      name: "Ime"
+      email: "Email"
+      password: "Lozinka"
+      password_hint: "Najmanje 10 znakova."
+      new_password: "Nova lozinka"
+      password_confirmation: "Ponovite lozinku"
+      status: "Status"
+      terminal: "Terminal"
+      donor: "Donator"
+      amount: "Iznos"
+    statuses:
+      pending: "Na čekanju"
+      processing: "U obradi"
+      successful: "Uspješno"
+      failed: "Neuspješno"
+      cancelled: "Otkazano"
+    sessions:
+      title: "Prijava"
+      lead: "Prijavite se na %{account}."
+      submit: "Prijavi se"
+      forgot: "Zaboravili ste lozinku?"
+      invalid: "Pogrešan email ili lozinka."
+      signed_out: "Odjavljeni ste."
+    password_resets:
+      title: "Poništavanje lozinke"
+      lead: "Poslat ćemo link na vašu email adresu."
+      submit: "Pošalji link"
+      back: "Nazad na prijavu"
+      sent: "Ako poznajemo ovu adresu, link je na putu."
+      edit_title: "Nova lozinka"
+      save: "Sačuvaj lozinku"
+      updated: "Vaša lozinka je promijenjena."
+      invalid_link: "Ovaj link nije važeći ili je istekao."
+    overview:
+      greeting: "Selam, %{name}"
+      lead: "Ovako stoje vaše donacije."
+      today: "Danas"
+      this_month: "Ovaj mjesec"
+      all_time: "Ukupno"
+      by_terminal: "Po terminalu"
+      recent: "Posljednje donacije"
+      all_donations: "Sve donacije"
+      no_donations: "Još nema donacija."
+      setup:
+        title: "Još tri koraka do pravih donacija"
+        connect: "Povežite pružatelja plaćanja"
+        terminal: "Povežite terminal s kartičnim čitačem"
+        appearance: "Dodajte logo i tekstove"
+      chart:
+        title: "Donacije po danu"
+        summary:
+          one: "%{total} iz jedne donacije, prosječno %{average}"
+          few: "%{total} iz %{count} donacije, prosječno %{average}"
+          other: "%{total} iz %{count} donacija, prosječno %{average}"
+        period: "Period"
+        days: { one: "%{count} dan", few: "%{count} dana", other: "%{count} dana" }
+        empty: "U ovom periodu još nema donacija."
+        as_table: "Prikaži kao tabelu"
+        date: "Datum"
+    donations:
+      any: "Sve"
+      filter: "Filtriraj"
+      count: { one: "1 donacija", few: "%{count} donacije", other: "%{count} donacija" }
+      date: "Datum"
+      test: "Test"
+      pages: "Stranice"
+      previous: "Nazad"
+      next: "Dalje"
+    terminals:
+      no_provider: "Još nije povezan nijedan pružatelj plaćanja, pa ovaj terminal radi u testnom načinu. API ključ i kod trgovca unosite pod „Plaćanja“."
+      no_provider_link: "Poveži SumUp"
+      lead: "Svaki terminal ima vlastitu adresu i vlastiti kartični čitač. Otvorite adresu na tabletu."
+      add: "Dodaj terminal"
+      edit: "Uredi"
+      inactive: "Isključen"
+      created: "Terminal je kreiran: %{host}"
+      saved: "Sačuvano."
+      deleted: "Terminal je obrisan."
+      has_donations: "Ovaj terminal već ima donacije i ne može se obrisati. Umjesto toga ga isključite."
+      certificate_pending: "Adresa se podešava, obično za nekoliko minuta"
+      certificate_failed: "Adresa se nije mogla podesiti. Molimo pišite nam: %{email}"
+      slug: "Adresa"
+      slug_hint: "Kasnije se ne može promijeniti. Na primjer %{example}"
+      provider: "Pružatelj plaćanja"
+      provider_hint: "Druge pružatelje povežite pod"
+      pairing_code: "Kod za uparivanje"
+      pairing_hint: "Za novi čitač. Solo ga prikazuje pod Connections > API > Connect."
+      reader_id: "Ili postojeći ID čitača"
+      reader_hint: "Ako je čitač već uparen. U testnom načinu oba polja ostaju prazna."
+      active: "Terminal prima donacije"
+      delete_title: "Obriši terminal"
+      delete_hint: "Moguće samo dok nema donacija."
+      delete: "Obriši terminal"
+      delete_confirm: "Zaista obrisati ovaj terminal?"
+    appearance:
+      lead: "Ovako donatori vide vaš terminal. Promjene važe za sve terminale."
+      saved: "Sačuvano."
+      preview: "Pregled"
+      brand: "Brend"
+      primary_color: "Glavna boja"
+      accent_color: "Boja naglaska"
+      background_color: "Pozadina"
+      logo: "Logo"
+      background: "Pozadinska slika (opcionalno)"
+      image_hint: "PNG, JPG ili WebP, najviše %{size} MB."
+      image_invalid: "Slika mora biti PNG, JPG ili WebP datoteka do %{size} MB."
+      remove_image: "Ukloni sliku"
+      texts: "Tekstovi"
+      texts_hint: "Prazna polja prikazuju standardni tekst koji vidite kao primjer."
+      copy:
+        title: "Naslov"
+        subtitle: "Podnaslov"
+        thank_you: "Tekst zahvale nakon donacije"
+      amounts: "Iznosi"
+      preset_amounts: "Unaprijed zadani iznosi"
+      preset_hint: "Odvojeni zarezom, najviše %{count}."
+      currency: "Valuta"
+      currency_hint: "Mora odgovarati vašem trgovačkom računu."
+      allow_custom_amount: "Dozvoli vlastiti iznos"
+      collect_donor_details: "Pitaj za ime i email (opcionalno za donatore)"
+      show_recent_donations: "Prikaži posljednje donacije s imenima na terminalu"
+      general: "Općenito"
+      languages: "Jezici terminala (prvi je zadani)"
+      time_zone: "Vremenska zona"
+      receipt_footer: "Podnožje potvrde o donaciji"
+      receipt_hint: "Na primjer naziv i adresa vašeg džemata."
+    payments:
+      lead: "Plaćanja idu preko vašeg vlastitog računa kod pružatelja. Povežite ga ovdje."
+      connected: "%{provider} je povezan."
+      verified: "Pristupni podaci rade."
+      removed: "Veza je uklonjena."
+      in_use: "Terminal još koristi ovu vezu."
+      status_verified: "Povezano, provjereno %{date}"
+      status_unverified: "Još nije provjereno"
+      status_none: "Nije povezano"
+      connect: "Poveži"
+      change: "Promijeni"
+      check: "Provjeri"
+      keys_note: "Vaši ključevi se čuvaju šifrirano i više se nikad ne prikazuju."
+      keep_blank: "Ostavite prazno da zadržite sačuvanu vrijednost."
+      save_and_check: "Sačuvaj i provjeri"
+      guide_title: "Kako pronaći pristupne podatke"
+      other_providers: "Koristite drugog pružatelja? Pišite nam:"
+      remove_title: "Ukloni vezu"
+      remove_hint: "Briše sačuvane ključeve. Moguće samo ako nijedan terminal ne koristi ovu vezu."
+      remove: "Ukloni vezu"
+      remove_confirm: "Zaista ukloniti ovu vezu?"
+  payment_providers:
+    sumup:
+      name: "SumUp"
+      description: "Kartična plaćanja preko SumUp Solo čitača."
+      fields:
+        api_key: { label: "API ključ", hint: "Tajni ključ (Secret Key) iz vašeg SumUp Toolkita." }
+        merchant_code: { label: "Kod trgovca", hint: "Na primjer MK01A8C2." }
+        affiliate_key: { label: "Affiliate ključ", hint: "SumUp ga traži za plaćanja preko čitača." }
+        affiliate_app_id: { label: "Identifikator aplikacije", hint: "Identifikator koji ste unijeli za affiliate ključ." }
+    test:
+      name: "Testni način"
+      description: "Uvijek dostupan: plaćanja se simuliraju i ne računaju se kao prihod. Iznosi koji završavaju na ,13 namjerno ne uspijevaju."
+  mailers:
+    greeting: "Selam %{name},"
+    password_reset:
+      subject: "Nova lozinka za %{account}"
+      body: "Ovim linkom postavljate novu lozinku za %{account}."
+      action: "Postavi novu lozinku"
+      expiry: "Link važi jedan sat. Ako ovo niste tražili, možete zanemariti ovaj email."
+    welcome:
+      subject: "Dobro došli, %{account}"
+      body: "Vaš račun za %{account} je spreman, s prvim terminalom u testnom načinu."
+      action: "Na kontrolnu ploču"
+      next: "Sljedeće povežite pružatelja plaćanja i uredite svoj terminal."
+    login_links:
+      subject: "Vaš link za prijavu"
+      body: "Prijavite se ovdje:"
+    donation:
+      subject: "Hvala na vašoj donaciji za %{account}"
+      body: "Vaša donacija od %{amount} za %{account} je primljena."
