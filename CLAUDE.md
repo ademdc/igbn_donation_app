@@ -54,7 +54,7 @@ Always reach records through the account or terminal: `@account.terminals.find`,
 
 Plain CSS through Sprockets, with tokens shared with Hutba: `marketing.css`, `app.css`, `admin.css` (builds on `app.css`) and `terminal.css`, which takes the account's colours as CSS variables from `layouts/terminal`. No Tailwind. esbuild bundles `app/javascript/*.js`: `application.js` for the terminal, `marketing.js`, `dashboard.js`.
 
-Email goes through SendGrid's SMTP interface (`SENDGRID_API_KEY`, `SENDGRID_DOMAIN`, `MAIL_FROM`).
+Email goes through Postmark's API (`POSTMARK_API_KEY`, a server token, and `MAIL_FROM`).
 
 Brand images live in the database (`BrandImage`) because Fly machines have no persistent disk.
 

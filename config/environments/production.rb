@@ -77,17 +77,10 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
-  if ENV["SENDGRID_API_KEY"].present?
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.smtp_settings = {
-      address: "smtp.sendgrid.net",
-      port: 587,
-      user_name: "apikey",
-      password: ENV["SENDGRID_API_KEY"],
-      domain: ENV["SENDGRID_DOMAIN"],
-      authentication: :plain,
-      enable_starttls_auto: true
-    }
+  # Postmark's server API token: https://github.com/ActiveCampaign/postmark-rails
+  if ENV["POSTMARK_API_KEY"].present?
+    config.action_mailer.delivery_method = :postmark
+    config.action_mailer.postmark_settings = { api_token: ENV["POSTMARK_API_KEY"] }
   end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

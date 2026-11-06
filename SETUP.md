@@ -66,8 +66,7 @@ fly secrets set \
   APP_DOMAIN=digital-donation.com \
   CONTACT_EMAIL=info@digital-donation.com \
   MAIL_FROM='Digital Donation <info@digital-donation.com>' \
-  SENDGRID_API_KEY=SG.… \
-  SENDGRID_DOMAIN=digital-donation.com
+  POSTMARK_API_KEY=…
 fly secrets set FLY_API_TOKEN="$(fly tokens create deploy -x 87600h)"
 ```
 
@@ -81,11 +80,14 @@ fly secrets set ENCRYPTION_PRIMARY_KEY=… ENCRYPTION_DETERMINISTIC_KEY=… ENCR
 **Back these up somewhere safe.** Without them every stored API key is unreadable, and
 accounts would have to enter theirs again. `SECRET_KEY_BASE` can change; these can't.
 
-### 3. Email (SendGrid)
+### 3. Email (Postmark)
 
-`MAIL_FROM` must use a domain or sender already verified in SendGrid, otherwise SendGrid refuses the mail. If it isn't set, the app sends from `CONTACT_EMAIL`, which only works once that domain is verified too.
+1. In Postmark, create a server for this app and copy its **Server API token** into `POSTMARK_API_KEY`.
+2. Verify the sender: either a Sender Signature for `info@digital-donation.com` or the whole `digital-donation.com` domain. Postmark refuses mail from an unverified `MAIL_FROM`.
 
-Until this is right, no email goes out: no donation confirmations, welcome mails or password resets. Donations themselves aren't affected.
+Until both are done, no email goes out: no donation confirmations, welcome mails or password resets. Donations themselves aren't affected.
+
+To test without delivering anything, use `POSTMARK_API_TEST` as the token. Postmark checks the message and sends nothing.
 
 ### 4. Deploy
 

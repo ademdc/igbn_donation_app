@@ -16,6 +16,9 @@ gem "tzinfo-data", platforms: %i[ mswin mswin64 mingw x64_mingw jruby ]
 gem "bootsnap", require: false
 gem "rails-i18n", "~> 7.0"
 gem "rack-attack", "~> 6.7"
+gem "postmark-rails", "~> 0.22"
+# Postmark depends on json, and Rails 7.1 can't decode with json 3
+gem "json", "~> 2.9"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
